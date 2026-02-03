@@ -1,0 +1,624 @@
+{
+  "id": "word-test-suite",
+  "name": "WORD Test Suite",
+  "hostType": "word",
+  "testCases": [
+    {
+      "id": "word-001-读取选中文本",
+      "category": "文档读取",
+      "name": "读取选中文本",
+      "description": "读取当前选中的文本内容",
+      "userInput": "读取当前选中的文本内容",
+      "expectedCode": "Word.run(async (context) => {\n  const selection = context.document.getSelection();\n  selection.load(\"text\");\n  await context.sync();\n  \n  return {\n    text: selection.text\n  };\n});",
+      "expectedBehavior": "读取选中文本 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取选中文本 的预期结果"
+      ],
+      "toolsTemplate": "文档读取 > 读取选中文本",
+      "priority": "high"
+    },
+    {
+      "id": "word-002-读取整个文档",
+      "category": "文档读取",
+      "name": "读取整个文档",
+      "description": "读取整个文档的文本内容",
+      "userInput": "读取整个文档的文本内容",
+      "expectedCode": "Word.run(async (context) => {\n  const body = context.document.body;\n  body.load(\"text\");\n  await context.sync();\n  \n  return {\n    text: body.text\n  };\n});",
+      "expectedBehavior": "读取整个文档 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取整个文档 的预期结果"
+      ],
+      "toolsTemplate": "文档读取 > 读取整个文档",
+      "priority": "high"
+    },
+    {
+      "id": "word-003-读取文档段落",
+      "category": "文档读取",
+      "name": "读取文档段落",
+      "description": "读取文档所有段落的内容",
+      "userInput": "读取文档所有段落的内容",
+      "expectedCode": "Word.run(async (context) => {\n  const paragraphs = context.document.body.paragraphs;\n  paragraphs.load(\"items\");\n  await context.sync();\n  \n  const texts = paragraphs.items.map(p => {\n    p.load(\"text\");\n    return p;\n  });\n  await context.sync();\n  \n  return texts.map(p => p.text);\n});",
+      "expectedBehavior": "读取文档段落 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取文档段落 的预期结果"
+      ],
+      "toolsTemplate": "文档读取 > 读取文档段落",
+      "priority": "high"
+    },
+    {
+      "id": "word-004-在选中位置插入文本",
+      "category": "文本插入",
+      "name": "在选中位置插入文本",
+      "description": "在当前选中的位置插入文本\"Hello World\"",
+      "userInput": "在当前选中的位置插入文本\"Hello World\"",
+      "expectedCode": "Word.run(async (context) => {\n  const selection = context.document.getSelection();\n  selection.insertText(\"插入的文本\", \"Replace\");\n  await context.sync();\n});",
+      "expectedBehavior": "在选中位置插入文本 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 在选中位置插入文本 的预期结果"
+      ],
+      "toolsTemplate": "文本插入 > 在选中位置插入文本",
+      "priority": "high"
+    },
+    {
+      "id": "word-005-在文档末尾插入段落",
+      "category": "文本插入",
+      "name": "在文档末尾插入段落",
+      "description": "在文档末尾插入一个新段落\"这是新的段落内容\"",
+      "userInput": "在文档末尾插入一个新段落\"这是新的段落内容\"",
+      "expectedCode": "Word.run(async (context) => {\n  const paragraph = context.document.body.insertParagraph(\n    \"这是新的段落内容\",\n    \"End\"\n  );\n  paragraph.load(\"text\");\n  await context.sync();\n});",
+      "expectedBehavior": "在文档末尾插入段落 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 在文档末尾插入段落 的预期结果"
+      ],
+      "toolsTemplate": "文本插入 > 在文档末尾插入段落",
+      "priority": "high"
+    },
+    {
+      "id": "word-006-插入多行文本（推荐）",
+      "category": "文本插入",
+      "name": "插入多行文本（推荐）",
+      "description": "在文档末尾插入三行文本：第一行是\"项目概述\"，第二行是\"这是一个示例项目\"，第三行是\"预计完成时间：2026年2月\"",
+      "userInput": "在文档末尾插入三行文本：第一行是\"项目概述\"，第二行是\"这是一个示例项目\"，第三行是\"预计完成时间：2026年2月\"",
+      "expectedCode": "Word.run(async (context) => {\n  const body = context.document.body;\n  const lines = [\"第一行内容\", \"第二行内容\", \"第三行内容\"];\n  \n  // 循环插入每个段落，确保格式控制灵活\n  for (const line of lines) {\n    const p = body.insertParagraph(line, \"End\");\n    // 可选：设置段落样式\n    // p.alignment = Word.Alignment.centered;\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "插入多行文本（推荐） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入多行文本（推荐） 的预期结果"
+      ],
+      "toolsTemplate": "文本插入 > 插入多行文本（推荐）",
+      "priority": "high"
+    },
+    {
+      "id": "word-007-在特定位置插入内容",
+      "category": "文本插入",
+      "name": "在特定位置插入内容",
+      "description": "在文档开头插入\"开头内容\"，在末尾插入\"末尾内容\"",
+      "userInput": "在文档开头插入\"开头内容\"，在末尾插入\"末尾内容\"",
+      "expectedCode": "Word.run(async (context) => {\n  const body = context.document.body;\n  \n  // 在开头插入\n  body.insertParagraph(\"开头内容\", \"Start\");\n  \n  // 在末尾插入\n  body.insertParagraph(\"末尾内容\", \"End\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "在特定位置插入内容 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 在特定位置插入内容 的预期结果"
+      ],
+      "toolsTemplate": "文本插入 > 在特定位置插入内容",
+      "priority": "high"
+    },
+    {
+      "id": "word-008-插入-base64-图片",
+      "category": "图片操作",
+      "name": "插入 Base64 图片",
+      "description": "在文档末尾插入一张 400x300 的图片（使用 Base64 编码）",
+      "userInput": "在文档末尾插入一张 400x300 的图片（使用 Base64 编码）",
+      "expectedCode": "// 假设 base64Image 是图片的 Base64 字符串（不带 data:image/... 前缀）\nWord.run(async (context) => {\n  const body = context.document.body;\n  \n  // 在文档末尾插入图片\n  const image = body.insertInlinePictureFromBase64(base64Image, \"End\");\n  \n  // 设置图片大小（可选）\n  image.width = 400;\n  image.height = 300;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "插入 Base64 图片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入 Base64 图片 的预期结果"
+      ],
+      "toolsTemplate": "图片操作 > 插入 Base64 图片",
+      "priority": "high"
+    },
+    {
+      "id": "word-009-创建列表",
+      "category": "列表操作",
+      "name": "创建列表",
+      "description": "创建一个包含\"项目1\"、\"项目2\"、\"项目3\"的项目符号列表",
+      "userInput": "创建一个包含\"项目1\"、\"项目2\"、\"项目3\"的项目符号列表",
+      "expectedCode": "Word.run(async (context) => {\n  const body = context.document.body;\n  \n  const items = [\"项目 1\", \"项目 2\", \"项目 3\"];\n  \n  // 插入第一项并启动列表\n  const firstPara = body.insertParagraph(items[0], \"End\");\n  firstPara.startNewList();\n  \n  // 插入后续项\n  for (let i = 1; i < items.length; i++) {\n    body.insertParagraph(items[i], \"End\");\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建列表 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建列表 的预期结果"
+      ],
+      "toolsTemplate": "列表操作 > 创建列表",
+      "priority": "high"
+    },
+    {
+      "id": "word-010-插入表格",
+      "category": "表格操作",
+      "name": "插入表格",
+      "description": "创建一个 3 行 4 列的表格，包含标题和数据",
+      "userInput": "创建一个 3 行 4 列的表格，包含标题和数据",
+      "expectedCode": "Word.run(async (context) => {\n  const selection = context.document.getSelection();\n  \n  // 创建 3x4 的表格\n  const table = selection.insertTable(3, 4, \"After\", [\n    [\"标题1\", \"标题2\", \"标题3\", \"标题4\"],\n    [\"数据1\", \"数据2\", \"数据3\", \"数据4\"],\n    [\"数据5\", \"数据6\", \"数据7\", \"数据8\"]\n  ]);\n  \n  // 设置表格样式\n  table.styleBuiltIn = Word.Style.gridTable5Dark_Accent1;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "插入表格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入表格 的预期结果"
+      ],
+      "toolsTemplate": "表格操作 > 插入表格",
+      "priority": "high"
+    },
+    {
+      "id": "word-011-读取表格数据",
+      "category": "表格操作",
+      "name": "读取表格数据",
+      "description": "读取第一个表格的所有单元格数据",
+      "userInput": "读取第一个表格的所有单元格数据",
+      "expectedCode": "Word.run(async (context) => {\n  const tables = context.document.body.tables;\n  tables.load(\"items\");\n  await context.sync();\n  \n  if (tables.items.length > 0) {\n    const table = tables.items[0];\n    const rows = table.rows;\n    rows.load(\"items\");\n    await context.sync();\n    \n    const data = [];\n    for (const row of rows.items) {\n      const cells = row.cells;\n      cells.load(\"items\");\n      await context.sync();\n      \n      const rowData = [];\n      for (const cell of cells.items) {\n        cell.body.load(\"text\");\n        await context.sync();\n        rowData.push(cell.body.text);\n      }\n      data.push(rowData);\n    }\n    \n    return data;\n  }\n});",
+      "expectedBehavior": "读取表格数据 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取表格数据 的预期结果"
+      ],
+      "toolsTemplate": "表格操作 > 读取表格数据",
+      "priority": "high"
+    },
+    {
+      "id": "word-012-创建内容控件",
+      "category": "内容控件",
+      "name": "创建内容控件",
+      "description": "将选中内容创建为标题为\"客户名称\"的内容控件",
+      "userInput": "将选中内容创建为标题为\"客户名称\"的内容控件",
+      "expectedCode": "Word.run(async (context) => {\n  const selection = context.document.getSelection();\n  \n  // 将选中内容包装在内容控件中\n  const contentControl = selection.insertContentControl();\n  \n  // 设置属性\n  contentControl.title = \"客户名称\";\n  contentControl.tag = \"CustomerName\";\n  contentControl.appearance = Word.ContentControlAppearance.boundingBox;\n  contentControl.color = \"blue\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建内容控件 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建内容控件 的预期结果"
+      ],
+      "toolsTemplate": "内容控件 > 创建内容控件",
+      "priority": "high"
+    },
+    {
+      "id": "word-013-读取/更新内容控件",
+      "category": "内容控件",
+      "name": "读取/更新内容控件",
+      "description": "查找标签为 CustomerName 的内容控件，并将其内容更新为\"Contoso Ltd.\"",
+      "userInput": "查找标签为 CustomerName 的内容控件，并将其内容更新为\"Contoso Ltd.\"",
+      "expectedCode": "Word.run(async (context) => {\n  // 根据 Tag 查找控件\n  const contentControls = context.document.contentControls.getByTag(\"CustomerName\");\n  contentControls.load(\"items\");\n  await context.sync();\n  \n  // 更新所有匹配控件的文本\n  for (let cc of contentControls.items) {\n    cc.insertText(\"Contoso Ltd.\", \"Replace\");\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "读取/更新内容控件 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取/更新内容控件 的预期结果"
+      ],
+      "toolsTemplate": "内容控件 > 读取/更新内容控件",
+      "priority": "high"
+    },
+    {
+      "id": "word-014-修改页眉",
+      "category": "页眉页脚",
+      "name": "修改页眉",
+      "description": "在文档页眉中添加红色居中的文本\"机密文件 - 仅供内部使用\"",
+      "userInput": "在文档页眉中添加红色居中的文本\"机密文件 - 仅供内部使用\"",
+      "expectedCode": "Word.run(async (context) => {\n  const header = context.document.sections.getFirst().getHeader(Word.HeaderFooterType.primary);\n  header.clear();\n  \n  const paragraph = header.insertParagraph(\"机密文件 - 仅供内部使用\", \"Start\");\n  paragraph.font.color = \"red\";\n  paragraph.alignment = Word.Alignment.centered;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "修改页眉 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 修改页眉 的预期结果"
+      ],
+      "toolsTemplate": "页眉页脚 > 修改页眉",
+      "priority": "medium"
+    },
+    {
+      "id": "word-015-设置文本格式",
+      "category": "格式化",
+      "name": "设置文本格式",
+      "description": "将选中文本设置为微软雅黑、12号、加粗、深灰色",
+      "userInput": "将选中文本设置为微软雅黑、12号、加粗、深灰色",
+      "expectedCode": "Word.run(async (context) => {\n  const selection = context.document.getSelection();\n  \n  // 设置字体\n  selection.font.name = \"微软雅黑\";\n  selection.font.size = 12;\n  selection.font.bold = true;\n  selection.font.color = \"#333333\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置文本格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置文本格式 的预期结果"
+      ],
+      "toolsTemplate": "格式化 > 设置文本格式",
+      "priority": "medium"
+    },
+    {
+      "id": "word-016-设置段落格式",
+      "category": "格式化",
+      "name": "设置段落格式",
+      "description": "设置所有段落为 1.5 倍行距、段后 10 磅间距、两端对齐",
+      "userInput": "设置所有段落为 1.5 倍行距、段后 10 磅间距、两端对齐",
+      "expectedCode": "Word.run(async (context) => {\n  const paragraphs = context.document.body.paragraphs;\n  paragraphs.load(\"items\");\n  await context.sync();\n  \n  for (const paragraph of paragraphs.items) {\n    paragraph.lineSpacing = 1.5;  // 1.5倍行距\n    paragraph.spaceAfter = 10;     // 段后间距\n    paragraph.alignment = \"Justified\";  // 两端对齐\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置段落格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置段落格式 的预期结果"
+      ],
+      "toolsTemplate": "格式化 > 设置段落格式",
+      "priority": "medium"
+    },
+    {
+      "id": "word-017-简单替换",
+      "category": "搜索替换",
+      "name": "简单替换",
+      "description": "把文档中所有的\"旧版本\"替换成\"新版本\"，不区分大小写",
+      "userInput": "把文档中所有的\"旧版本\"替换成\"新版本\"，不区分大小写",
+      "expectedCode": "Word.run(async (context) => {\n  const searchResults = context.document.body.search(\"旧文本\", {\n    matchCase: false,\n    matchWholeWord: false\n  });\n  \n  searchResults.load(\"items\");\n  await context.sync();\n  \n  for (const result of searchResults.items) {\n    result.insertText(\"新文本\", \"Replace\");\n  }\n  \n  await context.sync();\n  \n  return { replacedCount: searchResults.items.length };\n});",
+      "expectedBehavior": "简单替换 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 简单替换 的预期结果"
+      ],
+      "toolsTemplate": "搜索替换 > 简单替换",
+      "priority": "medium"
+    },
+    {
+      "id": "word-018-高级搜索（通配符）",
+      "category": "搜索替换",
+      "name": "高级搜索（通配符）",
+      "description": "搜索所有以 to 开头以 n 结尾的单词，并用黄色高亮显示",
+      "userInput": "搜索所有以 to 开头以 n 结尾的单词，并用黄色高亮显示",
+      "expectedCode": "Word.run(async (context) => {\n  // 搜索以 'to' 开头并以 'n' 结尾的单词\n  const searchResults = context.document.body.search(\"to*n\", {\n    matchWildcards: true\n  });\n  \n  searchResults.load(\"items\");\n  await context.sync();\n  \n  // 突出显示结果\n  for (const result of searchResults.items) {\n    result.font.highlightColor = \"yellow\";\n  }\n});",
+      "expectedBehavior": "高级搜索（通配符） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 高级搜索（通配符） 的预期结果"
+      ],
+      "toolsTemplate": "搜索替换 > 高级搜索（通配符）",
+      "priority": "medium"
+    },
+    {
+      "id": "word-019-插入当前日期字段",
+      "category": "字段（Fields）操作",
+      "name": "插入当前日期字段",
+      "description": "在光标位置插入当前日期字段，格式为\"月/日/年\"",
+      "userInput": "在光标位置插入当前日期字段，格式为\"月/日/年\"",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 插入日期字段，格式为 \"月/日/年 时:分 上午/下午\"\n  const field = range.insertField(\n    Word.InsertLocation.end,\n    Word.FieldType.date,\n    '\\\\@ \"M/d/yyyy h:mm am/pm\"',\n    true\n  );\n  \n  field.load(\"result,code\");\n  await context.sync();\n  \n  console.log(\"日期字段代码:\", field.code);\n  console.log(\"日期字段结果:\", field.result);\n});",
+      "expectedBehavior": "插入当前日期字段 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入当前日期字段 的预期结果"
+      ],
+      "toolsTemplate": "字段（Fields）操作 > 插入当前日期字段",
+      "priority": "high"
+    },
+    {
+      "id": "word-020-创建目录字段",
+      "category": "字段（Fields）操作",
+      "name": "创建目录字段",
+      "description": "在文档开头插入目录",
+      "userInput": "在文档开头插入目录",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 插入目录字段（TOC）\n  const field = range.insertField(\n    Word.InsertLocation.start,\n    Word.FieldType.toc,\n    '\\\\o \"1-3\" \\\\h \\\\z \\\\u',\n    true\n  );\n  \n  field.load(\"result\");\n  await context.sync();\n});",
+      "expectedBehavior": "创建目录字段 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建目录字段 的预期结果"
+      ],
+      "toolsTemplate": "字段（Fields）操作 > 创建目录字段",
+      "priority": "high"
+    },
+    {
+      "id": "word-021-插入超链接字段",
+      "category": "字段（Fields）操作",
+      "name": "插入超链接字段",
+      "description": "插入一个指向微软官网的超链接",
+      "userInput": "插入一个指向微软官网的超链接",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 插入超链接字段\n  const field = range.insertField(\n    Word.InsertLocation.end,\n    Word.FieldType.hyperlink,\n    '\"https://www.microsoft.com\" \\\\o \"访问微软官网\"',\n    true\n  );\n  \n  field.load(\"result,code\");\n  await context.sync();\n});",
+      "expectedBehavior": "插入超链接字段 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入超链接字段 的预期结果"
+      ],
+      "toolsTemplate": "字段（Fields）操作 > 插入超链接字段",
+      "priority": "high"
+    },
+    {
+      "id": "word-022-插入页码字段",
+      "category": "字段（Fields）操作",
+      "name": "插入页码字段",
+      "description": "插入页码",
+      "userInput": "插入页码",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 插入页码字段\n  const field = range.insertField(\n    Word.InsertLocation.end,\n    Word.FieldType.page,\n    \"\",\n    true\n  );\n  \n  field.load(\"result\");\n  await context.sync();\n});",
+      "expectedBehavior": "插入页码字段 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入页码字段 的预期结果"
+      ],
+      "toolsTemplate": "字段（Fields）操作 > 插入页码字段",
+      "priority": "high"
+    },
+    {
+      "id": "word-023-addin字段（存储插件数据）",
+      "category": "字段（Fields）操作",
+      "name": "Addin字段（存储插件数据）",
+      "description": "创建一个用于存储插件自定义数据的 Addin 字段",
+      "userInput": "创建一个用于存储插件自定义数据的 Addin 字段",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 插入 Addin 字段用于存储插件数据\n  const field = range.insertField(\n    Word.InsertLocation.before,\n    Word.FieldType.addin\n  );\n  \n  field.load(\"code,result,data\");\n  await context.sync();\n  \n  // 设置字段数据\n  field.data = JSON.stringify({ customKey: \"customValue\" });\n  await context.sync();\n});",
+      "expectedBehavior": "Addin字段（存储插件数据） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 Addin字段（存储插件数据） 的预期结果"
+      ],
+      "toolsTemplate": "字段（Fields）操作 > Addin字段（存储插件数据）",
+      "priority": "medium"
+    },
+    {
+      "id": "word-024-更新字段内容",
+      "category": "字段（Fields）操作",
+      "name": "更新字段内容",
+      "description": "更新文档中所有日期字段",
+      "userInput": "更新文档中所有日期字段",
+      "expectedCode": "Word.run(async (context) => {\n  // 获取文档中所有字段\n  const fields = context.document.body.fields;\n  fields.load(\"items\");\n  await context.sync();\n  \n  // 更新所有字段\n  let updatedCount = 0;\n  for (const field of fields.items) {\n    try {\n      field.load(\"type\");\n      await context.sync();\n      \n      // 更新字段内容\n      field.updateResult();\n      updatedCount++;\n    } catch (e) {\n      console.warn(\"无法更新字段:\", e);\n    }\n  }\n  \n  await context.sync();\n  \n  return {\n    success: true,\n    updatedCount: updatedCount,\n    message: `成功更新 ${updatedCount} 个字段`\n  };\n});",
+      "expectedBehavior": "更新字段内容 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 更新字段内容 的预期结果"
+      ],
+      "toolsTemplate": "字段（Fields）操作 > 更新字段内容",
+      "priority": "medium"
+    },
+    {
+      "id": "word-025-插入脚注",
+      "category": "脚注和尾注",
+      "name": "插入脚注",
+      "description": "在选中位置插入脚注\"参考文献1\"",
+      "userInput": "在选中位置插入脚注\"参考文献1\"",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 在选中位置插入脚注\n  const footnote = range.insertFootnote(\"这是脚注的参考文献内容。\");\n  \n  footnote.load(\"reference\");\n  await context.sync();\n  \n  console.log(\"脚注参考号:\", footnote.reference);\n});",
+      "expectedBehavior": "插入脚注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入脚注 的预期结果"
+      ],
+      "toolsTemplate": "脚注和尾注 > 插入脚注",
+      "priority": "high"
+    },
+    {
+      "id": "word-026-插入尾注",
+      "category": "脚注和尾注",
+      "name": "插入尾注",
+      "description": "在选中位置插入尾注\"附录A\"",
+      "userInput": "在选中位置插入尾注\"附录A\"",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 在选中位置插入尾注\n  const endnote = range.insertEndnote(\"这是尾注的参考文献内容。\");\n  \n  endnote.load(\"reference\");\n  await context.sync();\n  \n  console.log(\"尾注参考号:\", endnote.reference);\n});",
+      "expectedBehavior": "插入尾注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入尾注 的预期结果"
+      ],
+      "toolsTemplate": "脚注和尾注 > 插入尾注",
+      "priority": "high"
+    },
+    {
+      "id": "word-027-读取脚注内容",
+      "category": "脚注和尾注",
+      "name": "读取脚注内容",
+      "description": "搜索并统计文档中的脚注数量",
+      "userInput": "搜索并统计文档中的脚注数量",
+      "expectedCode": "Word.run(async (context) => {\n  // 搜索脚注引用标记\n  const searchResults = context.document.body.search(\"^f\", {\n    matchWildcards: true\n  });\n  \n  searchResults.load(\"items\");\n  await context.sync();\n  \n  console.log(\"找到\", searchResults.items.length, \"个脚注\");\n});",
+      "expectedBehavior": "读取脚注内容 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取脚注内容 的预期结果"
+      ],
+      "toolsTemplate": "脚注和尾注 > 读取脚注内容",
+      "priority": "high"
+    },
+    {
+      "id": "word-028-应用标题1样式",
+      "category": "样式管理",
+      "name": "应用标题1样式",
+      "description": "将选中段落应用标题1样式",
+      "userInput": "将选中段落应用标题1样式",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection().getRange();\n  \n  // 应用内置标题1样式\n  range.style = \"Heading1\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "应用标题1样式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 应用标题1样式 的预期结果"
+      ],
+      "toolsTemplate": "样式管理 > 应用标题1样式",
+      "priority": "medium"
+    },
+    {
+      "id": "word-029-应用标题样式（使用枚举）",
+      "category": "样式管理",
+      "name": "应用标题样式（使用枚举）",
+      "description": "将选中段落应用标题2样式",
+      "userInput": "将选中段落应用标题2样式",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection();\n  range.load(\"text\");\n  await context.sync();\n  \n  // 使用字符串形式的样式名称 (更兼容)\n  // 可选: \"Heading 1\", \"Heading 2\", \"Heading 3\" 等\n  range.style = \"Heading 2\";\n  \n  await context.sync();\n  \n  return {\n    success: true,\n    appliedStyle: \"Heading 2\",\n    text: range.text\n  };\n});",
+      "expectedBehavior": "应用标题样式（使用枚举） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 应用标题样式（使用枚举） 的预期结果"
+      ],
+      "toolsTemplate": "样式管理 > 应用标题样式（使用枚举）",
+      "priority": "medium"
+    },
+    {
+      "id": "word-030-应用引用样式",
+      "category": "样式管理",
+      "name": "应用引用样式",
+      "description": "将选中段落应用引用块样式",
+      "userInput": "将选中段落应用引用块样式",
+      "expectedCode": "Word.run(async (context) => {\n  const range = context.document.getSelection();\n  range.load(\"text\");\n  await context.sync();\n  \n  // 应用引用块样式 (使用字符串形式)\n  range.style = \"Quote\";\n  \n  await context.sync();\n  \n  return {\n    success: true,\n    appliedStyle: \"Quote\",\n    text: range.text\n  };\n});",
+      "expectedBehavior": "应用引用样式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 应用引用样式 的预期结果"
+      ],
+      "toolsTemplate": "样式管理 > 应用引用样式",
+      "priority": "medium"
+    },
+    {
+      "id": "word-031-批量应用样式",
+      "category": "样式管理",
+      "name": "批量应用样式",
+      "description": "查找所有包含\"重要\"的段落，应用强调样式",
+      "userInput": "查找所有包含\"重要\"的段落，应用强调样式",
+      "expectedCode": "Word.run(async (context) => {\n  // 查找所有包含特定文本的段落\n  const searchResults = context.document.body.search(\"重要\", {\n    matchCase: false\n  });\n  \n  searchResults.load(\"items\");\n  await context.sync();\n  \n  let appliedCount = 0;\n  \n  // 为所有匹配的段落应用强调样式\n  for (const result of searchResults.items) {\n    const paragraph = result.parentOrNullObject.paragraph;\n    paragraph.load(\"isNullObject\");\n    await context.sync();\n    \n    if (!paragraph.isNullObject) {\n      paragraph.style = \"Emphasis\";  // 使用字符串形式\n      appliedCount++;\n    }\n  }\n  \n  await context.sync();\n  \n  return {\n    success: true,\n    appliedCount: appliedCount,\n    message: `成功为 ${appliedCount} 个段落应用强调样式`\n  };\n});",
+      "expectedBehavior": "批量应用样式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 批量应用样式 的预期结果"
+      ],
+      "toolsTemplate": "样式管理 > 批量应用样式",
+      "priority": "medium"
+    },
+    {
+      "id": "word-032-获取并应用现有样式",
+      "category": "样式管理",
+      "name": "获取并应用现有样式",
+      "description": "获取第一个段落的样式，应用到选中区域",
+      "userInput": "获取第一个段落的样式，应用到选中区域",
+      "expectedCode": "Word.run(async (context) => {\n  // 获取第一个段落的样式\n  const firstParagraph = context.document.body.paragraphs.getFirst();\n  firstParagraph.load(\"style\");\n  await context.sync();\n  \n  const styleName = firstParagraph.style;\n  \n  // 将该样式应用到选中区域\n  const range = context.document.getSelection().getRange();\n  range.style = styleName;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "获取并应用现有样式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 获取并应用现有样式 的预期结果"
+      ],
+      "toolsTemplate": "样式管理 > 获取并应用现有样式",
+      "priority": "medium"
+    },
+    {
+      "id": "word-033-插入语法批注",
+      "category": "注释批注（Annotations）",
+      "name": "插入语法批注",
+      "description": "为选中段落添加语法建议批注",
+      "userInput": "为选中段落添加语法建议批注",
+      "expectedCode": "Word.run(async (context) => {\n  const paragraph = context.document.getSelection().paragraphs.getFirst();\n  \n  // 创建批注（需要 WordApi 1.7+）\n  const annotationSet = paragraph.insertAnnotations([{\n    critiqueAnnotation: {\n      critique: {\n        colorScheme: Word.CritiqueColorScheme.red,\n        start: 0,\n        length: 10\n      },\n      popupOptions: {\n        title: \"语法建议\",\n        suggestions: [\"建议1\", \"建议2\"],\n        subtitle: \"可能的语法问题\"\n      }\n    }\n  }]);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "插入语法批注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入语法批注 的预期结果"
+      ],
+      "toolsTemplate": "注释批注（Annotations） > 插入语法批注",
+      "priority": "high"
+    },
+    {
+      "id": "word-034-读取段落批注",
+      "category": "注释批注（Annotations）",
+      "name": "读取段落批注",
+      "description": "读取选中段落的所有批注",
+      "userInput": "读取选中段落的所有批注",
+      "expectedCode": "Word.run(async (context) => {\n  const paragraph = context.document.getSelection().paragraphs.getFirst();\n  \n  // 获取段落的所有批注\n  const annotations = paragraph.getAnnotations();\n  annotations.load(\"items\");\n  await context.sync();\n  \n  console.log(\"找到\", annotations.items.length, \"个批注\");\n  \n  for (const annotation of annotations.items) {\n    annotation.load(\"critiqueAnnotation\");\n    await context.sync();\n    console.log(\"批注:\", annotation.critiqueAnnotation);\n  }\n});",
+      "expectedBehavior": "读取段落批注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取段落批注 的预期结果"
+      ],
+      "toolsTemplate": "注释批注（Annotations） > 读取段落批注",
+      "priority": "high"
+    },
+    {
+      "id": "word-035-注册批注事件",
+      "category": "注释批注（Annotations）",
+      "name": "注册批注事件",
+      "description": "监听批注被点击的事件",
+      "userInput": "监听批注被点击的事件",
+      "expectedCode": "Word.run(async (context) => {\n  // 注册批注点击事件\n  context.document.onAnnotationClicked.add(async (args) => {\n    await Word.run(async (context) => {\n      const annotation = context.document.getAnnotationById(args.id);\n      annotation.load(\"critiqueAnnotation\");\n      await context.sync();\n      \n      console.log(\"点击的批注:\", annotation.critiqueAnnotation.critique);\n    });\n  });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "注册批注事件 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 注册批注事件 的预期结果"
+      ],
+      "toolsTemplate": "注释批注（Annotations） > 注册批注事件",
+      "priority": "medium"
+    },
+    {
+      "id": "word-036-删除批注",
+      "category": "注释批注（Annotations）",
+      "name": "删除批注",
+      "description": "删除选中段落的所有批注",
+      "userInput": "删除选中段落的所有批注",
+      "expectedCode": "Word.run(async (context) => {\n  const paragraph = context.document.getSelection().paragraphs.getFirst();\n  \n  // 获取并删除段落的所有批注\n  const annotations = paragraph.getAnnotations();\n  annotations.load(\"items\");\n  await context.sync();\n  \n  for (const annotation of annotations.items) {\n    annotation.delete();\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "删除批注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除批注 的预期结果"
+      ],
+      "toolsTemplate": "注释批注（Annotations） > 删除批注",
+      "priority": "medium"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "generatedAt": "2026-02-02T05:07:25.497Z",
+    "sourceFile": "/Users/cw/Documents/GitHub/github/DocuPilot/DocuPilot/.claude/skills/word/TOOLS.md"
+  }
+}

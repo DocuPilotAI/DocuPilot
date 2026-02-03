@@ -1,0 +1,725 @@
+[
+  {
+    "timestamp": "2026-01-30T07:24:20.717Z",
+    "testCaseId": "excel-006-复制工作表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "复制当前工作表",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:22.296Z",
+    "testCaseId": "excel-007-读取选中区域",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "读取当前选中的单元格数据",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:23.467Z",
+    "testCaseId": "excel-008-读取指定区域",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "读取 A1:D10 区域的数据",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:25.170Z",
+    "testCaseId": "excel-009-读取多个不连续区域（重要！）",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 读取多个不连续区域（重要！） 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:26.300Z",
+    "testCaseId": "excel-010-写入单个值",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "在 A1 单元格写入数字 100",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:27.463Z",
+    "testCaseId": "excel-011-写入数组数据",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "在 A1:C3 区域写入示例数据",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:28.596Z",
+    "testCaseId": "excel-012-写入多个不连续区域",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 写入多个不连续区域 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:29.722Z",
+    "testCaseId": "excel-013-创建表格",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "创建一个 3 行 4 列的表格",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:30.837Z",
+    "testCaseId": "excel-014-排序表格",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "按第一列升序排序表格",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:31.968Z",
+    "testCaseId": "excel-015-筛选表格",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "筛选表格第三列为 Electronics 的数据",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:33.199Z",
+    "testCaseId": "excel-016-创建透视表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "基于 A1:D5 数据在 F1 位置创建数据透视表",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:34.336Z",
+    "testCaseId": "excel-017-添加列层次结构和筛选器",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 添加列层次结构和筛选器 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:35.451Z",
+    "testCaseId": "excel-018-数据透视表日期筛选",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 数据透视表日期筛选 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:36.577Z",
+    "testCaseId": "excel-019-数据透视表标签筛选",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 数据透视表标签筛选 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:37.691Z",
+    "testCaseId": "excel-020-数据透视表数值筛选",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 数据透视表数值筛选 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:38.805Z",
+    "testCaseId": "excel-021-清除透视表筛选器",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 清除透视表筛选器 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:40.058Z",
+    "testCaseId": "excel-022-创建切片器",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 创建切片器 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:41.132Z",
+    "testCaseId": "excel-023-使用切片器筛选",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 使用切片器筛选 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:42.257Z",
+    "testCaseId": "excel-024-切换透视表布局",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 切换透视表布局 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:43.344Z",
+    "testCaseId": "excel-025-获取透视表数据",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 获取透视表数据 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:44.440Z",
+    "testCaseId": "excel-026-格式化透视表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 格式化透视表 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:45.512Z",
+    "testCaseId": "excel-027-刷新透视表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 刷新透视表 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:24:46.670Z",
+    "testCaseId": "excel-028-删除透视表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 删除透视表 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:25:01.589Z",
+    "testCaseId": "excel-029-设置数值验证",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 设置数值验证 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:11.515Z",
+    "testCaseId": "excel-022-创建切片器",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 创建切片器 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:12.865Z",
+    "testCaseId": "excel-023-使用切片器筛选",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 使用切片器筛选 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:13.988Z",
+    "testCaseId": "excel-024-切换透视表布局",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 切换透视表布局 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:15.132Z",
+    "testCaseId": "excel-025-获取透视表数据",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 获取透视表数据 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:16.256Z",
+    "testCaseId": "excel-026-格式化透视表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 格式化透视表 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:17.378Z",
+    "testCaseId": "excel-027-刷新透视表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 刷新透视表 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:18.384Z",
+    "testCaseId": "excel-028-删除透视表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 删除透视表 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:19.390Z",
+    "testCaseId": "excel-029-设置数值验证",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 设置数值验证 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:20.394Z",
+    "testCaseId": "excel-030-设置下拉列表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 设置下拉列表 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:21.400Z",
+    "testCaseId": "excel-031-添加批注",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 添加批注 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:22.405Z",
+    "testCaseId": "excel-032-创建命名区域",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 创建命名区域 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:23.419Z",
+    "testCaseId": "excel-033-柱状图",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 柱状图 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:24.426Z",
+    "testCaseId": "excel-034-折线图",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 折线图 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:25.435Z",
+    "testCaseId": "excel-035-设置数字格式",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 设置数字格式 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:26.520Z",
+    "testCaseId": "excel-036-设置条件格式",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 设置条件格式 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T07:40:27.633Z",
+    "testCaseId": "excel-037-常用公式",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 常用公式 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T08:06:21.130Z",
+    "testCaseId": "excel-001-创建工作表",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Office.js 未加载",
+    "stackTrace": "executeOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "创建一个名为 NewSheet 的工作表",
+    "generatedCode": "...\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T08:07:44.545Z",
+    "testCaseId": "excel-002-创建工作表（带验证）",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Office.js 未加载",
+    "stackTrace": "executeOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "执行 创建工作表（带验证） 操作",
+    "generatedCode": "...\n\\n[Office.js code here]\\n\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    // 工作表不存在，创建新的\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    // 工作表已存在，使用现有的\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    // 工作表不存在，创建新的\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    // 工作表已存在，使用现有的\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T08:08:30.160Z",
+    "testCaseId": "excel-003-重命名工作表",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Office.js 未加载",
+    "stackTrace": "executeOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "将当前工作表重命名为 RenamedSheet",
+    "generatedCode": "...\n\\nExcel.run(async (context) => {\\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\\n  sheet.name = \\\"RenamedSheet\\\";\\n  await context.sync();\\n});\\n\n\\nExcel.run(async (context) => {\\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\\n  sheet.name = \\\"RenamedSheet\\\";\\n  await context.sync();\\n});\\n\n",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T08:08:40.703Z",
+    "testCaseId": "excel-005-删除工作表（带验证）",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "执行 删除工作表（带验证） 操作",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T08:08:43.272Z",
+    "testCaseId": "excel-006-复制工作表",
+    "hostType": "excel",
+    "errorType": "NetworkError",
+    "errorMessage": "Load failed",
+    "userInput": "复制当前工作表",
+    "generatedCode": "",
+    "context": {
+      "officeVersion": "unknown",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T09:27:43.149Z",
+    "testCaseId": "excel-001-创建工作表",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Unexpected token '...'",
+    "stackTrace": "AsyncFunction@[native code]\nexecuteOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "创建一个名为 NewSheet 的工作表",
+    "generatedCode": "...\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n",
+    "context": {
+      "officeVersion": "16.105.125.2",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T09:28:14.155Z",
+    "testCaseId": "excel-002-创建工作表（带验证）",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Unexpected token '...'",
+    "stackTrace": "AsyncFunction@[native code]\nexecuteOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "执行 创建工作表（带验证） 操作",
+    "generatedCode": "...\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    // 工作表不存在，创建新的\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    // 工作表已存在，使用现有的\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n\\nExcel.run(async (context) => {\\n  const sheets = context.workbook.worksheets;\\n  const existingSheet = sheets.getItemOrNullObject(\\\"NewSheet\\\");\\n  await context.sync();\\n  \\n  let sheet;\\n  if (existingSheet.isNullObject) {\\n    // 工作表不存在，创建新的\\n    sheet = sheets.add(\\\"NewSheet\\\");\\n  } else {\\n    // 工作表已存在，使用现有的\\n    sheet = existingSheet;\\n  }\\n  \\n  sheet.activate();\\n  await context.sync();\\n});\\n\n",
+    "context": {
+      "officeVersion": "16.105.125.2",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T09:28:41.256Z",
+    "testCaseId": "excel-003-重命名工作表",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Unexpected token '...'",
+    "stackTrace": "AsyncFunction@[native code]\nexecuteOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "将当前工作表重命名为 RenamedSheet",
+    "generatedCode": "...\n\\nExcel.run(async (context) => {\\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\\n  sheet.name = \\\"RenamedSheet\\\";\\n  await context.sync();\\n});\\n\n\\nExcel.run(async (context) => {\\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\\n  sheet.name = \\\"RenamedSheet\\\";\\n  await context.sync();\\n});\\n\n",
+    "context": {
+      "officeVersion": "16.105.125.2",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T09:29:11.837Z",
+    "testCaseId": "excel-004-删除工作表",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Unexpected token '...'",
+    "stackTrace": "AsyncFunction@[native code]\nexecuteOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "删除名为 SheetToDelete 的工作表",
+    "generatedCode": "...\n\\nExcel.run(async (context) => {\\n  const sheet = context.workbook.worksheets.getItem(\\\"SheetToDelete\\\");\\n  sheet.delete();\\n  await context.sync();\\n});\\n\n\\nExcel.run(async (context) => {\\n  const sheet = context.workbook.worksheets.getItem(\\\"SheetToDelete\\\");\\n  sheet.delete();\\n  await context.sync();\\n});\\n\n",
+    "context": {
+      "officeVersion": "16.105.125.2",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T09:29:48.328Z",
+    "testCaseId": "excel-005-删除工作表（带验证）",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Unexpected token '...'",
+    "stackTrace": "AsyncFunction@[native code]\nexecuteOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "执行 删除工作表（带验证） 操作",
+    "generatedCode": "...\n",
+    "context": {
+      "officeVersion": "16.105.125.2",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  },
+  {
+    "timestamp": "2026-01-30T09:30:22.707Z",
+    "testCaseId": "excel-006-复制工作表",
+    "hostType": "excel",
+    "errorType": "UnknownError",
+    "errorMessage": "Invalid escape in identifier: '\\'",
+    "stackTrace": "AsyncFunction@[native code]\nexecuteOfficeCode@\nexecuteOfficeCode@\nexecuteTestCase@",
+    "userInput": "复制当前工作表",
+    "generatedCode": "\\nExcel.run(async (context) => {\\n  try {\\n    const sheet = context.workbook.worksheets.getActiveWorksheet();\\n    sheet.load(\\\"name\\\");\\n    await context.sync();\\n    \\n    const originalName = sheet.name;\\n    const newSheet = sheet.copy(Excel.WorksheetPositionType.after, sheet);\\n    newSheet.name = originalName + \\\" (副本)\\\";\\n    newSheet.activate();\\n    \\n    await context.sync();\\n  } catch (error) {\\n    console.error(\\\"复制工作表时出错:\\\", error);\\n    throw error;\\n  }\\n});\\n\n\\nExcel.run(async (context) => {\\n  try {\\n    const sheet = context.workbook.worksheets.getActiveWorksheet();\\n    sheet.load(\\\"name\\\");\\n    await context.sync();\\n    \\n    const originalName = sheet.name;\\n    const newSheet = sheet.copy(Excel.WorksheetPositionType.after, sheet);\\n    newSheet.name = originalName + \\\" (副本)\\\";\\n    newSheet.activate();\\n    \\n    await context.sync();\\n  } catch (error) {\\n    console.error(\\\"复制工作表时出错:\\\", error);\\n    throw error;\\n  }\\n});\\n\n",
+    "context": {
+      "officeVersion": "16.105.125.2",
+      "platform": "MacIntel",
+      "browserInfo": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+    }
+  }
+]

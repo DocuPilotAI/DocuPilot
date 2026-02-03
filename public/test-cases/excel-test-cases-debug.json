@@ -1,0 +1,81 @@
+{
+  "id": "excel-test-suite-debug",
+  "name": "EXCEL Test Suite (Debug - 问题用例)",
+  "hostType": "excel",
+  "testCases": [
+    {
+      "id": "excel-004-删除工作表",
+      "category": "工作表管理",
+      "name": "删除工作表",
+      "description": "删除名为 SheetToDelete 的工作表",
+      "userInput": "先创建一个名为 SheetToDelete 的工作表，然后立即删除它",
+      "expectedCode": "// ⚠️ 重要：删除工作表前应该先检查是否存在，建议使用\"删除工作表（带验证）\"模板\ntry {\n  await Excel.run(async (context) => {\n    const sheet = context.workbook.worksheets.getItem(\"SheetToDelete\");\n    sheet.delete();\n    await context.sync();\n  });\n} catch (error) {\n  console.error(\"删除工作表时出错:\", error);\n  throw error;\n}",
+      "expectedBehavior": "工作表 SheetToDelete 被删除",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除工作表 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 删除工作表",
+      "priority": "high"
+    },
+    {
+      "id": "excel-005-删除工作表（带验证）",
+      "category": "工作表管理",
+      "name": "删除工作表（带验证）",
+      "description": "检查并删除名为 SheetToDelete 的工作表，如果不存在则给出提示",
+      "userInput": "先创建一个名为 SheetToDelete 的工作表，然后检查它是否存在并删除，如果不存在则给出提示",
+      "expectedCode": "// ⚠️ 最佳实践：检查工作表是否存在后再删除（推荐使用此方法）\nawait Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getItemOrNullObject(\"SheetToDelete\");\n  await context.sync();\n  \n  if (!sheet.isNullObject) {\n    sheet.delete();\n    await context.sync();\n    console.log(\"工作表已删除\");\n  } else {\n    console.log(\"工作表不存在，无需删除\");\n  }\n});",
+      "expectedBehavior": "删除工作表（带验证） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除工作表（带验证） 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 删除工作表（带验证）",
+      "priority": "high"
+    },
+    {
+      "id": "excel-020-数据透视表数值筛选",
+      "category": "透视表",
+      "name": "数据透视表数值筛选",
+      "description": "筛选 PivotTable1 的 Product 字段，只显示 Amount 大于 500 的项",
+      "userInput": "先在 A1:D10 创建包含 Product, Category, Date, Amount 列的示例数据，然后基于这些数据在 F1 创建名为 PivotTable1 的数据透视表（行字段 Product，数据字段 Amount），最后筛选 Product 字段只显示 Amount 大于 500 的项",
+      "expectedCode": "// ⚠️ 数值筛选：根据聚合值筛选行字段项\nawait Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const pivotTable = sheet.pivotTables.getItemOrNullObject(\"PivotTable1\");\n  await context.sync();\n  \n  if (pivotTable.isNullObject) {\n    console.log(\"数据透视表不存在\");\n    return;\n  }\n  \n  // 获取行层次结构中的字段\n  const productHierarchy = pivotTable.rowHierarchies.getItemOrNullObject(\"Product\");\n  await context.sync();\n  \n  if (!productHierarchy.isNullObject) {\n    const filterField = productHierarchy.fields.getItem(\"Product\");\n    \n    // 数值筛选: 只显示销量大于 500 的项\n    const valueFilter = {\n      condition: Excel.ValueFilterCondition.greaterThan,\n      comparator: 500,\n      value: \"Amount\"\n    };\n    filterField.applyFilter({ valueFilter: valueFilter });\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "数据透视表数值筛选 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 数据透视表数值筛选 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 数据透视表数值筛选",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-022-创建切片器",
+      "category": "透视表",
+      "name": "创建切片器",
+      "description": "为 PivotTable1 创建一个 Category 字段的切片器",
+      "userInput": "先在 A1:D10 创建包含 Product, Category, Date, Amount 列的示例数据，然后基于这些数据在 F1 创建名为 PivotTable1 的数据透视表（行字段 Product，列字段 Category，数据字段 Amount），最后为这个透视表创建一个 Category 字段的切片器",
+      "expectedCode": "// ⚠️ 创建切片器用于交互式筛选透视表\nawait Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 先检查透视表是否存在\n  const pivotTable = sheet.pivotTables.getItemOrNullObject(\"PivotTable1\");\n  await context.sync();\n  \n  if (pivotTable.isNullObject) {\n    console.log(\"数据透视表不存在，无法创建切片器\");\n    return;\n  }\n  \n  // 创建切片器用于交互式筛选\n  const slicer = sheet.slicers.add(\n    \"PivotTable1\",  // 数据透视表名称\n    \"Category\"      // 筛选字段\n  );\n  \n  slicer.name = \"类别切片器\";\n  slicer.left = 400;\n  slicer.top = 200;\n  slicer.width = 200;\n  slicer.height = 200;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建切片器 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建切片器 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 创建切片器",
+      "priority": "high"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0-debug",
+    "generatedAt": "2026-01-31T00:00:00.000Z",
+    "sourceFile": "手动创建 - 仅包含问题用例",
+    "description": "临时调试文件，只包含4个有问题的测试用例"
+  }
+}

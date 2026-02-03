@@ -1,0 +1,64 @@
+{
+  "id": "word-test-suite-debug",
+  "name": "WORD Test Suite (Debug - 问题用例)",
+  "hostType": "word",
+  "testCases": [
+    {
+      "id": "word-006-插入多行文本（推荐）",
+      "category": "文本插入",
+      "name": "插入多行文本（推荐）",
+      "description": "在文档末尾插入三行文本",
+      "userInput": "在文档末尾插入三行文本：第一行是"项目概述"，第二行是"这是一个示例项目"，第三行是"预计完成时间：2026年2月"",
+      "expectedCode": "Word.run(async (context) => {\n  const body = context.document.body;\n  const lines = [\"第一行内容\", \"第二行内容\", \"第三行内容\"];\n  \n  // 循环插入每个段落，确保格式控制灵活\n  for (const line of lines) {\n    const p = body.insertParagraph(line, \"End\");\n    // 可选：设置段落样式\n    // p.alignment = Word.Alignment.centered;\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "插入多行文本（推荐） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入多行文本（推荐） 的预期结果"
+      ],
+      "toolsTemplate": "文本插入 > 插入多行文本（推荐）",
+      "priority": "high"
+    },
+    {
+      "id": "word-014-修改页眉",
+      "category": "页眉页脚",
+      "name": "修改页眉",
+      "description": "在文档页眉添加机密标记",
+      "userInput": "在文档页眉中添加红色居中的文本"机密文件 - 仅供内部使用"",
+      "expectedCode": "Word.run(async (context) => {\n  const header = context.document.sections.getFirst().getHeader(Word.HeaderFooterType.primary);\n  header.clear();\n  \n  const paragraph = header.insertParagraph(\"机密文件 - 仅供内部使用\", \"Start\");\n  paragraph.font.color = \"red\";\n  paragraph.alignment = Word.Alignment.centered;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "修改页眉 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 修改页眉 的预期结果"
+      ],
+      "toolsTemplate": "页眉页脚 > 修改页眉",
+      "priority": "medium"
+    },
+    {
+      "id": "word-017-简单替换",
+      "category": "搜索替换",
+      "name": "简单替换",
+      "description": "将文档中所有"旧版本"替换为"新版本"",
+      "userInput": "把文档中所有的"旧版本"替换成"新版本"，不区分大小写",
+      "expectedCode": "Word.run(async (context) => {\n  const searchResults = context.document.body.search(\"旧文本\", {\n    matchCase: false,\n    matchWholeWord: false\n  });\n  \n  searchResults.load(\"items\");\n  await context.sync();\n  \n  for (const result of searchResults.items) {\n    result.insertText(\"新文本\", \"Replace\");\n  }\n  \n  await context.sync();\n  \n  return { replacedCount: searchResults.items.length };\n});",
+      "expectedBehavior": "简单替换 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 简单替换 的预期结果"
+      ],
+      "toolsTemplate": "搜索替换 > 简单替换",
+      "priority": "medium"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0-debug",
+    "generatedAt": "2026-01-31T00:00:00.000Z",
+    "sourceFile": "手动创建 - Word 问题用例",
+    "description": "临时调试文件，只包含3个有问题的测试用例"
+  }
+}

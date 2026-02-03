@@ -1,0 +1,454 @@
+{
+  "id": "powerpoint-test-suite",
+  "name": "POWERPOINT Test Suite",
+  "hostType": "powerpoint",
+  "testCases": [
+    {
+      "id": "powerpoint-001-获取幻灯片列表",
+      "category": "幻灯片操作",
+      "name": "获取幻灯片列表",
+      "description": "执行 获取幻灯片列表 操作",
+      "userInput": "执行 获取幻灯片列表 操作",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slides = context.presentation.slides;\n  slides.load(\"items\");\n  await context.sync();\n  \n  return {\n    slideCount: slides.items.length,\n    slides: slides.items.map((slide, index) => ({\n      index: index + 1,\n      id: slide.id\n    }))\n  };\n});",
+      "expectedBehavior": "获取幻灯片列表 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 获取幻灯片列表 的预期结果"
+      ],
+      "toolsTemplate": "幻灯片操作 > 获取幻灯片列表",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-002-添加空白幻灯片",
+      "category": "幻灯片操作",
+      "name": "添加空白幻灯片",
+      "description": "执行 添加空白幻灯片 操作",
+      "userInput": "执行 添加空白幻灯片 操作",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  context.presentation.slides.add();\n  await context.sync();\n});",
+      "expectedBehavior": "添加空白幻灯片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加空白幻灯片 的预期结果"
+      ],
+      "toolsTemplate": "幻灯片操作 > 添加空白幻灯片",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-003-删除幻灯片",
+      "category": "幻灯片操作",
+      "name": "删除幻灯片",
+      "description": "删除当前幻灯片",
+      "userInput": "删除当前幻灯片",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slides = context.presentation.slides;\n  slides.load(\"items\");\n  await context.sync();\n  \n  // 删除第一张幻灯片\n  if (slides.items.length > 0) {\n    slides.items[0].delete();\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "删除幻灯片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除幻灯片 的预期结果"
+      ],
+      "toolsTemplate": "幻灯片操作 > 删除幻灯片",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-004-插入来自其他演示文稿的幻灯片",
+      "category": "幻灯片操作",
+      "name": "插入来自其他演示文稿的幻灯片",
+      "description": "执行 插入来自其他演示文稿的幻灯片 操作",
+      "userInput": "执行 插入来自其他演示文稿的幻灯片 操作",
+      "expectedCode": "// 假设 chosenFileBase64 是包含 .pptx 文件内容的 Base64 字符串\nPowerPoint.run(async (context) => {\n  context.presentation.insertSlidesFromBase64(chosenFileBase64);\n  await context.sync();\n});",
+      "expectedBehavior": "插入来自其他演示文稿的幻灯片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入来自其他演示文稿的幻灯片 的预期结果"
+      ],
+      "toolsTemplate": "幻灯片操作 > 插入来自其他演示文稿的幻灯片",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-005-创建并填充表格",
+      "category": "表格操作",
+      "name": "创建并填充表格",
+      "description": "执行 创建并填充表格 操作",
+      "userInput": "执行 创建并填充表格 操作",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  // 创建 3x4 表格\n  const table = slide.shapes.addTable(3, 4, {\n    left: 100,\n    top: 100,\n    width: 400,\n    height: 150,\n    values: [\n      [\"标题1\", \"标题2\", \"标题3\", \"标题4\"],\n      [\"数据1\", \"数据2\", \"数据3\", \"数据4\"],\n      [\"数据5\", \"数据6\", \"数据7\", \"数据8\"]\n    ]\n  });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建并填充表格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建并填充表格 的预期结果"
+      ],
+      "toolsTemplate": "表格操作 > 创建并填充表格",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-006-格式化表格单元格",
+      "category": "表格操作",
+      "name": "格式化表格单元格",
+      "description": "将第一个表格的标题行设置为蓝色背景、白色粗体文字",
+      "userInput": "将第一个表格的标题行设置为蓝色背景、白色粗体文字",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  // 创建表格并应用样式\n  const table = slide.shapes.addTable(3, 3, {\n    left: 100,\n    top: 100,\n    values: [\n      [\"A\", \"B\", \"C\"],\n      [\"D\", \"E\", \"F\"],\n      [\"G\", \"H\", \"I\"]\n    ],\n    uniformCellProperties: {\n      fill: { color: \"darkblue\" },\n      font: { color: \"white\", bold: true },\n      horizontalAlignment: PowerPoint.ParagraphHorizontalAlignment.center\n    }\n  });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "格式化表格单元格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 格式化表格单元格 的预期结果"
+      ],
+      "toolsTemplate": "表格操作 > 格式化表格单元格",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-007-添加矩形",
+      "category": "形状操作",
+      "name": "添加矩形",
+      "description": "添加一个蓝色矩形",
+      "userInput": "添加一个蓝色矩形",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  const rect = slide.shapes.addGeometricShape(PowerPoint.GeometricShapeType.rectangle);\n  rect.left = 100;\n  rect.top = 100;\n  rect.width = 200;\n  rect.height = 100;\n  rect.fill.setSolidColor(\"blue\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加矩形 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加矩形 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 添加矩形",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-008-添加文本框",
+      "category": "形状操作",
+      "name": "添加文本框",
+      "description": "添加一个包含标题的文本框",
+      "userInput": "添加一个包含标题的文本框",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  const textBox = slide.shapes.addTextBox(\"这是文本内容\");\n  textBox.left = 100;\n  textBox.top = 100;\n  textBox.width = 300;\n  textBox.height = 50;\n  \n  // 设置文本样式\n  textBox.textFrame.textRange.font.size = 24;\n  textBox.textFrame.textRange.font.color = \"purple\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "幻灯片中出现文本框",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加文本框 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 添加文本框",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-009-添加线条",
+      "category": "形状操作",
+      "name": "添加线条",
+      "description": "添加一条红色箭头线",
+      "userInput": "添加一条红色箭头线",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  const line = slide.shapes.addLine(PowerPoint.ConnectorType.straight, {\n    left: 50,\n    top: 50,\n    width: 200, // 终点相对起点的水平距离\n    height: 200 // 终点相对起点的垂直距离\n  });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加线条 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加线条 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 添加线条",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-010-组合形状",
+      "category": "形状操作",
+      "name": "组合形状",
+      "description": "执行 组合形状 操作",
+      "userInput": "执行 组合形状 操作",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shapes = slide.shapes;\n  \n  // 假设我们想组合前两个形状\n  slide.load(\"shapes/items\");\n  await context.sync();\n  \n  if (shapes.items.length >= 2) {\n    const shapesToGroup = [shapes.items[0], shapes.items[1]];\n    const group = shapes.addGroup(shapesToGroup);\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "组合形状 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 组合形状 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 组合形状",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-011-添加图片",
+      "category": "图片操作",
+      "name": "添加图片",
+      "description": "执行 添加图片 操作",
+      "userInput": "执行 添加图片 操作",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  // base64Image 是图片的 Base64 字符串（不带 data:image/... 前缀）\n  const image = slide.shapes.addImage(base64Image);\n  image.left = 100;\n  image.top = 100;\n  image.width = 400;\n  image.height = 300;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加图片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加图片 的预期结果"
+      ],
+      "toolsTemplate": "图片操作 > 添加图片",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-012-为幻灯片添加标签",
+      "category": "标签（元数据）",
+      "name": "为幻灯片添加标签",
+      "description": "执行 为幻灯片添加标签 操作",
+      "userInput": "执行 为幻灯片添加标签 操作",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  slide.tags.add(\"CATEGORY\", \"Confidential\");\n  await context.sync();\n});",
+      "expectedBehavior": "为幻灯片添加标签 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 为幻灯片添加标签 的预期结果"
+      ],
+      "toolsTemplate": "标签（元数据） > 为幻灯片添加标签",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-013-根据标签处理幻灯片",
+      "category": "标签（元数据）",
+      "name": "根据标签处理幻灯片",
+      "description": "执行 根据标签处理幻灯片 操作",
+      "userInput": "执行 根据标签处理幻灯片 操作",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slides = context.presentation.slides;\n  slides.load(\"tags/key, tags/value\");\n  await context.sync();\n  \n  // 遍历并处理\n  for (let slide of slides.items) {\n    // 检查标签逻辑\n  }\n});",
+      "expectedBehavior": "根据标签处理幻灯片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 根据标签处理幻灯片 的预期结果"
+      ],
+      "toolsTemplate": "标签（元数据） > 根据标签处理幻灯片",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-014-设置文本粗体和斜体",
+      "category": "文本格式化增强",
+      "name": "设置文本粗体和斜体",
+      "description": "将第一个形状的文本设置为粗体和斜体",
+      "userInput": "将第一个形状的文本设置为粗体和斜体",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shape = slide.shapes.getItemAt(0);\n  \n  // 设置文本范围的字体属性\n  const textRange = shape.textFrame.textRange;\n  textRange.font.bold = true;\n  textRange.font.italic = true;\n  textRange.font.underline = PowerPoint.FontUnderlineStyle.single;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置文本粗体和斜体 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置文本粗体和斜体 的预期结果"
+      ],
+      "toolsTemplate": "文本格式化增强 > 设置文本粗体和斜体",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-015-设置字体名称和大小",
+      "category": "文本格式化增强",
+      "name": "设置字体名称和大小",
+      "description": "将第一个形状的字体设置为微软雅黑 24 号",
+      "userInput": "将第一个形状的字体设置为微软雅黑 24 号",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shape = slide.shapes.getItemAt(0);\n  \n  const textRange = shape.textFrame.textRange;\n  textRange.font.name = \"微软雅黑\";\n  textRange.font.size = 24;\n  textRange.font.color = \"#4472C4\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置字体名称和大小 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置字体名称和大小 的预期结果"
+      ],
+      "toolsTemplate": "文本格式化增强 > 设置字体名称和大小",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-016-文本垂直居中",
+      "category": "文本格式化增强",
+      "name": "文本垂直居中",
+      "description": "将第一个形状的文本垂直居中对齐",
+      "userInput": "将第一个形状的文本垂直居中对齐",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shape = slide.shapes.getItemAt(0);\n  \n  // 设置文本框垂直对齐\n  shape.textFrame.verticalAlignment = PowerPoint.TextVerticalAlignment.middle;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "文本垂直居中 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 文本垂直居中 的预期结果"
+      ],
+      "toolsTemplate": "文本格式化增强 > 文本垂直居中",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-017-设置文本框边距",
+      "category": "文本格式化增强",
+      "name": "设置文本框边距",
+      "description": "设置第一个形状的文本框边距为上下5点、左右10点",
+      "userInput": "设置第一个形状的文本框边距为上下5点、左右10点",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shape = slide.shapes.getItemAt(0);\n  \n  // 设置文本框的边距（单位：点）\n  shape.textFrame.marginLeft = 10;\n  shape.textFrame.marginRight = 10;\n  shape.textFrame.marginTop = 5;\n  shape.textFrame.marginBottom = 5;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置文本框边距 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置文本框边距 的预期结果"
+      ],
+      "toolsTemplate": "文本格式化增强 > 设置文本框边距",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-018-获取幻灯片布局信息",
+      "category": "幻灯片布局和母版",
+      "name": "获取幻灯片布局信息",
+      "description": "获取当前幻灯片的布局和母版名称",
+      "userInput": "获取当前幻灯片的布局和母版名称",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  // 加载布局和母版信息\n  slide.load(\"slideMaster,layout\");\n  await context.sync();\n  \n  const master = slide.slideMaster;\n  const layout = slide.layout;\n  \n  master.load(\"id,name\");\n  layout.load(\"id,name\");\n  await context.sync();\n  \n  console.log(\"母版:\", master.name);\n  console.log(\"布局:\", layout.name);\n});",
+      "expectedBehavior": "获取幻灯片布局信息 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 获取幻灯片布局信息 的预期结果"
+      ],
+      "toolsTemplate": "幻灯片布局和母版 > 获取幻灯片布局信息",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-019-使用指定布局创建幻灯片",
+      "category": "幻灯片布局和母版",
+      "name": "使用指定布局创建幻灯片",
+      "description": "使用第一张幻灯片的布局创建新幻灯片",
+      "userInput": "使用第一张幻灯片的布局创建新幻灯片",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  // 获取第一张幻灯片的布局\n  const firstSlide = context.presentation.slides.getItemAt(0);\n  firstSlide.load(\"layout\");\n  await context.sync();\n  \n  const layout = firstSlide.layout;\n  layout.load(\"id\");\n  await context.sync();\n  \n  // 使用相同布局创建新幻灯片\n  const newSlide = context.presentation.slides.add({\n    layoutId: layout.id\n  });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "使用指定布局创建幻灯片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 使用指定布局创建幻灯片 的预期结果"
+      ],
+      "toolsTemplate": "幻灯片布局和母版 > 使用指定布局创建幻灯片",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-020-获取所有可用布局",
+      "category": "幻灯片布局和母版",
+      "name": "获取所有可用布局",
+      "description": "列出所有可用的幻灯片布局",
+      "userInput": "列出所有可用的幻灯片布局",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slides = context.presentation.slides;\n  slides.load(\"items\");\n  await context.sync();\n  \n  if (slides.items.length > 0) {\n    const firstSlide = slides.items[0];\n    firstSlide.load(\"slideMaster\");\n    await context.sync();\n    \n    const master = firstSlide.slideMaster;\n    master.load(\"layouts\");\n    await context.sync();\n    \n    const layouts = master.layouts;\n    layouts.load(\"items\");\n    await context.sync();\n    \n    console.log(\"可用布局:\");\n    for (const layout of layouts.items) {\n      layout.load(\"id,name\");\n      await context.sync();\n      console.log(`- ${layout.name} (ID: ${layout.id})`);\n    }\n  }\n});",
+      "expectedBehavior": "获取所有可用布局 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 获取所有可用布局 的预期结果"
+      ],
+      "toolsTemplate": "幻灯片布局和母版 > 获取所有可用布局",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-021-使用主题颜色填充形状",
+      "category": "主题系统",
+      "name": "使用主题颜色填充形状",
+      "description": "用主题强调色1填充第一个形状",
+      "userInput": "用主题强调色1填充第一个形状",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shape = slide.shapes.getItemAt(0);\n  \n  // 使用主题颜色（accent1 是主题强调色1）\n  shape.fill.setSolidColor(\"accent1\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "使用主题颜色填充形状 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 使用主题颜色填充形状 的预期结果"
+      ],
+      "toolsTemplate": "主题系统 > 使用主题颜色填充形状",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-022-使用多种主题颜色",
+      "category": "主题系统",
+      "name": "使用多种主题颜色",
+      "description": "创建3个矩形，分别使用主题强调色1、2、3",
+      "userInput": "创建3个矩形，分别使用主题强调色1、2、3",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  // 创建多个形状使用不同主题颜色\n  const rect1 = slide.shapes.addGeometricShape(PowerPoint.GeometricShapeType.rectangle);\n  rect1.left = 50;\n  rect1.top = 50;\n  rect1.width = 100;\n  rect1.height = 100;\n  rect1.fill.setSolidColor(\"accent1\"); // 主题强调色1\n  \n  const rect2 = slide.shapes.addGeometricShape(PowerPoint.GeometricShapeType.rectangle);\n  rect2.left = 170;\n  rect2.top = 50;\n  rect2.width = 100;\n  rect2.height = 100;\n  rect2.fill.setSolidColor(\"accent2\"); // 主题强调色2\n  \n  await context.sync();\n});",
+      "expectedBehavior": "使用多种主题颜色 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 使用多种主题颜色 的预期结果"
+      ],
+      "toolsTemplate": "主题系统 > 使用多种主题颜色",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-023-读取表格数据",
+      "category": "表格数据操作",
+      "name": "读取表格数据",
+      "description": "读取第一个表格的所有单元格数据",
+      "userInput": "读取第一个表格的所有单元格数据",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shapes = slide.shapes;\n  shapes.load(\"items\");\n  await context.sync();\n  \n  // 找到第一个表格\n  let table = null;\n  for (const shape of shapes.items) {\n    if (shape.type === PowerPoint.ShapeType.table) {\n      table = shape.table;\n      break;\n    }\n  }\n  \n  if (table) {\n    table.load(\"rows,columns\");\n    await context.sync();\n    \n    // 读取所有单元格数据\n    for (let i = 0; i < table.rows.count; i++) {\n      for (let j = 0; j < table.columns.count; j++) {\n        const cell = table.getCell(i, j);\n        cell.load(\"text\");\n        await context.sync();\n        console.log(`[${i},${j}]: ${cell.text}`);\n      }\n    }\n  }\n});",
+      "expectedBehavior": "读取表格数据 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取表格数据 的预期结果"
+      ],
+      "toolsTemplate": "表格数据操作 > 读取表格数据",
+      "priority": "high"
+    },
+    {
+      "id": "powerpoint-024-更新表格单元格",
+      "category": "表格数据操作",
+      "name": "更新表格单元格",
+      "description": "将第一个表格的第一行第一列更新为\"新内容\"",
+      "userInput": "将第一个表格的第一行第一列更新为\"新内容\"",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shapes = slide.shapes;\n  shapes.load(\"items\");\n  await context.sync();\n  \n  let table = null;\n  for (const shape of shapes.items) {\n    if (shape.type === PowerPoint.ShapeType.table) {\n      table = shape.table;\n      break;\n    }\n  }\n  \n  if (table) {\n    // 更新单元格内容\n    const cell = table.getCell(0, 0);\n    cell.text = \"更新的内容\";\n    \n    await context.sync();\n  }\n});",
+      "expectedBehavior": "更新表格单元格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 更新表格单元格 的预期结果"
+      ],
+      "toolsTemplate": "表格数据操作 > 更新表格单元格",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-025-设置行高和列宽",
+      "category": "表格数据操作",
+      "name": "设置行高和列宽",
+      "description": "设置第一个表格的第一行高度为50点，第一列宽度为150点",
+      "userInput": "设置第一个表格的第一行高度为50点，第一列宽度为150点",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  const shapes = slide.shapes;\n  shapes.load(\"items\");\n  await context.sync();\n  \n  let table = null;\n  for (const shape of shapes.items) {\n    if (shape.type === PowerPoint.ShapeType.table) {\n      table = shape.table;\n      break;\n    }\n  }\n  \n  if (table) {\n    // 设置行高和列宽\n    const firstRow = table.rows.getItemAt(0);\n    firstRow.height = 50;\n    \n    const firstColumn = table.columns.getItemAt(0);\n    firstColumn.width = 150;\n    \n    await context.sync();\n  }\n});",
+      "expectedBehavior": "设置行高和列宽 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置行高和列宽 的预期结果"
+      ],
+      "toolsTemplate": "表格数据操作 > 设置行高和列宽",
+      "priority": "medium"
+    },
+    {
+      "id": "powerpoint-026-创建带合并单元格的表格",
+      "category": "表格数据操作",
+      "name": "创建带合并单元格的表格",
+      "description": "创建一个3行4列的表格，第一行的4个单元格合并",
+      "userInput": "创建一个3行4列的表格，第一行的4个单元格合并",
+      "expectedCode": "PowerPoint.run(async (context) => {\n  const slide = context.presentation.getSelectedSlides().getItemAt(0);\n  \n  const tableValues = [\n    [\"标题\", \"\", \"\", \"\"],  // 第一行将被合并\n    [\"项目A\", \"100\", \"200\", \"300\"],\n    [\"项目B\", \"150\", \"250\", \"350\"]\n  ];\n  \n  const options = {\n    values: tableValues,\n    left: 50,\n    top: 50,\n    mergedAreas: [{\n      firstRow: 0,\n      firstColumn: 0,\n      rowSpan: 1,\n      columnSpan: 4\n    }]\n  };\n  \n  const table = slide.shapes.addTable(3, 4, options);\n  await context.sync();\n});",
+      "expectedBehavior": "创建带合并单元格的表格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建带合并单元格的表格 的预期结果"
+      ],
+      "toolsTemplate": "表格数据操作 > 创建带合并单元格的表格",
+      "priority": "high"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "generatedAt": "2026-02-02T05:07:25.500Z",
+    "sourceFile": "/Users/cw/Documents/GitHub/github/DocuPilot/DocuPilot/.claude/skills/powerpoint/TOOLS.md"
+  }
+}

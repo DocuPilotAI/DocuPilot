@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History API 诊断工具</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .test-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .test-section h2 {
+      color: #495057;
+      font-size: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status.pass {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status.fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status.warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .test-item {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid transparent;
+    }
+
+    .test-item.pass {
+      border-left-color: #28a745;
+    }
+
+    .test-item.fail {
+      border-left-color: #dc3545;
+    }
+
+    .test-item.warning {
+      border-left-color: #ffc107;
+    }
+
+    .test-label {
+      font-weight: 500;
+      color: #495057;
+    }
+
+    .test-value {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #6c757d;
+    }
+
+    .icon {
+      font-size: 20px;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .console-output {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 15px;
+      line-height: 1.6;
+    }
+
+    .console-output .log-line {
+      margin-bottom: 4px;
+    }
+
+    .console-output .log-info {
+      color: #4fc3f7;
+    }
+
+    .console-output .log-success {
+      color: #81c784;
+    }
+
+    .console-output .log-error {
+      color: #e57373;
+    }
+
+    .console-output .log-warning {
+      color: #ffb74d;
+    }
+
+    .summary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .summary h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .summary p {
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .actions {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 History API 诊断工具</h1>
+    <p class="subtitle">检测 window.history API 的可用性和功能性</p>
+
+    <div id="summary" class="summary" style="display: none;">
+      <h3 id="summary-title">✅ 全部测试通过</h3>
+      <p id="summary-text">所有 History API 功能正常工作</p>
+    </div>
+
+    <div class="test-section">
+      <h2>
+        <span class="icon">🔬</span>
+        基础检查
+      </h2>
+      <div id="basic-tests"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>
+        <span class="icon">⚙️</span>
+        功能测试
+      </h2>
+      <div id="function-tests"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>
+        <span class="icon">📋</span>
+        属性检查
+      </h2>
+      <div id="property-tests"></div>
+    </div>
+
+    <div class="actions">
+      <button onclick="runAllTests()">🔄 重新运行测试</button>
+      <button onclick="testReplaceState()">测试 replaceState</button>
+      <button onclick="testPushState()">测试 pushState</button>
+      <button onclick="clearConsole()">清除日志</button>
+    </div>
+
+    <div class="console-output" id="console"></div>
+  </div>
+
+  <script>
+    let testResults = {
+      passed: 0,
+      failed: 0,
+      warnings: 0,
+      total: 0
+    };
+
+    function log(message, type = 'info') {
+      const console = document.getElementById('console');
+      const line = document.createElement('div');
+      line.className = `log-line log-${type}`;
+      line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      console.appendChild(line);
+      console.scrollTop = console.scrollHeight;
+    }
+
+    function clearConsole() {
+      document.getElementById('console').innerHTML = '';
+    }
+
+    function createTestItem(label, value, status) {
+      testResults.total++;
+      if (status === 'pass') testResults.passed++;
+      else if (status === 'fail') testResults.failed++;
+      else if (status === 'warning') testResults.warnings++;
+
+      return `
+        <div class="test-item ${status}">
+          <span class="test-label">${label}</span>
+          <div>
+            <span class="test-value">${value}</span>
+            <span class="status ${status}">${status}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function runBasicTests() {
+      const container = document.getElementById('basic-tests');
+      let html = '';
+
+      // Test 1: window.history exists
+      const hasHistory = typeof window.history !== 'undefined' && window.history !== null;
+      html += createTestItem(
+        'window.history 存在',
+        hasHistory ? 'object' : 'undefined',
+        hasHistory ? 'pass' : 'fail'
+      );
+      log(`window.history: ${hasHistory ? '✓ 存在' : '✗ 不存在'}`, hasHistory ? 'success' : 'error');
+
+      // Test 2: history.replaceState exists
+      const hasReplaceState = hasHistory && 
+        typeof window.history.replaceState !== 'undefined' && 
+        window.history.replaceState !== null;
+      html += createTestItem(
+        'history.replaceState 存在',
+        hasReplaceState ? typeof window.history.replaceState : 'undefined',
+        hasReplaceState ? 'pass' : 'fail'
+      );
+      log(`replaceState: ${hasReplaceState ? '✓ 存在' : '✗ 不存在'}`, hasReplaceState ? 'success' : 'error');
+
+      // Test 3: history.pushState exists
+      const hasPushState = hasHistory && 
+        typeof window.history.pushState !== 'undefined' && 
+        window.history.pushState !== null;
+      html += createTestItem(
+        'history.pushState 存在',
+        hasPushState ? typeof window.history.pushState : 'undefined',
+        hasPushState ? 'pass' : 'fail'
+      );
+      log(`pushState: ${hasPushState ? '✓ 存在' : '✗ 不存在'}`, hasPushState ? 'success' : 'error');
+
+      container.innerHTML = html;
+    }
+
+    function runFunctionTests() {
+      const container = document.getElementById('function-tests');
+      let html = '';
+
+      const methods = ['replaceState', 'pushState', 'back', 'forward', 'go'];
+      
+      methods.forEach(method => {
+        const exists = window.history && typeof window.history[method] === 'function';
+        const isNull = window.history && window.history[method] === null;
+        
+        let status = 'pass';
+        let value = typeof window.history[method];
+        
+        if (!exists) {
+          status = 'fail';
+          value = isNull ? 'null' : 'undefined';
+        }
+        
+        html += createTestItem(
+          `history.${method}()`,
+          value,
+          status
+        );
+        
+        log(`${method}: ${exists ? '✓ 函数类型' : '✗ ' + value}`, exists ? 'success' : 'error');
+      });
+
+      container.innerHTML = html;
+    }
+
+    function runPropertyTests() {
+      const container = document.getElementById('property-tests');
+      let html = '';
+
+      const properties = ['state', 'length', 'scrollRestoration'];
+      
+      properties.forEach(prop => {
+        const exists = window.history && prop in window.history;
+        const value = exists ? JSON.stringify(window.history[prop]) : 'undefined';
+        
+        html += createTestItem(
+          `history.${prop}`,
+          value,
+          exists ? 'pass' : 'warning'
+        );
+        
+        log(`${prop}: ${exists ? '✓ ' + value : '✗ 不存在'}`, exists ? 'success' : 'warning');
+      });
+
+      container.innerHTML = html;
+    }
+
+    function testReplaceState() {
+      log('正在测试 replaceState...', 'info');
+      try {
+        window.history.replaceState({test: 'replace'}, 'Test', '#test-replace');
+        log('✓ replaceState 调用成功', 'success');
+        log(`  当前 state: ${JSON.stringify(window.history.state)}`, 'info');
+      } catch (error) {
+        log(`✗ replaceState 失败: ${error.message}`, 'error');
+      }
+    }
+
+    function testPushState() {
+      log('正在测试 pushState...', 'info');
+      try {
+        window.history.pushState({test: 'push'}, 'Test', '#test-push');
+        log('✓ pushState 调用成功', 'success');
+        log(`  当前 state: ${JSON.stringify(window.history.state)}`, 'info');
+      } catch (error) {
+        log(`✗ pushState 失败: ${error.message}`, 'error');
+      }
+    }
+
+    function updateSummary() {
+      const summary = document.getElementById('summary');
+      const title = document.getElementById('summary-title');
+      const text = document.getElementById('summary-text');
+
+      summary.style.display = 'block';
+
+      if (testResults.failed > 0) {
+        title.textContent = '❌ 测试失败';
+        text.textContent = `发现 ${testResults.failed} 个严重问题，需要立即修复！`;
+        summary.style.background = 'linear-gradient(135deg, #ef5350 0%, #c62828 100%)';
+      } else if (testResults.warnings > 0) {
+        title.textContent = '⚠️ 部分通过';
+        text.textContent = `有 ${testResults.warnings} 个警告，但核心功能正常`;
+        summary.style.background = 'linear-gradient(135deg, #ffb74d 0%, #f57c00 100%)';
+      } else {
+        title.textContent = '✅ 全部通过';
+        text.textContent = `所有 ${testResults.passed} 项测试通过，History API 工作正常！`;
+        summary.style.background = 'linear-gradient(135deg, #66bb6a 0%, #43a047 100%)';
+      }
+
+      log(`\n=== 测试总结 ===`, 'info');
+      log(`通过: ${testResults.passed}`, 'success');
+      log(`警告: ${testResults.warnings}`, 'warning');
+      log(`失败: ${testResults.failed}`, 'error');
+      log(`总计: ${testResults.total}`, 'info');
+    }
+
+    function runAllTests() {
+      clearConsole();
+      testResults = { passed: 0, failed: 0, warnings: 0, total: 0 };
+      
+      log('=== 开始诊断 ===', 'info');
+      log(`浏览器: ${navigator.userAgent}`, 'info');
+      log(`时间: ${new Date().toLocaleString()}`, 'info');
+      log('', 'info');
+
+      runBasicTests();
+      runFunctionTests();
+      runPropertyTests();
+      updateSummary();
+
+      log('', 'info');
+      log('=== 诊断完成 ===', 'success');
+    }
+
+    // Run tests on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(runAllTests, 100);
+    });
+  </script>
+</body>
+</html>

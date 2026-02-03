@@ -1,0 +1,1168 @@
+{
+  "id": "excel-test-suite",
+  "name": "EXCEL Test Suite",
+  "hostType": "excel",
+  "testCases": [
+    {
+      "id": "excel-001-创建工作表",
+      "category": "工作表管理",
+      "name": "创建工作表",
+      "description": "创建一个名为 NewSheet 的工作表",
+      "userInput": "创建一个名为 NewSheet 的工作表",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheets = context.workbook.worksheets;\n  const sheet = sheets.add(\"NewSheet\");\n  sheet.activate();\n  await context.sync();\n});",
+      "expectedBehavior": "新工作表 NewSheet 被创建并激活",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建工作表 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 创建工作表",
+      "priority": "high"
+    },
+    {
+      "id": "excel-002-创建工作表（带验证）",
+      "category": "工作表管理",
+      "name": "创建工作表（带验证）",
+      "description": "创建一个名为 NewSheet 的工作表，如果已存在则使用现有的",
+      "userInput": "创建一个名为 NewSheet 的工作表，如果已存在则使用现有的",
+      "expectedCode": "// ⚠️ 最佳实践：检查工作表是否已存在\nExcel.run(async (context) => {\n  const sheets = context.workbook.worksheets;\n  const existingSheet = sheets.getItemOrNullObject(\"NewSheet\");\n  await context.sync();\n  \n  let sheet;\n  if (existingSheet.isNullObject) {\n    // 工作表不存在，创建新的\n    sheet = sheets.add(\"NewSheet\");\n  } else {\n    // 工作表已存在，使用现有的\n    sheet = existingSheet;\n  }\n  \n  sheet.activate();\n  await context.sync();\n});",
+      "expectedBehavior": "创建工作表（带验证） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建工作表（带验证） 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 创建工作表（带验证）",
+      "priority": "high"
+    },
+    {
+      "id": "excel-003-重命名工作表",
+      "category": "工作表管理",
+      "name": "重命名工作表",
+      "description": "将当前工作表重命名为 RenamedSheet",
+      "userInput": "将当前工作表重命名为 RenamedSheet",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  sheet.name = \"RenamedSheet\";\n  await context.sync();\n});",
+      "expectedBehavior": "当前工作表名称变为 RenamedSheet",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 重命名工作表 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 重命名工作表",
+      "priority": "high"
+    },
+    {
+      "id": "excel-004-删除工作表",
+      "category": "工作表管理",
+      "name": "删除工作表",
+      "description": "删除名为 SheetToDelete 的工作表",
+      "userInput": "删除名为 SheetToDelete 的工作表",
+      "expectedCode": "// ⚠️ 重要：删除工作表前应该先检查是否存在，建议使用\"删除工作表（带验证）\"模板\ntry {\n  await Excel.run(async (context) => {\n    const sheet = context.workbook.worksheets.getItem(\"SheetToDelete\");\n    sheet.delete();\n    await context.sync();\n  });\n} catch (error) {\n  console.error(\"删除工作表时出错:\", error);\n  throw error;\n}",
+      "expectedBehavior": "工作表 SheetToDelete 被删除",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除工作表 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 删除工作表",
+      "priority": "high"
+    },
+    {
+      "id": "excel-005-删除工作表（带验证）",
+      "category": "工作表管理",
+      "name": "删除工作表（带验证）",
+      "description": "检查并删除名为 SheetToDelete 的工作表，如果不存在则给出提示",
+      "userInput": "检查并删除名为 SheetToDelete 的工作表，如果不存在则给出提示",
+      "expectedCode": "// ⚠️ 最佳实践：检查工作表是否存在后再删除（推荐使用此方法）\nawait Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getItemOrNullObject(\"SheetToDelete\");\n  await context.sync();\n  \n  if (!sheet.isNullObject) {\n    sheet.delete();\n    await context.sync();\n    console.log(\"工作表已删除\");\n  } else {\n    console.log(\"工作表不存在，无需删除\");\n  }\n});",
+      "expectedBehavior": "删除工作表（带验证） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除工作表（带验证） 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 删除工作表（带验证）",
+      "priority": "high"
+    },
+    {
+      "id": "excel-006-复制工作表",
+      "category": "工作表管理",
+      "name": "复制工作表",
+      "description": "复制当前工作表",
+      "userInput": "复制当前工作表",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const newSheet = sheet.copy(Excel.WorksheetPositionType.after, sheet);\n  newSheet.name = \"CopiedSheet\";\n  await context.sync();\n});",
+      "expectedBehavior": "当前工作表的副本被创建",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 复制工作表 的预期结果"
+      ],
+      "toolsTemplate": "工作表管理 > 复制工作表",
+      "priority": "high"
+    },
+    {
+      "id": "excel-007-读取选中区域",
+      "category": "数据读取",
+      "name": "读取选中区域",
+      "description": "读取当前选中的单元格数据",
+      "userInput": "读取当前选中的单元格数据",
+      "expectedCode": "// 获取当前选中的单元格区域\nExcel.run(async (context) => {\n  const range = context.workbook.getSelectedRange();\n  range.load([\"values\", \"address\", \"formulas\", \"numberFormat\"]);\n  await context.sync();\n  \n  return {\n    address: range.address,\n    values: range.values,\n    formulas: range.formulas,\n    format: range.numberFormat\n  };\n});",
+      "expectedBehavior": "返回选中区域的值、地址和格式",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取选中区域 的预期结果"
+      ],
+      "toolsTemplate": "数据读取 > 读取选中区域",
+      "priority": "high"
+    },
+    {
+      "id": "excel-008-读取指定区域",
+      "category": "数据读取",
+      "name": "读取指定区域",
+      "description": "读取 A1:D10 区域的数据",
+      "userInput": "读取 A1:D10 区域的数据",
+      "expectedCode": "// 读取指定地址的单元格\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"A1:D10\");\n  range.load(\"values\");\n  await context.sync();\n  \n  return range.values;\n});",
+      "expectedBehavior": "返回 A1:D10 区域的所有数据",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取指定区域 的预期结果"
+      ],
+      "toolsTemplate": "数据读取 > 读取指定区域",
+      "priority": "high"
+    },
+    {
+      "id": "excel-009-读取多个不连续区域（重要！）",
+      "category": "数据读取",
+      "name": "读取多个不连续区域（重要！）",
+      "description": "分别读取 B3, F3, J3 这三个单元格的值",
+      "userInput": "分别读取 B3, F3, J3 这三个单元格的值",
+      "expectedCode": "// ⚠️ 注意：getRangeAreas 是 workbook 级别的方法，不是 sheet 级别\n// 错误用法：sheet.getRangeAreas(\"B3,F3,J3\") ❌\n// 正确用法：workbook.getRangeAreas() ✅\n\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const sheetName = sheet.name;\n  \n  // 使用 workbook.getRangeAreas() 读取多个不连续区域\n  const rangeAreas = context.workbook.getRangeAreas(`${sheetName}!B3,${sheetName}!F3,${sheetName}!J3`);\n  rangeAreas.load(\"address\");\n  \n  // 或者分别读取每个单元格\n  const range1 = sheet.getRange(\"B3\");\n  const range2 = sheet.getRange(\"F3\");\n  const range3 = sheet.getRange(\"J3\");\n  \n  range1.load(\"values\");\n  range2.load(\"values\");\n  range3.load(\"values\");\n  \n  await context.sync();\n  \n  return {\n    b3: range1.values[0][0],\n    f3: range2.values[0][0],\n    j3: range3.values[0][0]\n  };\n});",
+      "expectedBehavior": "读取多个不连续区域（重要！） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取多个不连续区域（重要！） 的预期结果"
+      ],
+      "toolsTemplate": "数据读取 > 读取多个不连续区域（重要！）",
+      "priority": "high"
+    },
+    {
+      "id": "excel-010-写入单个值",
+      "category": "数据写入",
+      "name": "写入单个值",
+      "description": "在 A1 单元格写入数字 100",
+      "userInput": "在 A1 单元格写入数字 100",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const cell = sheet.getRange(\"A1\");\n  cell.values = [[\"Hello World\"]];\n  await context.sync();\n});",
+      "expectedBehavior": "A1 单元格显示数字 100",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 写入单个值 的预期结果"
+      ],
+      "toolsTemplate": "数据写入 > 写入单个值",
+      "priority": "high"
+    },
+    {
+      "id": "excel-011-写入数组数据",
+      "category": "数据写入",
+      "name": "写入数组数据",
+      "description": "在 A1:C3 区域写入示例数据",
+      "userInput": "在 A1:C3 区域写入示例数据",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"A1:C3\");\n  range.values = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ];\n  await context.sync();\n});",
+      "expectedBehavior": "写入数组数据 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 写入数组数据 的预期结果"
+      ],
+      "toolsTemplate": "数据写入 > 写入数组数据",
+      "priority": "high"
+    },
+    {
+      "id": "excel-012-写入多个不连续区域",
+      "category": "数据写入",
+      "name": "写入多个不连续区域",
+      "description": "在 B3, F3, J3 单元格分别写入 10, 20, 30",
+      "userInput": "在 B3, F3, J3 单元格分别写入 10, 20, 30",
+      "expectedCode": "// 方式1：分别写入每个区域（推荐）\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  sheet.getRange(\"B3\").values = [[10]];\n  sheet.getRange(\"F3\").values = [[20]];\n  sheet.getRange(\"J3\").values = [[30]];\n  \n  await context.sync();\n});\n\n// 方式2：使用 workbook.getRangeAreas()（跨工作表场景）\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const sheetName = sheet.name;\n  \n  // 注意：必须使用完整地址（包含工作表名）\n  const rangeAreas = context.workbook.getRangeAreas(\n    `${sheetName}!B3,${sheetName}!F3,${sheetName}!J3`\n  );\n  \n  // RangeAreas 的操作有限，通常用于格式化等批量操作\n  rangeAreas.format.fill.color = \"yellow\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "写入多个不连续区域 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 写入多个不连续区域 的预期结果"
+      ],
+      "toolsTemplate": "数据写入 > 写入多个不连续区域",
+      "priority": "high"
+    },
+    {
+      "id": "excel-013-创建表格",
+      "category": "表格操作",
+      "name": "创建表格",
+      "description": "将 A1:D10 区域创建为表格",
+      "userInput": "将 A1:D10 区域创建为表格",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  // 创建表格，包含标题行\n  const table = sheet.tables.add(\"A1:D5\", true);\n  table.name = \"SalesTable\";\n  \n  // 设置标题\n  table.getHeaderRowRange().values = [[\"Date\", \"Product\", \"Category\", \"Amount\"]];\n  \n  // 设置数据\n  table.getDataBodyRange().values = [\n    [\"2023-01-01\", \"Widget A\", \"Electronics\", 100],\n    [\"2023-01-02\", \"Widget B\", \"Electronics\", 200],\n    [\"2023-01-03\", \"Widget C\", \"Home\", 150],\n    [\"2023-01-04\", \"Widget D\", \"Home\", 300]\n  ];\n  \n  // 自动调整列宽\n  sheet.getUsedRange().format.autofitColumns();\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建表格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建表格 的预期结果"
+      ],
+      "toolsTemplate": "表格操作 > 创建表格",
+      "priority": "high"
+    },
+    {
+      "id": "excel-014-排序表格",
+      "category": "表格操作",
+      "name": "排序表格",
+      "description": "按第四列 Amount 降序排序 SalesTable 表格",
+      "userInput": "按第四列 Amount 降序排序 SalesTable 表格",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const table = sheet.tables.getItem(\"SalesTable\");\n  \n  // 按第四列（Amount）降序排序\n  table.sort.apply([\n    {\n      key: 3, // 第4列，索引从0开始\n      ascending: false\n    }\n  ]);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "排序表格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 排序表格 的预期结果"
+      ],
+      "toolsTemplate": "表格操作 > 排序表格",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-015-筛选表格",
+      "category": "表格操作",
+      "name": "筛选表格",
+      "description": "筛选 SalesTable 表格第三列 Category 为 Electronics 的数据",
+      "userInput": "筛选 SalesTable 表格第三列 Category 为 Electronics 的数据",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const table = sheet.tables.getItem(\"SalesTable\");\n  \n  // 筛选第三列（Category）为 \"Electronics\"\n  table.columns.getItemAt(2).filter.apply({\n    filterOn: Excel.FilterOn.values,\n    values: [\"Electronics\"]\n  });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "筛选表格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 筛选表格 的预期结果"
+      ],
+      "toolsTemplate": "表格操作 > 筛选表格",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-016-创建透视表",
+      "category": "透视表",
+      "name": "创建透视表",
+      "description": "基于 A1:D5 数据在 F1 位置创建数据透视表，按 Category 和 Product 汇总 Amount",
+      "userInput": "基于 A1:D5 数据在 F1 位置创建数据透视表，按 Category 和 Product 汇总 Amount",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  // 假设数据在 A1:D5\n  const sourceRange = sheet.getRange(\"A1:D5\");\n  \n  // 在 F1 创建透视表\n  const pivotTable = sheet.pivotTables.add(\"PivotTable1\", sourceRange, \"F1\");\n  \n  // 添加行字段\n  pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem(\"Category\"));\n  pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem(\"Product\"));\n  \n  // 添加数据字段（默认求和）\n  pivotTable.dataHierarchies.add(pivotTable.hierarchies.getItem(\"Amount\"));\n  \n  await context.sync();\n});",
+      "expectedBehavior": "F1 位置创建了数据透视表",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建透视表 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 创建透视表",
+      "priority": "high"
+    },
+    {
+      "id": "excel-017-添加列层次结构和筛选器",
+      "category": "透视表",
+      "name": "添加列层次结构和筛选器",
+      "description": "为 PivotTable1 添加 Region 列字段和 Category 筛选字段",
+      "userInput": "为 PivotTable1 添加 Region 列字段和 Category 筛选字段",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 添加列字段\n  pivotTable.columnHierarchies.add(pivotTable.hierarchies.getItem(\"Region\"));\n  \n  // 添加筛选器字段\n  pivotTable.filterHierarchies.add(pivotTable.hierarchies.getItem(\"Category\"));\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加列层次结构和筛选器 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加列层次结构和筛选器 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 添加列层次结构和筛选器",
+      "priority": "high"
+    },
+    {
+      "id": "excel-018-数据透视表日期筛选",
+      "category": "透视表",
+      "name": "数据透视表日期筛选",
+      "description": "筛选 PivotTable1 的日期字段，只显示 2020-08-01 之后的数据",
+      "userInput": "筛选 PivotTable1 的日期字段，只显示 2020-08-01 之后的数据",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 获取或添加日期层次结构\n  let dateHierarchy = pivotTable.rowHierarchies.getItemOrNullObject(\"Date\");\n  await context.sync();\n  \n  if (dateHierarchy.isNullObject) {\n    dateHierarchy = pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem(\"Date\"));\n    await context.sync();\n  }\n  \n  // 应用日期筛选: 只显示 2020-08-01 之后的数据\n  const filterField = dateHierarchy.fields.getItem(\"Date\");\n  const dateFilter = {\n    condition: Excel.DateFilterCondition.afterOrEqualTo,\n    comparator: {\n      date: \"2020-08-01\",\n      specificity: Excel.FilterDatetimeSpecificity.month\n    }\n  };\n  filterField.applyFilter({ dateFilter: dateFilter });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "数据透视表日期筛选 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 数据透视表日期筛选 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 数据透视表日期筛选",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-019-数据透视表标签筛选",
+      "category": "透视表",
+      "name": "数据透视表标签筛选",
+      "description": "筛选 PivotTable1 的 Category 字段，排除以\"电子\"开头的项",
+      "userInput": "筛选 PivotTable1 的 Category 字段，排除以\"电子\"开头的项",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 获取字段\n  const filterField = pivotTable.rowHierarchies.getItem(\"Category\")\n    .fields.getItem(\"Category\");\n  \n  // 标签筛选: 排除以\"电子\"开头的项\n  const labelFilter = {\n    condition: Excel.LabelFilterCondition.beginsWith,\n    substring: \"电子\",\n    exclusive: true\n  };\n  filterField.applyFilter({ labelFilter: labelFilter });\n  \n  await context.sync();\n});",
+      "expectedBehavior": "数据透视表标签筛选 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 数据透视表标签筛选 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 数据透视表标签筛选",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-020-数据透视表数值筛选",
+      "category": "透视表",
+      "name": "数据透视表数值筛选",
+      "description": "筛选 PivotTable1 的 Product 字段，只显示 Amount 大于 500 的项",
+      "userInput": "筛选 PivotTable1 的 Product 字段，只显示 Amount 大于 500 的项",
+      "expectedCode": "// ⚠️ 数值筛选：根据聚合值筛选行字段项\nawait Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const pivotTable = sheet.pivotTables.getItemOrNullObject(\"PivotTable1\");\n  await context.sync();\n  \n  if (pivotTable.isNullObject) {\n    console.log(\"数据透视表不存在\");\n    return;\n  }\n  \n  // 获取行层次结构中的字段\n  const productHierarchy = pivotTable.rowHierarchies.getItemOrNullObject(\"Product\");\n  await context.sync();\n  \n  if (!productHierarchy.isNullObject) {\n    const filterField = productHierarchy.fields.getItem(\"Product\");\n    \n    // 数值筛选: 只显示销量大于 500 的项\n    const valueFilter = {\n      condition: Excel.ValueFilterCondition.greaterThan,\n      comparator: 500,\n      value: \"Amount\"\n    };\n    filterField.applyFilter({ valueFilter: valueFilter });\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "数据透视表数值筛选 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 数据透视表数值筛选 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 数据透视表数值筛选",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-021-清除透视表筛选器",
+      "category": "透视表",
+      "name": "清除透视表筛选器",
+      "description": "清除 PivotTable1 所有字段的筛选器",
+      "userInput": "清除 PivotTable1 所有字段的筛选器",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 加载所有层次结构\n  pivotTable.hierarchies.load(\"items\");\n  await context.sync();\n  \n  // 清除所有字段的筛选器\n  for (const hierarchy of pivotTable.hierarchies.items) {\n    hierarchy.fields.load(\"items\");\n    await context.sync();\n    \n    for (const field of hierarchy.fields.items) {\n      field.clearAllFilters();\n    }\n  }\n  \n  await context.sync();\n});",
+      "expectedBehavior": "清除透视表筛选器 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 清除透视表筛选器 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 清除透视表筛选器",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-022-创建切片器",
+      "category": "透视表",
+      "name": "创建切片器",
+      "description": "为 PivotTable1 创建一个 Category 字段的切片器",
+      "userInput": "为 PivotTable1 创建一个 Category 字段的切片器",
+      "expectedCode": "// ⚠️ 创建切片器用于交互式筛选透视表\nawait Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 先检查透视表是否存在\n  const pivotTable = sheet.pivotTables.getItemOrNullObject(\"PivotTable1\");\n  await context.sync();\n  \n  if (pivotTable.isNullObject) {\n    console.log(\"数据透视表不存在，无法创建切片器\");\n    return;\n  }\n  \n  // 创建切片器用于交互式筛选\n  const slicer = sheet.slicers.add(\n    \"PivotTable1\",  // 数据透视表名称\n    \"Category\"      // 筛选字段\n  );\n  \n  slicer.name = \"类别切片器\";\n  slicer.left = 400;\n  slicer.top = 200;\n  slicer.width = 200;\n  slicer.height = 200;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建切片器 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建切片器 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 创建切片器",
+      "priority": "high"
+    },
+    {
+      "id": "excel-023-使用切片器筛选",
+      "category": "透视表",
+      "name": "使用切片器筛选",
+      "description": "使用类别切片器筛选\"电子产品\"、\"家居用品\"、\"服装\"",
+      "userInput": "使用类别切片器筛选\"电子产品\"、\"家居用品\"、\"服装\"",
+      "expectedCode": "Excel.run(async (context) => {\n  const slicer = context.workbook.slicers.getItem(\"类别切片器\");\n  \n  // 选择特定项进行筛选\n  slicer.selectItems([\"电子产品\", \"家居用品\", \"服装\"]);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "使用切片器筛选 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 使用切片器筛选 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 使用切片器筛选",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-024-切换透视表布局",
+      "category": "透视表",
+      "name": "切换透视表布局",
+      "description": "将 PivotTable1 的布局切换为大纲格式",
+      "userInput": "将 PivotTable1 的布局切换为大纲格式",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 切换布局类型: Compact(紧凑), Outline(大纲), Tabular(表格)\n  pivotTable.layout.layoutType = \"Outline\";  // 或 \"Compact\", \"Tabular\"\n  \n  await context.sync();\n});",
+      "expectedBehavior": "切换透视表布局 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 切换透视表布局 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 切换透视表布局",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-025-获取透视表数据",
+      "category": "透视表",
+      "name": "获取透视表数据",
+      "description": "获取 PivotTable1 的数据区域和值",
+      "userInput": "获取 PivotTable1 的数据区域和值",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 获取数据区域\n  const dataRange = pivotTable.layout.getDataBodyRange();\n  dataRange.load(\"address, values\");\n  \n  await context.sync();\n  \n  console.log(\"数据区域:\", dataRange.address);\n  console.log(\"数据值:\", dataRange.values);\n  \n  return dataRange.values;\n});",
+      "expectedBehavior": "获取透视表数据 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 获取透视表数据 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 获取透视表数据",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-026-格式化透视表",
+      "category": "透视表",
+      "name": "格式化透视表",
+      "description": "格式化 PivotTable1，设置空单元格显示\"--\"，数据右对齐",
+      "userInput": "格式化 PivotTable1，设置空单元格显示\"--\"，数据右对齐",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  const pivotLayout = pivotTable.layout;\n  \n  // 设置空单元格显示文本\n  pivotLayout.emptyCellText = \"--\";\n  pivotLayout.fillEmptyCells = true;\n  \n  // 保留格式设置\n  pivotLayout.preserveFormatting = true;\n  \n  // 设置数据区域的对齐方式\n  const dataRange = pivotLayout.getDataBodyRange();\n  dataRange.format.horizontalAlignment = Excel.HorizontalAlignment.right;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "格式化透视表 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 格式化透视表 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 格式化透视表",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-027-刷新透视表",
+      "category": "透视表",
+      "name": "刷新透视表",
+      "description": "刷新 PivotTable1 的数据",
+      "userInput": "刷新 PivotTable1 的数据",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 刷新数据透视表数据\n  pivotTable.refresh();\n  \n  await context.sync();\n});",
+      "expectedBehavior": "刷新透视表 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 刷新透视表 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 刷新透视表",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-028-删除透视表",
+      "category": "透视表",
+      "name": "删除透视表",
+      "description": "删除 PivotTable1",
+      "userInput": "删除 PivotTable1",
+      "expectedCode": "Excel.run(async (context) => {\n  const pivotTable = context.workbook.worksheets.getActiveWorksheet()\n    .pivotTables.getItem(\"PivotTable1\");\n  \n  // 删除数据透视表\n  pivotTable.delete();\n  \n  await context.sync();\n});",
+      "expectedBehavior": "删除透视表 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除透视表 的预期结果"
+      ],
+      "toolsTemplate": "透视表 > 删除透视表",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-029-设置数值验证",
+      "category": "数据验证",
+      "name": "设置数值验证",
+      "description": "限制 B2:B10 单元格只能输入大于 0 的整数",
+      "userInput": "限制 B2:B10 单元格只能输入大于 0 的整数",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"B2:B10\");\n  \n  // 只允许大于0的整数\n  range.dataValidation.rule = {\n    wholeNumber: {\n      formula1: 0,\n      operator: Excel.DataValidationOperator.greaterThan\n    }\n  };\n  \n  // 设置输入提示\n  range.dataValidation.prompt = {\n    showPrompt: true,\n    title: \"输入限制\",\n    message: \"请输入大于0的整数\"\n  };\n  \n  // 设置错误警告\n  range.dataValidation.errorAlert = {\n    showAlert: true,\n    style: Excel.DataValidationAlertStyle.stop,\n    title: \"无效输入\",\n    message: \"数值必须大于0\"\n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置数值验证 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置数值验证 的预期结果"
+      ],
+      "toolsTemplate": "数据验证 > 设置数值验证",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-030-设置下拉列表",
+      "category": "数据验证",
+      "name": "设置下拉列表",
+      "description": "为 C2:C10 单元格设置下拉列表：选项1、选项2、选项3",
+      "userInput": "为 C2:C10 单元格设置下拉列表：选项1、选项2、选项3",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"C2:C10\");\n  \n  range.dataValidation.rule = {\n    list: {\n      inCellDropDown: true,\n      source: \"选项1,选项2,选项3\"\n    }\n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置下拉列表 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置下拉列表 的预期结果"
+      ],
+      "toolsTemplate": "数据验证 > 设置下拉列表",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-031-添加批注",
+      "category": "批注与命名项",
+      "name": "添加批注",
+      "description": "在 A1 单元格添加批注\"这是一个批注。\"",
+      "userInput": "在 A1 单元格添加批注\"这是一个批注。\"",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const comments = sheet.comments;\n  \n  // 在 A1 添加批注\n  comments.add(\"A1\", \"这是一个批注。\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加批注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加批注 的预期结果"
+      ],
+      "toolsTemplate": "批注与命名项 > 添加批注",
+      "priority": "high"
+    },
+    {
+      "id": "excel-032-创建命名区域",
+      "category": "批注与命名项",
+      "name": "创建命名区域",
+      "description": "将 A1:B10 区域命名为 MyData",
+      "userInput": "将 A1:B10 区域命名为 MyData",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"A1:B10\");\n  \n  // 创建命名区域 \"MyData\"\n  context.workbook.names.add(\"MyData\", range);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建命名区域 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建命名区域 的预期结果"
+      ],
+      "toolsTemplate": "批注与命名项 > 创建命名区域",
+      "priority": "high"
+    },
+    {
+      "id": "excel-033-柱状图",
+      "category": "图表创建",
+      "name": "柱状图",
+      "description": "基于 A1:B10 数据创建标题为\"数据分析图表\"的柱状图",
+      "userInput": "基于 A1:B10 数据创建标题为\"数据分析图表\"的柱状图",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const dataRange = sheet.getRange(\"A1:B10\");\n  \n  const chart = sheet.charts.add(\n    Excel.ChartType.columnClustered,\n    dataRange,\n    Excel.ChartSeriesBy.auto\n  );\n  \n  chart.title.text = \"数据分析图表\";\n  chart.setPosition(\"E1\", \"L15\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "柱状图 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 柱状图 的预期结果"
+      ],
+      "toolsTemplate": "图表创建 > 柱状图",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-034-折线图",
+      "category": "图表创建",
+      "name": "折线图",
+      "description": "基于 A1:B10 数据创建标题为\"趋势分析\"的折线图",
+      "userInput": "基于 A1:B10 数据创建标题为\"趋势分析\"的折线图",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const dataRange = sheet.getRange(\"A1:B10\");\n  \n  const chart = sheet.charts.add(\n    Excel.ChartType.line,\n    dataRange,\n    Excel.ChartSeriesBy.columns\n  );\n  \n  chart.title.text = \"趋势分析\";\n  await context.sync();\n});",
+      "expectedBehavior": "折线图 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 折线图 的预期结果"
+      ],
+      "toolsTemplate": "图表创建 > 折线图",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-035-设置数字格式",
+      "category": "格式化",
+      "name": "设置数字格式",
+      "description": "执行 设置数字格式 操作",
+      "userInput": "执行 设置数字格式 操作",
+      "expectedCode": "Excel.run(async (context) => {\n  const range = context.workbook.getSelectedRange();\n  range.numberFormat = [[\"#,##0.00\"]]; // 千分位，两位小数\n  await context.sync();\n});",
+      "expectedBehavior": "设置数字格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置数字格式 的预期结果"
+      ],
+      "toolsTemplate": "格式化 > 设置数字格式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-036-设置条件格式",
+      "category": "格式化",
+      "name": "设置条件格式",
+      "description": "执行 设置条件格式 操作",
+      "userInput": "执行 设置条件格式 操作",
+      "expectedCode": "Excel.run(async (context) => {\n  const range = context.workbook.getSelectedRange();\n  \n  const conditionalFormat = range.conditionalFormats.add(\n    Excel.ConditionalFormatType.colorScale\n  );\n  \n  conditionalFormat.colorScale.criteria = {\n    minimum: { color: \"#FF0000\", type: \"LowestValue\" },\n    midpoint: { color: \"#FFFF00\", type: \"Percentile\", value: 50 },\n    maximum: { color: \"#00FF00\", type: \"HighestValue\" }\n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置条件格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置条件格式 的预期结果"
+      ],
+      "toolsTemplate": "格式化 > 设置条件格式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-037-常用公式",
+      "category": "公式",
+      "name": "常用公式",
+      "description": "执行 常用公式 操作",
+      "userInput": "执行 常用公式 操作",
+      "expectedCode": "// 求和\n\"=SUM(A1:A10)\"\n\n// 平均值\n\"=AVERAGE(A1:A10)\"\n\n// 计数\n\"=COUNT(A1:A10)\"\n\"=COUNTA(A1:A10)\"  // 非空计数\n\n// 条件计数\n\"=COUNTIF(A1:A10, \\\">100\\\")\"\n\n// 查找\n\"=VLOOKUP(E1, A1:B10, 2, FALSE)\"\n\n// 条件求和\n\"=SUMIF(A1:A10, \\\">100\\\", B1:B10)\"",
+      "expectedBehavior": "常用公式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 常用公式 的预期结果"
+      ],
+      "toolsTemplate": "公式 > 常用公式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-038-单元格值条件格式",
+      "category": "条件格式完整",
+      "name": "单元格值条件格式",
+      "description": "高亮显示所有大于 100 的单元格",
+      "userInput": "高亮显示所有大于 100 的单元格",
+      "expectedCode": "// 高亮大于100的单元格\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"A1:D10\");\n  \n  const conditionalFormat = range.conditionalFormats.add(\n    Excel.ConditionalFormatType.cellValue\n  );\n  \n  // 设置大于100的单元格为绿色背景\n  conditionalFormat.cellValue.format.fill.color = \"#90EE90\";\n  conditionalFormat.cellValue.rule = { \n    formula1: \"100\", \n    operator: \"GreaterThan\" \n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "单元格值条件格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 单元格值条件格式 的预期结果"
+      ],
+      "toolsTemplate": "条件格式完整 > 单元格值条件格式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-039-数据条格式",
+      "category": "条件格式完整",
+      "name": "数据条格式",
+      "description": "为 B 列添加数据条显示",
+      "userInput": "为 B 列添加数据条显示",
+      "expectedCode": "// 为区域添加数据条\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"B2:B10\");\n  \n  const conditionalFormat = range.conditionalFormats.add(\n    Excel.ConditionalFormatType.dataBar\n  );\n  \n  // 设置数据条方向和颜色\n  conditionalFormat.dataBar.barDirection = Excel.ConditionalDataBarDirection.leftToRight;\n  conditionalFormat.dataBar.positiveFormat.fillColor = \"#4472C4\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "数据条格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 数据条格式 的预期结果"
+      ],
+      "toolsTemplate": "条件格式完整 > 数据条格式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-040-图标集格式",
+      "category": "条件格式完整",
+      "name": "图标集格式",
+      "description": "用箭头图标集显示 C 列数据趋势",
+      "userInput": "用箭头图标集显示 C 列数据趋势",
+      "expectedCode": "// 显示红绿箭头图标集\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"C2:C10\");\n  \n  const conditionalFormat = range.conditionalFormats.add(\n    Excel.ConditionalFormatType.iconSet\n  );\n  \n  const iconSetCF = conditionalFormat.iconSet;\n  iconSetCF.style = Excel.IconSet.threeArrows;\n  \n  // 设置图标标准\n  iconSetCF.criteria = [\n    {},\n    {\n      type: Excel.ConditionalFormatIconRuleType.number,\n      operator: Excel.ConditionalIconCriterionOperator.greaterThanOrEqual,\n      formula: \"=500\"\n    },\n    {\n      type: Excel.ConditionalFormatIconRuleType.number,\n      operator: Excel.ConditionalIconCriterionOperator.greaterThanOrEqual,\n      formula: \"=1000\"\n    }\n  ];\n  \n  await context.sync();\n});",
+      "expectedBehavior": "图标集格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 图标集格式 的预期结果"
+      ],
+      "toolsTemplate": "条件格式完整 > 图标集格式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-041-预设条件格式（高于平均值）",
+      "category": "条件格式完整",
+      "name": "预设条件格式（高于平均值）",
+      "description": "高亮显示高于平均值的单元格",
+      "userInput": "高亮显示高于平均值的单元格",
+      "expectedCode": "// 高亮高于平均值的单元格\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"D2:D10\");\n  \n  const conditionalFormat = range.conditionalFormats.add(\n    Excel.ConditionalFormatType.presetCriteria\n  );\n  \n  // 设置高于平均值的单元格为黄色背景\n  conditionalFormat.preset.format.fill.color = \"yellow\";\n  conditionalFormat.preset.rule = {\n    criterion: Excel.ConditionalFormatPresetCriterion.aboveAverage\n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "预设条件格式（高于平均值） 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 预设条件格式（高于平均值） 的预期结果"
+      ],
+      "toolsTemplate": "条件格式完整 > 预设条件格式（高于平均值）",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-042-前/后n项格式",
+      "category": "条件格式完整",
+      "name": "前/后N项格式",
+      "description": "高亮显示前 10 名的数据",
+      "userInput": "高亮显示前 10 名的数据",
+      "expectedCode": "// 高亮前10名\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"E2:E20\");\n  \n  const conditionalFormat = range.conditionalFormats.add(\n    Excel.ConditionalFormatType.topBottom\n  );\n  \n  // 高亮前10项\n  conditionalFormat.topBottom.format.fill.color = \"#FFC000\";\n  conditionalFormat.topBottom.rule = {\n    rank: 10,\n    type: \"TopItems\"\n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "前/后N项格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 前/后N项格式 的预期结果"
+      ],
+      "toolsTemplate": "条件格式完整 > 前/后N项格式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-043-自定义公式条件格式",
+      "category": "条件格式完整",
+      "name": "自定义公式条件格式",
+      "description": "用公式设置条件：如果当前单元格大于左边的单元格则显示为绿色",
+      "userInput": "用公式设置条件：如果当前单元格大于左边的单元格则显示为绿色",
+      "expectedCode": "// 使用自定义公式设置条件格式\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"B2:B10\");\n  \n  const conditionalFormat = range.conditionalFormats.add(\n    Excel.ConditionalFormatType.custom\n  );\n  \n  // 如果单元格值大于左边单元格，设置为绿色\n  conditionalFormat.custom.rule.formula = '=B2>A2';\n  conditionalFormat.custom.format.font.color = \"green\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "自定义公式条件格式 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 自定义公式条件格式 的预期结果"
+      ],
+      "toolsTemplate": "条件格式完整 > 自定义公式条件格式",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-044-监听单元格数据变化",
+      "category": "事件处理",
+      "name": "监听单元格数据变化",
+      "description": "监听工作表的数据变化，当单元格内容改变时输出日志",
+      "userInput": "监听工作表的数据变化，当单元格内容改变时输出日志",
+      "expectedCode": "// 注册数据变化事件处理器\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  sheet.onChanged.add(async (event) => {\n    await Excel.run(async (context) => {\n      console.log(\"数据变化类型:\", event.changeType);\n      console.log(\"变化地址:\", event.address);\n      console.log(\"变化来源:\", event.source);\n      await context.sync();\n    });\n  });\n  \n  await context.sync();\n  console.log(\"已注册数据变化事件监听\");\n});",
+      "expectedBehavior": "监听单元格数据变化 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 监听单元格数据变化 的预期结果"
+      ],
+      "toolsTemplate": "事件处理 > 监听单元格数据变化",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-045-监听选择区域变化",
+      "category": "事件处理",
+      "name": "监听选择区域变化",
+      "description": "监听用户选择的单元格变化",
+      "userInput": "监听用户选择的单元格变化",
+      "expectedCode": "// 监听用户选择的单元格变化\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  sheet.onSelectionChanged.add(async (event) => {\n    await Excel.run(async (context) => {\n      console.log(\"当前选择地址:\", event.address);\n      await context.sync();\n    });\n  });\n  \n  await context.sync();\n  console.log(\"已注册选择变化事件监听\");\n});",
+      "expectedBehavior": "监听选择区域变化 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 监听选择区域变化 的预期结果"
+      ],
+      "toolsTemplate": "事件处理 > 监听选择区域变化",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-046-工作表激活事件",
+      "category": "事件处理",
+      "name": "工作表激活事件",
+      "description": "监听工作表被激活的事件",
+      "userInput": "监听工作表被激活的事件",
+      "expectedCode": "// 监听工作表激活\nExcel.run(async (context) => {\n  const sheets = context.workbook.worksheets;\n  \n  sheets.onActivated.add(async (event) => {\n    await Excel.run(async (context) => {\n      const sheet = context.workbook.worksheets.getItem(event.worksheetId);\n      sheet.load(\"name\");\n      await context.sync();\n      console.log(\"激活的工作表:\", sheet.name);\n    });\n  });\n  \n  await context.sync();\n  console.log(\"已注册工作表激活事件监听\");\n});",
+      "expectedBehavior": "工作表激活事件 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 工作表激活事件 的预期结果"
+      ],
+      "toolsTemplate": "事件处理 > 工作表激活事件",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-047-计算完成事件",
+      "category": "事件处理",
+      "name": "计算完成事件",
+      "description": "监听工作表计算完成事件",
+      "userInput": "监听工作表计算完成事件",
+      "expectedCode": "// 监听工作表计算完成\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  sheet.onCalculated.add(async (event) => {\n    await Excel.run(async (context) => {\n      console.log(\"工作表计算完成:\", event.worksheetId);\n      await context.sync();\n    });\n  });\n  \n  await context.sync();\n  console.log(\"已注册计算完成事件监听\");\n});",
+      "expectedBehavior": "计算完成事件 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 计算完成事件 的预期结果"
+      ],
+      "toolsTemplate": "事件处理 > 计算完成事件",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-048-添加矩形形状",
+      "category": "形状操作",
+      "name": "添加矩形形状",
+      "description": "在工作表中添加一个蓝色矩形",
+      "userInput": "在工作表中添加一个蓝色矩形",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const shapes = sheet.shapes;\n  \n  const rectangle = shapes.addGeometricShape(Excel.GeometricShapeType.rectangle);\n  rectangle.left = 100;\n  rectangle.top = 100;\n  rectangle.height = 150;\n  rectangle.width = 200;\n  rectangle.name = \"MyRectangle\";\n  \n  // 设置填充颜色\n  rectangle.fill.setSolidColor(\"#4472C4\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加矩形形状 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加矩形形状 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 添加矩形形状",
+      "priority": "high"
+    },
+    {
+      "id": "excel-049-插入图片",
+      "category": "形状操作",
+      "name": "插入图片",
+      "description": "插入一张图片",
+      "userInput": "插入一张图片",
+      "expectedCode": "// 插入 Base64 编码的图片\nExcel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const shapes = sheet.shapes;\n  \n  // 示例 Base64 图片（需要替换为实际图片数据）\n  const base64Image = \"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==\";\n  \n  const image = shapes.addImage(base64Image);\n  image.left = 200;\n  image.top = 50;\n  image.height = 100;\n  image.width = 100;\n  image.name = \"MyImage\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "插入图片 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入图片 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 插入图片",
+      "priority": "high"
+    },
+    {
+      "id": "excel-050-添加线条",
+      "category": "形状操作",
+      "name": "添加线条",
+      "description": "添加一条红色箭头线",
+      "userInput": "添加一条红色箭头线",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const shapes = sheet.shapes;\n  \n  // 添加直线（从点 [200,50] 到 [300,150]）\n  const line = shapes.addLine(200, 50, 300, 150, Excel.ConnectorType.straight);\n  line.name = \"MyLine\";\n  \n  // 设置线条样式\n  line.lineFormat.color = \"red\";\n  line.lineFormat.weight = 2;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加线条 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加线条 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 添加线条",
+      "priority": "high"
+    },
+    {
+      "id": "excel-051-创建文本框",
+      "category": "形状操作",
+      "name": "创建文本框",
+      "description": "创建一个包含\"重要提示\"的文本框",
+      "userInput": "创建一个包含\"重要提示\"的文本框",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const shapes = sheet.shapes;\n  \n  const textBox = shapes.addTextBox(\"这是文本框内容\");\n  textBox.left = 100;\n  textBox.top = 200;\n  textBox.height = 80;\n  textBox.width = 200;\n  textBox.name = \"MyTextBox\";\n  \n  // 设置文本格式\n  textBox.textFrame.textRange.font.color = \"blue\";\n  textBox.textFrame.textRange.font.size = 14;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "创建文本框 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 创建文本框 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 创建文本框",
+      "priority": "high"
+    },
+    {
+      "id": "excel-052-形状分组",
+      "category": "形状操作",
+      "name": "形状分组",
+      "description": "将 Shape1 和 Shape2 组合为一个组",
+      "userInput": "将 Shape1 和 Shape2 组合为一个组",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const shapes = sheet.shapes;\n  \n  // 获取要分组的形状\n  const shape1 = shapes.getItem(\"Shape1\");\n  const shape2 = shapes.getItem(\"Shape2\");\n  \n  // 创建形状组\n  shape1.load(\"id\");\n  shape2.load(\"id\");\n  await context.sync();\n  \n  const shapeIds = [shape1.id, shape2.id];\n  const group = shapes.addGroup(shapeIds);\n  group.name = \"MyGroup\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "形状分组 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 形状分组 的预期结果"
+      ],
+      "toolsTemplate": "形状操作 > 形状分组",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-053-添加单元格备注",
+      "category": "备注（Notes）",
+      "name": "添加单元格备注",
+      "description": "在 A1 单元格添加备注\"这是重要数据\"",
+      "userInput": "在 A1 单元格添加备注\"这是重要数据\"",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 在 A1 单元格添加备注\n  sheet.notes.add(\"A1\", \"这是一个重要的备注。\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加单元格备注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加单元格备注 的预期结果"
+      ],
+      "toolsTemplate": "备注（Notes） > 添加单元格备注",
+      "priority": "high"
+    },
+    {
+      "id": "excel-054-修改备注内容",
+      "category": "备注（Notes）",
+      "name": "修改备注内容",
+      "description": "修改 A1 单元格的备注内容",
+      "userInput": "修改 A1 单元格的备注内容",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 获取并修改 A1 的备注\n  const note = sheet.notes.getItem(\"A1\");\n  note.content = \"已更新的备注内容。\";\n  \n  await context.sync();\n});",
+      "expectedBehavior": "修改备注内容 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 修改备注内容 的预期结果"
+      ],
+      "toolsTemplate": "备注（Notes） > 修改备注内容",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-055-设置备注可见性",
+      "category": "备注（Notes）",
+      "name": "设置备注可见性",
+      "description": "设置 A1 的备注始终显示",
+      "userInput": "设置 A1 的备注始终显示",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  const note = sheet.notes.getItem(\"A1\");\n  note.load(\"visible\");\n  await context.sync();\n  \n  // 切换可见性\n  note.visible = !note.visible;\n  \n  await context.sync();\n});",
+      "expectedBehavior": "设置备注可见性 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 设置备注可见性 的预期结果"
+      ],
+      "toolsTemplate": "备注（Notes） > 设置备注可见性",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-056-删除备注",
+      "category": "备注（Notes）",
+      "name": "删除备注",
+      "description": "删除 A2 单元格的备注",
+      "userInput": "删除 A2 单元格的备注",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  const note = sheet.notes.getItem(\"A2\");\n  note.delete();\n  \n  await context.sync();\n});",
+      "expectedBehavior": "删除备注 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除备注 的预期结果"
+      ],
+      "toolsTemplate": "备注（Notes） > 删除备注",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-057-复制区域到新位置",
+      "category": "范围高级操作",
+      "name": "复制区域到新位置",
+      "description": "将 A1:C5 复制到 E1",
+      "userInput": "将 A1:C5 复制到 E1",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 将 A1:C5 复制到 E1\n  const destRange = sheet.getRange(\"E1\");\n  destRange.copyFrom(\"A1:C5\", Excel.RangeCopyType.all);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "复制区域到新位置 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 复制区域到新位置 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 复制区域到新位置",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-058-复制时跳过空白单元格",
+      "category": "范围高级操作",
+      "name": "复制时跳过空白单元格",
+      "description": "复制 A1:C3 到 D1，跳过空白单元格",
+      "userInput": "复制 A1:C3 到 D1，跳过空白单元格",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 复制时跳过空白单元格，保留目标位置的现有数据\n  const destRange = sheet.getRange(\"D1\");\n  destRange.copyFrom(\n    \"A1:C3\",\n    Excel.RangeCopyType.all,\n    true,  // skipBlanks\n    false  // transpose\n  );\n  \n  await context.sync();\n});",
+      "expectedBehavior": "复制时跳过空白单元格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 复制时跳过空白单元格 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 复制时跳过空白单元格",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-059-移动区域",
+      "category": "范围高级操作",
+      "name": "移动区域",
+      "description": "将 A1:C5 移动到 G1",
+      "userInput": "将 A1:C5 移动到 G1",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 将 A1:C5 移动到 G1（剪切并粘贴）\n  const sourceRange = sheet.getRange(\"A1:C5\");\n  sourceRange.moveTo(\"G1\");\n  \n  await context.sync();\n});",
+      "expectedBehavior": "移动区域 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 移动区域 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 移动区域",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-060-插入单元格",
+      "category": "范围高级操作",
+      "name": "插入单元格",
+      "description": "在 B2 插入单元格，其他单元格向下移动",
+      "userInput": "在 B2 插入单元格，其他单元格向下移动",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 在 B2 插入单元格，现有单元格向下移动\n  const range = sheet.getRange(\"B2:B2\");\n  range.insert(Excel.InsertShiftDirection.down);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "插入单元格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 插入单元格 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 插入单元格",
+      "priority": "high"
+    },
+    {
+      "id": "excel-061-删除单元格",
+      "category": "范围高级操作",
+      "name": "删除单元格",
+      "description": "删除 C3:C5，其他单元格向上移动",
+      "userInput": "删除 C3:C5，其他单元格向上移动",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 删除 C3:C5，其他单元格向上移动\n  const range = sheet.getRange(\"C3:C5\");\n  range.delete(Excel.DeleteShiftDirection.up);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "删除单元格 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除单元格 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 删除单元格",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-062-清除区域内容",
+      "category": "范围高级操作",
+      "name": "清除区域内容",
+      "description": "清除 A1:D10 区域的所有内容",
+      "userInput": "清除 A1:D10 区域的所有内容",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"A1:D10\");\n  \n  // 清除所有内容和格式\n  range.clear(Excel.ClearApplyTo.all);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "清除区域内容 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 清除区域内容 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 清除区域内容",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-063-删除重复值",
+      "category": "范围高级操作",
+      "name": "删除重复值",
+      "description": "删除 A1:B20 区域中基于第1和第2列的重复行",
+      "userInput": "删除 A1:B20 区域中基于第1和第2列的重复行",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"A1:B20\");\n  \n  // 基于第1列和第2列删除重复行\n  range.removeDuplicates([0, 1], true); // true 表示包含标题行\n  \n  await context.sync();\n});",
+      "expectedBehavior": "删除重复值 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 删除重复值 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 删除重复值",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-064-行列分组",
+      "category": "范围高级操作",
+      "name": "行列分组",
+      "description": "对第 2 到第 5 行进行分组",
+      "userInput": "对第 2 到第 5 行进行分组",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 对第2到第5行进行分组\n  const range = sheet.getRange(\"2:5\");\n  range.group(Excel.GroupOption.byRows);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "行列分组 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 行列分组 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 行列分组",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-065-取消分组",
+      "category": "范围高级操作",
+      "name": "取消分组",
+      "description": "取消第 2 到第 5 行的分组",
+      "userInput": "取消第 2 到第 5 行的分组",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  \n  // 取消第2到第5行的分组\n  const range = sheet.getRange(\"2:5\");\n  range.ungroup(Excel.GroupOption.byRows);\n  \n  await context.sync();\n});",
+      "expectedBehavior": "取消分组 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 取消分组 的预期结果"
+      ],
+      "toolsTemplate": "范围高级操作 > 取消分组",
+      "priority": "medium"
+    },
+    {
+      "id": "excel-066-添加复选框",
+      "category": "复选框",
+      "name": "添加复选框",
+      "description": "将 B2:B10 的布尔值转换为复选框",
+      "userInput": "将 B2:B10 的布尔值转换为复选框",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"B2:B10\");\n  \n  // 将布尔值转换为复选框\n  range.control = {\n    type: Excel.CellControlType.checkbox\n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "添加复选框 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 添加复选框 的预期结果"
+      ],
+      "toolsTemplate": "复选框 > 添加复选框",
+      "priority": "high"
+    },
+    {
+      "id": "excel-067-读取复选框状态",
+      "category": "复选框",
+      "name": "读取复选框状态",
+      "description": "读取 B2:B10 复选框的选中状态",
+      "userInput": "读取 B2:B10 复选框的选中状态",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"B2:B10\");\n  \n  // 读取复选框的值（true/false）\n  range.load(\"values\");\n  await context.sync();\n  \n  console.log(\"复选框状态:\", range.values);\n});",
+      "expectedBehavior": "读取复选框状态 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 读取复选框状态 的预期结果"
+      ],
+      "toolsTemplate": "复选框 > 读取复选框状态",
+      "priority": "high"
+    },
+    {
+      "id": "excel-068-移除复选框",
+      "category": "复选框",
+      "name": "移除复选框",
+      "description": "移除 B2:B10 的复选框，还原为布尔值",
+      "userInput": "移除 B2:B10 的复选框，还原为布尔值",
+      "expectedCode": "Excel.run(async (context) => {\n  const sheet = context.workbook.worksheets.getActiveWorksheet();\n  const range = sheet.getRange(\"B2:B10\");\n  \n  // 将复选框还原为布尔值\n  range.control = {\n    type: Excel.CellControlType.empty\n  };\n  \n  await context.sync();\n});",
+      "expectedBehavior": "移除复选框 操作成功完成",
+      "validationSteps": [
+        "检查代码是否成功生成",
+        "检查代码格式是否正确",
+        "检查代码是否包含必要的 context.sync()",
+        "验证 移除复选框 的预期结果"
+      ],
+      "toolsTemplate": "复选框 > 移除复选框",
+      "priority": "medium"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "generatedAt": "2026-02-02T05:07:25.473Z",
+    "sourceFile": "/Users/cw/Documents/GitHub/github/DocuPilot/DocuPilot/.claude/skills/excel/TOOLS.md"
+  }
+}
