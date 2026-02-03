@@ -1,205 +1,206 @@
 # DocuPilot
 
 <div align="center">
-**通过自然语言对话，让 Claude AI 智能助手帮你完成 Excel、Word、PowerPoint 的复杂操作**
+
+**Control Excel, Word, and PowerPoint through natural language conversations - Let Claude AI assistant handle complex Office tasks**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
 
-简体中文 | [English](README_EN.md)
+English | [简体中文](README.md)
 
 </div>
 
 ---
 
-## 📸 项目截图
+## 📸 Screenshots
 
 <div align="center">
 
-### Excel 数据分析
-![Excel 界面](./public/assets/sample_excel.png)
+### Excel Data Analysis
+![Excel Interface](./public/assets/sample_excel.png)
 
-### Word 文档编辑
-![Word 界面](./public/assets/sample_word.png)
+### Word Document Editing
+![Word Interface](./public/assets/sample_word.png)
 
-### PowerPoint 演示文稿
-![PowerPoint 界面](./public/assets/sample_ppt.png)
+### PowerPoint Presentation
+![PowerPoint Interface](./public/assets/sample_ppt.png)
 
 </div>
 
 ---
 
-## 📖 目录
+## 📖 Table of Contents
 
-- [✨ 核心特性](#-核心特性)
-- [🎯 为什么选择 DocuPilot](#-为什么选择-docupilot)
-- [🚀 快速开始](#-快速开始)
-  - [前置要求](#前置要求)
-  - [安装步骤](#安装步骤)
-  - [在 Office 中加载](#在-office-中加载)
-  - [首次使用](#首次使用)
-- [💡 使用示例](#-使用示例)
-  - [Excel 数据分析](#excel-数据分析)
-  - [Word 文档编辑](#word-文档编辑)
-  - [PowerPoint 演示文稿](#powerpoint-演示文稿)
-  - [文件上传处理](#文件上传处理)
-- [🏗️ 开发者指南](#️-开发者指南)
-  - [项目架构](#项目架构)
-  - [技术栈](#技术栈)
-  - [项目结构](#项目结构)
-  - [本地开发](#本地开发)
-- [🔧 扩展与自定义](#-扩展与自定义)
-  - [添加新技能](#添加新技能)
-  - [自定义 Office 操作](#自定义-office-操作)
-  - [API 配置选项](#api-配置选项)
-- [🧪 测试](#-测试)
-- [🤝 贡献指南](#-贡献指南)
-- [❓ 常见问题](#-常见问题)
-- [📄 许可证](#-许可证)
-
----
-
-## ✨ 核心特性
-
-### 🗣️ 自然语言操作 Office
-无需记忆复杂的菜单和功能，**直接用对话完成工作**：
-- "帮我分析这些销售数据的趋势"
-- "在文档开头添加一个专业的标题页"
-- "创建一个关于市场分析的 PPT"
-
-### 🤖 Claude Agent 智能引擎
-基于 **Claude 4.5 Sonnet** 的强大 AI 能力：
-- 理解复杂的任务需求
-- 自动拆解多步骤操作
-- 高质量完成专业任务
-- 上下文感知的智能对话
-
-### 🎭 Agent/Plan 双模式
-根据任务复杂度选择执行方式：
-- **Agent 模式**：直接执行操作，实时反馈结果
-- **Plan 模式**：先制定执行计划，确认后再执行
-
-### 🔄 跨应用统一体验
-一个插件，三大 Office 应用：
-- ✅ **Excel**：数据分析、透视表、图表、条件格式
-- ✅ **Word**：文档编辑、样式管理、搜索替换
-- ✅ **PowerPoint**：幻灯片创建、内容排版、主题应用
-
-### 🧩 技能系统可扩展
-插件式架构，轻松扩展新功能：
-- 基于 `.claude/skills/` 的模块化技能系统
-- 每个技能独立定义、易于维护
-- 支持自定义 Office.js 操作模板
-- 社区可贡献新技能
+- [✨ Core Features](#-core-features)
+- [🎯 Why Choose DocuPilot](#-why-choose-docupilot)
+- [🚀 Quick Start](#-quick-start)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Loading in Office](#loading-in-office)
+  - [First Use](#first-use)
+- [💡 Usage Examples](#-usage-examples)
+  - [Excel Data Analysis](#excel-data-analysis)
+  - [Word Document Editing](#word-document-editing)
+  - [PowerPoint Presentations](#powerpoint-presentations)
+  - [File Upload Processing](#file-upload-processing)
+- [🏗️ Developer Guide](#️-developer-guide)
+  - [Project Architecture](#project-architecture)
+  - [Tech Stack](#tech-stack)
+  - [Project Structure](#project-structure)
+  - [Local Development](#local-development)
+- [🔧 Extension & Customization](#-extension--customization)
+  - [Adding New Skills](#adding-new-skills)
+  - [Custom Office Operations](#custom-office-operations)
+  - [API Configuration Options](#api-configuration-options)
+- [🧪 Testing](#-testing)
+- [🤝 Contributing](#-contributing)
+- [❓ FAQ](#-faq)
+- [📄 License](#-license)
 
 ---
 
-## 🎯 为什么选择 DocuPilot
+## ✨ Core Features
 
-| 传统方式 | DocuPilot |
-|---------|-----------|
-| 🔍 在菜单中查找功能 | 💬 直接说出需求 |
-| 📖 学习复杂的公式和函数 | 🤖 AI 自动处理逻辑 |
-| ⏰ 重复手动操作 | ⚡ 一句话批量完成 |
-| 🤔 需要记忆操作步骤 | 🧠 AI 理解上下文自动执行 |
-| 📱 单一应用单独学习 | 🔗 统一交互方式 |
+### 🗣️ Natural Language Office Control
+No need to memorize complex menus and functions - **just use conversation to get work done**:
+- "Help me analyze the sales data trends"
+- "Add a professional title page at the beginning of the document"
+- "Create a PPT about market analysis"
+
+### 🤖 Claude Agent Intelligence Engine
+Powered by **Claude 3.5 Sonnet**'s advanced AI capabilities:
+- Understand complex task requirements
+- Automatically break down multi-step operations
+- Complete professional tasks with high quality
+- Context-aware intelligent conversations
+
+### 🎭 Dual Agent/Plan Modes
+Choose execution method based on task complexity:
+- **Agent Mode**: Direct execution with real-time feedback
+- **Plan Mode**: Create execution plan first, then execute after confirmation
+
+### 🔄 Unified Cross-Application Experience
+One add-in for three major Office applications:
+- ✅ **Excel**: Data analysis, pivot tables, charts, conditional formatting
+- ✅ **Word**: Document editing, style management, search & replace
+- ✅ **PowerPoint**: Slide creation, content layout, theme application
+
+### 🧩 Extensible Skill System
+Plugin-based architecture for easy feature expansion:
+- Modular skill system based on `.claude/skills/`
+- Each skill independently defined and easy to maintain
+- Support for custom Office.js operation templates
+- Community contributions welcome
 
 ---
 
-## 🚀 快速开始
+## 🎯 Why Choose DocuPilot
 
-### 前置要求
+| Traditional Way | DocuPilot |
+|----------------|-----------|
+| 🔍 Search for features in menus | 💬 Just say what you need |
+| 📖 Learn complex formulas and functions | 🤖 AI handles the logic automatically |
+| ⏰ Repetitive manual operations | ⚡ Batch complete with one sentence |
+| 🤔 Need to memorize operation steps | 🧠 AI understands context and executes |
+| 📱 Learn each application separately | 🔗 Unified interaction method |
 
-- **Node.js** 18.0 或更高版本
-- **Office 应用**：
-  - Office 365 订阅版（推荐）
-  - Office 2019 或更高版本
-  - Office for Mac（2019 或更高版本）
-- **Anthropic API Key**：从 [Anthropic Console](https://console.anthropic.com/) 获取
+---
 
-### 安装步骤
+## 🚀 Quick Start
 
-#### 方式 1：一键安装（推荐，macOS/Linux）
+### Prerequisites
 
-使用 curl 命令快速安装：
+- **Node.js** 18.0 or higher
+- **Office Applications**:
+  - Office 365 subscription (recommended)
+  - Office 2019 or higher
+  - Office for Mac (2019 or higher)
+- **Anthropic API Key**: Get it from [Anthropic Console](https://console.anthropic.com/)
+
+### Installation
+
+#### Method 1: One-Click Install (Recommended, macOS/Linux)
+
+Quick install using curl:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh | bash
 ```
 
-该脚本会自动：
-- ✅ 检查系统环境（git、Node.js、npm）
-- ✅ 克隆项目仓库
-- ✅ 安装依赖包
-- ✅ 创建配置文件模板
+The script will automatically:
+- ✅ Check system environment (git, Node.js, npm)
+- ✅ Clone project repository
+- ✅ Install dependencies
+- ✅ Create configuration file template
 
-**自定义安装选项**：
+**Custom Installation Options**:
 
 ```bash
-# 安装到指定目录
+# Install to specific directory
 DOCUPILOT_DIR=~/my-docupilot curl -fsSL https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh | bash
 
-# 从特定分支安装
+# Install from specific branch
 DOCUPILOT_BRANCH=develop curl -fsSL https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh | bash
 
-# 从 Fork 仓库安装
+# Install from forked repository
 DOCUPILOT_REPO=https://github.com/YOUR_USERNAME/docupilot.git curl -fsSL https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh | bash
 ```
 
-#### 方式 2：手动安装（所有平台）
+#### Method 2: Manual Install (All Platforms)
 
-如果无法使用 curl 或希望手动控制每个步骤：
+If you cannot use curl or prefer to control each step manually:
 
 ```bash
-# 1. 克隆项目
+# 1. Clone the repository
 git clone https://github.com/docupilot/docupilot.git
 cd docupilot
 
-# 2. 安装依赖
+# 2. Install dependencies
 npm install
 
-# 3. 配置 API Key
+# 3. Configure API Key
 cp .env.local.example .env.local
-# 编辑 .env.local 文件，填入你的 Anthropic API Key
+# Edit .env.local and add your Anthropic API Key
 
-# 4. 启动开发服务器（HTTPS）
+# 4. Start development server (HTTPS)
 npm run dev:https
 ```
 
-服务器启动后，访问 `https://localhost:3000/taskpane` 验证是否正常运行。
+After the server starts, visit `https://localhost:3000/taskpane` to verify it's running properly.
 
-### 在 Office 中加载
+### Loading in Office
 
-DocuPilot 提供两种加载方式，可根据您的平台和使用场景选择：
+DocuPilot provides two loading methods. Choose based on your platform and use case:
 
-#### 方法 1：共享文件夹加载（推荐用于开发）
+#### Method 1: Shared Folder Loading (Recommended for Development)
 
-此方法将 `manifest.xml` 复制到系统特定目录，Office 会自动识别。
+This method copies `manifest.xml` to a system-specific directory where Office automatically detects it.
 
-##### macOS 用户
+##### For macOS Users
 
-1. **启动开发服务器**：
+1. **Start the development server**:
    
    ```bash
    npm run dev:https
    ```
 
-2. **使用脚本自动安装**（推荐）：
+2. **Automated installation using script** (Recommended):
    
    ```bash
    ./copy-manifest-to-wef.sh
    ```
    
-   脚本将自动把 `manifest.xml` 复制到以下目录：
+   The script will automatically copy `manifest.xml` to:
    - Excel: `~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/`
    - Word: `~/Library/Containers/com.microsoft.Word/Data/Documents/wef/`
    - PowerPoint: `~/Library/Containers/com.microsoft.Powerpoint/Data/Documents/wef/`
 
-3. **手动安装**（可选）：
+3. **Manual installation** (Optional):
    
-   如果脚本无法运行，可手动复制：
+   If the script doesn't work, you can manually copy:
    ```bash
    # Excel
    mkdir -p ~/Library/Containers/com.microsoft.Excel/Data/Documents/wef/
@@ -214,326 +215,322 @@ DocuPilot 提供两种加载方式，可根据您的平台和使用场景选择�
    cp manifest.xml ~/Library/Containers/com.microsoft.Powerpoint/Data/Documents/wef/
    ```
 
-4. **在 Office 中加载**：
-   - 打开 Excel、Word 或 PowerPoint
-   - 点击 **插入** 选项卡 → **获取加载项** 或 **我的加载项**
-   - 选择 **共享文件夹** 选项卡
-   - 找到并点击 **DocuPilot** 加载项
+4. **Load in Office**:
+   - Open Excel, Word, or PowerPoint
+   - Click **Insert** tab → **Get Add-ins** or **My Add-ins**
+   - Select the **Shared Folder** tab
+   - Find and click the **DocuPilot** add-in
 
-##### Windows 用户
+##### For Windows Users
 
-1. **启动开发服务器**：
+1. **Start the development server**:
    
    ```bash
    npm run dev:https
    ```
 
-2. **使用脚本自动安装**（推荐）：
+2. **Automated installation using script** (Recommended):
    
-   双击运行或在命令提示符中执行：
+   Double-click to run or execute in Command Prompt:
    ```batch
    copy-manifest-to-wef.bat
    ```
    
-   脚本将自动把 `manifest.xml` 复制到：
+   The script will automatically copy `manifest.xml` to:
    - `%USERPROFILE%\AppData\Local\Microsoft\Office\16.0\Wef\`
    
-   > **注意**：如果使用 Office 2013，需修改脚本中的 `16.0` 为 `15.0`
+   > **Note**: If using Office 2013, modify `16.0` to `15.0` in the script
 
-3. **手动安装**（可选）：
+3. **Manual installation** (Optional):
    
-   如果脚本无法运行，可手动复制：
+   If the script doesn't work, you can manually copy:
    ```batch
    mkdir "%USERPROFILE%\AppData\Local\Microsoft\Office\16.0\Wef"
    copy manifest.xml "%USERPROFILE%\AppData\Local\Microsoft\Office\16.0\Wef\manifest.xml"
    ```
 
-4. **在 Office 中加载**：
-   - 打开 Excel、Word 或 PowerPoint
-   - 点击 **插入** 选项卡 → **获取加载项** 或 **我的加载项**
-   - 选择 **共享文件夹** 选项卡
-   - 找到并点击 **DocuPilot** 加载项
+4. **Load in Office**:
+   - Open Excel, Word, or PowerPoint
+   - Click **Insert** tab → **Get Add-ins** or **My Add-ins**
+   - Select the **Shared Folder** tab
+   - Find and click the **DocuPilot** add-in
 
-#### 方法 2：手动上传加载（通用方法）
+#### Method 2: Manual Upload (Universal Method)
 
-此方法适用于所有平台，无需脚本或文件复制。
+This method works on all platforms without requiring scripts or file copying.
 
-1. **启动开发服务器**：
+1. **Start the development server**:
    
    ```bash
    npm run dev:https
    ```
 
-2. **打开 Office 应用**（Excel、Word 或 PowerPoint）
+2. **Open an Office application** (Excel, Word, or PowerPoint)
 
-3. **上传加载项**：
-   - 点击 **插入** 选项卡
-   - 选择 **获取加载项** 或 **我的加载项**
-   - 点击 **上传我的加载项**
-   - 浏览并选择项目根目录下的 `manifest.xml` 文件
-   - 点击 **上传**
+3. **Upload the add-in**:
+   - Click the **Insert** tab
+   - Select **Get Add-ins** or **My Add-ins**
+   - Click **Upload My Add-in**
+   - Browse and select the `manifest.xml` file from the project root directory
+   - Click **Upload**
 
-4. **打开 DocuPilot**：
-   - 在功能区找到 **DocuPilot** 按钮
-   - 点击按钮，任务窗格将在右侧打开
+4. **Open DocuPilot**:
+   - Find the **DocuPilot** button in the ribbon
+   - Click the button, and the task pane will open on the right
 
-> 💡 **提示**：
-> - 共享文件夹方法更便于开发，修改代码后无需重新上传
-> - 手动上传方法更简单直接，适合快速测试
-> - 如果加载项未显示，请重启 Office 应用
+> 💡 **Tips**:
+> - Shared folder method is better for development as you don't need to re-upload after code changes
+> - Manual upload method is simpler and more direct, suitable for quick testing
+> - If the add-in doesn't appear, try restarting the Office application
 
-### HTTPS 证书配置（重要）
+### HTTPS Certificate Setup (Important)
 
-Office Add-in **必须使用 HTTPS**。在首次使用前，需要正确配置和信任本地开发证书。
+Office Add-ins **require HTTPS**. Before first use, you need to properly configure and trust the local development certificate.
 
-#### 自动证书生成
+#### Automatic Certificate Generation
 
-首次运行 `npm run dev:https` 时，项目会自动使用 `office-addin-dev-certs` 生成自签名证书：
+When you first run `npm run dev:https`, the project automatically uses `office-addin-dev-certs` to generate self-signed certificates:
 
 ```bash
 npm run dev:https
 
-# 证书自动生成到：
+# Certificates are automatically generated to:
 # macOS/Linux: ~/.office-addin-dev-certs/
 # Windows: %USERPROFILE%\.office-addin-dev-certs\
 ```
 
-#### macOS 证书信任设置
+#### macOS Certificate Trust Setup
 
-**方法 1：命令行方式**（推荐，一步完成）
+**Method 1: Command Line** (Recommended, one-step)
 
 ```bash
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ~/.office-addin-dev-certs/localhost.crt
 ```
 
-**方法 2：图形界面方式**
+**Method 2: Graphical Interface**
 
 ```bash
-# 打开证书目录
+# Open certificate directory
 open ~/.office-addin-dev-certs
 
-# 然后按以下步骤操作：
-# 1. 双击 localhost.crt 文件
-# 2. 在钥匙串访问中，找到"系统"钥匙串中的 "localhost"
-# 3. 双击证书，展开"信任"部分
-# 4. 将"使用此证书时"设置为"始终信任"
-# 5. 关闭窗口，输入管理员密码确认
+# Then follow these steps:
+# 1. Double-click localhost.crt file
+# 2. In Keychain Access, find "localhost" in "System" keychain
+# 3. Double-click certificate, expand "Trust" section
+# 4. Set "When using this certificate" to "Always Trust"
+# 5. Close window and enter administrator password to confirm
 ```
 
-**验证**：
-
+**Verification**:
 ```bash
-# 打开浏览器访问，应该没有证书警告
+# Open in browser, should have no certificate warning
 open https://localhost:3000/taskpane
 ```
 
-#### Windows 证书信任设置
+#### Windows Certificate Trust Setup
 
-**方法 1：PowerShell 命令**（推荐，需要管理员权限）
+**Method 1: PowerShell Command** (Recommended, requires administrator privileges)
 
 ```powershell
-# 以管理员身份运行 PowerShell
+# Run PowerShell as Administrator
 $certPath = "$env:USERPROFILE\.office-addin-dev-certs\localhost.crt"
 Import-Certificate -FilePath $certPath -CertStoreLocation Cert:\LocalMachine\Root
 ```
 
-**方法 2：图形界面方式**
+**Method 2: Graphical Interface**
 
 ```
-1. 打开证书目录：
-   - 按 Win+R
-   - 输入：%USERPROFILE%\.office-addin-dev-certs
-   - 回车
+1. Open certificate directory:
+   - Press Win+R
+   - Type: %USERPROFILE%\.office-addin-dev-certs
+   - Press Enter
 
-2. 安装证书：
-   - 双击 localhost.crt 文件
-   - 点击"安装证书"
-   - 选择"本地计算机"（需要管理员权限）
-   - 选择"将所有的证书都放入下列存储"
-   - 浏览 → 选择"受信任的根证书颁发机构"
-   - 完成安装
+2. Install certificate:
+   - Double-click localhost.crt file
+   - Click "Install Certificate"
+   - Select "Local Machine" (requires administrator privileges)
+   - Select "Place all certificates in the following store"
+   - Browse → Select "Trusted Root Certification Authorities"
+   - Complete installation
 
-3. 确认安装：
-   - 按 Win+R，输入 certmgr.msc
-   - 查看"受信任的根证书颁发机构" → "证书"
-   - 应该能看到 "localhost" 证书
+3. Confirm installation:
+   - Press Win+R, type certmgr.msc
+   - View "Trusted Root Certification Authorities" → "Certificates"
+   - Should see "localhost" certificate
 ```
 
-**验证**：
-
+**Verification**:
 ```bash
-# 打开浏览器访问，应该没有证书警告
+# Open in browser, should have no certificate warning
 start https://localhost:3000/taskpane
 ```
 
-#### 常见问题
+#### Common Issues
 
-**问题 1：浏览器仍显示证书警告**
+**Issue 1: Browser still shows certificate warning**
+- ✅ Confirm certificate is correctly installed in system trust store
+- ✅ Fully restart browser (close all windows)
+- ✅ Clear browser cache and SSL state
 
-- ✅ 确认证书已正确安装到系统信任库
-- ✅ 完全重启浏览器（关闭所有窗口）
-- ✅ 清除浏览器缓存和 SSL 状态
+**Issue 2: Office cannot load add-in**
+- ✅ Confirm development server is running (`npm run dev:https`)
+- ✅ Restart Office application
+- ✅ Check if Office version supports Add-ins
 
-**问题 2：Office 无法加载加载项**
-- ✅ 确认开发服务器正在运行（`npm run dev:https`）
-- ✅ 重启 Office 应用程序
-- ✅ 检查 Office 版本是否支持 Add-in
-
-**问题 3：证书文件不存在**
-
+**Issue 3: Certificate files don't exist**
 ```bash
-# 手动安装证书工具
+# Manually install certificate tool
 npx office-addin-dev-certs install
 
-# 然后重新启动服务器
+# Then restart server
 npm run dev:https
 ```
 
-> ⚠️ **重要提示**：
-> - 必须先信任证书，再在 Office 中加载加载项
-> - 每次重新生成证书后，需要重新信任
-> - 团队开发时，每个开发者需要在自己的机器上生成和信任证书
+> ⚠️ **Important Notes**:
+> - You must trust the certificate before loading the add-in in Office
+> - After regenerating certificates, you need to trust them again
+> - In team development, each developer needs to generate and trust certificates on their own machine
 
-### 首次使用
+### First Use
 
-1. **配置 API Key**（如果尚未在 .env.local 中配置）：
-   - 点击任务窗格右上角的 ⚙️ 设置按钮
-   - 输入你的 Anthropic API Key
-   - 点击"保存"
+1. **Configure API Key** (if not configured in .env.local):
+   - Click the ⚙️ settings button in the top right of the task pane
+   - Enter your Anthropic API Key
+   - Click "Save"
 
-2. **开始对话**：
-   - 在输入框输入："你好，请介绍一下你自己"
-   - 观察 Claude 的响应
-   - 尝试简单命令："在 A1 单元格写入 Hello World"
+2. **Start Conversation**:
+   - Type in the input box: "Hello, please introduce yourself"
+   - Observe Claude's response
+   - Try a simple command: "Write Hello World in cell A1"
 
-3. **验证安装**：
-   - 如果看到 Claude 的真实回复（而非模拟响应）
-   - 且 Office 操作成功执行
-   - 说明安装成功！🎉
-
----
-
-## 💡 使用示例
-
-### Excel 数据分析
-
-**场景**：分析销售数据并创建可视化图表
-
-```
-你：帮我分析 A1:E20 区域的销售数据，按产品类别汇总，并创建一个柱状图
-```
-
-DocuPilot 将：
-1. ✅ 读取指定区域的数据
-2. ✅ 自动创建数据透视表
-3. ✅ 按类别汇总销售额
-4. ✅ 生成柱状图并设置格式
-5. ✅ 告知你结果位置
-
-**更多示例**：
-- "在 B 列计算平均值"
-- "找出销售额前 10 的产品并高亮显示"
-- "创建一个包含季度趋势的折线图"
-- "为这个表格添加条件格式，低于平均值的显示红色"
-
-### Word 文档编辑
-
-**场景**：快速创建专业文档结构
-
-```
-你：帮我创建一个项目报告模板，包含标题页、摘要、背景、方法、结果和结论这几个章节
-```
-
-DocuPilot 将：
-1. ✅ 插入封面页
-2. ✅ 创建各级标题
-3. ✅ 应用专业样式
-4. ✅ 添加页码和目录
-
-**更多示例**：
-- "在文档开头插入一个 3x4 的表格"
-- "将所有'产品'替换为'解决方案'"
-- "为文档添加页眉，内容为'公司机密'"
-- "在选中的段落后插入一个注释"
-
-### PowerPoint 演示文稿
-
-**场景**：快速生成演示幻灯片
-
-```
-你：创建一个关于产品发布的演示，包含封面、产品特性、市场优势、价格方案和联系方式
-```
-
-DocuPilot 将：
-1. ✅ 创建多张幻灯片
-2. ✅ 设置标题和内容布局
-3. ✅ 应用统一主题
-4. ✅ 添加形状和图标
-
-**更多示例**：
-- "在当前幻灯片添加一个标题和三栏内容"
-- "插入一张新幻灯片，标题为'市场分析'"
-- "在幻灯片中添加一个流程图"
-- "为所有标题应用公司品牌颜色"
-
-### 文件上传处理
-
-**场景**：上传 CSV 文件并分析
-
-1. **上传文件**：
-   - 点击输入框旁的 📎 按钮
-   - 选择 CSV 或 Excel 文件
-
-2. **请求分析**：
-   ```
-   你：分析我上传的销售数据文件，给出关键指标和趋势
-   ```
-
-3. DocuPilot 将：
-   - ✅ 读取文件内容
-   - ✅ 执行数据分析
-   - ✅ 生成分析报告
-   - ✅ 保存结果到 workspace 目录
+3. **Verify Installation**:
+   - If you see Claude's real response (not a mock response)
+   - And Office operations execute successfully
+   - Installation successful! 🎉
 
 ---
 
-## 🏗️ 开发者指南
+## 💡 Usage Examples
 
-### 项目架构
+### Excel Data Analysis
+
+**Scenario**: Analyze sales data and create visualization charts
+
+```
+You: Help me analyze the sales data in range A1:E20, summarize by product category, and create a column chart
+```
+
+DocuPilot will:
+1. ✅ Read data from the specified range
+2. ✅ Automatically create a pivot table
+3. ✅ Summarize sales by category
+4. ✅ Generate and format a column chart
+5. ✅ Inform you of the result location
+
+**More Examples**:
+- "Calculate the average in column B"
+- "Find and highlight the top 10 products by sales"
+- "Create a line chart showing quarterly trends"
+- "Add conditional formatting to this table, display values below average in red"
+
+### Word Document Editing
+
+**Scenario**: Quickly create professional document structure
+
+```
+You: Help me create a project report template with cover page, abstract, background, methodology, results, and conclusion sections
+```
+
+DocuPilot will:
+1. ✅ Insert a cover page
+2. ✅ Create section headings at various levels
+3. ✅ Apply professional styles
+4. ✅ Add page numbers and table of contents
+
+**More Examples**:
+- "Insert a 3x4 table at the beginning of the document"
+- "Replace all instances of 'product' with 'solution'"
+- "Add a header to the document with the text 'Company Confidential'"
+- "Insert a comment after the selected paragraph"
+
+### PowerPoint Presentations
+
+**Scenario**: Quickly generate presentation slides
+
+```
+You: Create a presentation about a product launch, including cover, product features, market advantages, pricing plans, and contact information
+```
+
+DocuPilot will:
+1. ✅ Create multiple slides
+2. ✅ Set title and content layouts
+3. ✅ Apply a unified theme
+4. ✅ Add shapes and icons
+
+**More Examples**:
+- "Add a title and three-column content to the current slide"
+- "Insert a new slide titled 'Market Analysis'"
+- "Add a flowchart to the slide"
+- "Apply company brand colors to all titles"
+
+### File Upload Processing
+
+**Scenario**: Upload CSV file and analyze
+
+1. **Upload File**:
+   - Click the 📎 button next to the input box
+   - Select CSV or Excel file
+
+2. **Request Analysis**:
+   ```
+   You: Analyze the sales data file I uploaded and provide key metrics and trends
+   ```
+
+3. DocuPilot will:
+   - ✅ Read file contents
+   - ✅ Perform data analysis
+   - ✅ Generate analysis report
+   - ✅ Save results to workspace directory
+
+---
+
+## 🏗️ Developer Guide
+
+### Project Architecture
 
 ```mermaid
 graph TB
-    subgraph frontend [前端层]
+    subgraph frontend [Frontend Layer]
         UI[React UI<br/>Tailwind CSS]
-        Chat[Chat 组件]
-        SSE[SSE 客户端<br/>实时任务接收]
-        Executor[Code Executor<br/>代码执行器]
-        Bridge[Bridge Factory<br/>Office 桥接]
+        Chat[Chat Components]
+        SSE[SSE Client<br/>Real-time Task Receiver]
+        Executor[Code Executor<br/>Code Executor]
+        Bridge[Bridge Factory<br/>Office Bridge]
     end
     
-    subgraph backend [后端层]
+    subgraph backend [Backend Layer]
         API[Next.js API Routes<br/>/api/chat]
         SDK[Claude Agent SDK]
-        MCPServer[MCP Server<br/>Office 代码执行]
-        EventEmitter[EventEmitter<br/>事件驱动通知]
-        TaskStream[SSE 推送<br/>/api/task-stream]
+        MCPServer[MCP Server<br/>Office Code Execution]
+        EventEmitter[EventEmitter<br/>Event-driven Notification]
+        TaskStream[SSE Push<br/>/api/task-stream]
     end
     
-    subgraph office [Office 应用层]
+    subgraph office [Office Application Layer]
         Excel[Excel.js]
         Word[Word.js]
         PPT[PowerPoint.js]
     end
     
-    subgraph skills [技能系统]
+    subgraph skills [Skill System]
         ExcelSkill[Excel Skills]
         WordSkill[Word Skills]
         PPTSkill[PowerPoint Skills]
     end
     
-    subgraph storage [存储层]
-        Sessions[Session 管理]
-        Files[文件上传]
+    subgraph storage [Storage Layer]
+        Sessions[Session Management]
+        Files[File Uploads]
     end
     
     UI --> Chat
@@ -560,285 +557,284 @@ graph TB
     style storage fill:#fff9c4
 ```
 
-**核心工作流程**：
+**Core Workflow**:
 
-1. **用户输入** → React 聊天界面 (`Chat` 组件)
-2. **发送请求** → Next.js API Route (`/api/chat`)
-3. **调用 SDK** → Claude Agent SDK 处理用户请求
-4. **MCP Tool 调用** → Agent 调用 `mcp__office__execute_code` 工具
-5. **任务入队** → MCP Server 将任务放入待执行队列
-6. **SSE 推送** → 通过 `/api/task-stream` 实时推送到前端（零延迟）
-7. **代码执行** → 前端 `Code Executor` 接收任务并执行 Office.js 代码
-8. **Bridge 路由** → `Bridge Factory` 根据 Office 类型路由到对应实现
-9. **结果反馈** → 执行结果通过 `EventEmitter` 事件驱动通知后端（< 1ms）
-10. **自动修复** → 如果执行失败，Agent 根据错误信息自动修正代码并重试（最多 3 次）
-11. **流式响应** → 最终结果通过 SSE 流式返回给用户
+1. **User Input** → React chat interface (`Chat` component)
+2. **Send Request** → Next.js API Route (`/api/chat`)
+3. **Call SDK** → Claude Agent SDK processes user request
+4. **MCP Tool Call** → Agent calls `mcp__office__execute_code` tool
+5. **Task Enqueue** → MCP Server adds task to pending queue
+6. **SSE Push** → Real-time push to frontend via `/api/task-stream` (zero delay)
+7. **Code Execution** → Frontend `Code Executor` receives task and executes Office.js code
+8. **Bridge Routing** → `Bridge Factory` routes to corresponding implementation based on Office type
+9. **Result Feedback** → Execution result notified to backend via `EventEmitter` event-driven (< 1ms)
+10. **Auto Fix** → If execution fails, Agent automatically fixes code based on error info and retries (max 3 times)
+11. **Streaming Response** → Final result streamed back to user via SSE
 
-**性能优化亮点**：
+**Performance Optimizations**:
 
-- ⚡ **事件驱动架构**：使用 EventEmitter 替代轮询，响应延迟从 50ms 降至 < 1ms（**72 倍加速**）
-- 🚀 **SSE 实时推送**：任务产生时立即推送，无需前端轮询（**100 倍加速**）
-- 🔄 **自动错误修复**：智能识别错误模式，自动重试修正（最多 3 次）
-- 📦 **桥接模式**：统一的 Office 操作接口，支持 Excel/Word/PowerPoint
+- ⚡ **Event-driven Architecture**: Uses EventEmitter instead of polling, response latency reduced from 50ms to < 1ms (**72x faster**)
+- 🚀 **SSE Real-time Push**: Tasks pushed immediately when created, no frontend polling needed (**100x faster**)
+- 🔄 **Auto Error Fix**: Intelligently identifies error patterns and automatically retries fixes (max 3 times)
+- 📦 **Bridge Pattern**: Unified Office operation interface supporting Excel/Word/PowerPoint
 
-### 技术栈
+### Tech Stack
 
-#### 前端
-- **框架**：Next.js 15 (App Router)
-- **UI 库**：React 18
-- **样式**：Tailwind CSS 4
-- **组件库**：Radix UI
-- **图标**：Lucide React
-- **Markdown**：react-markdown + remark-gfm
-- **Office 集成**：Office.js
+#### Frontend
+- **Framework**: Next.js 15 (App Router)
+- **UI Library**: React 18
+- **Styling**: Tailwind CSS 4
+- **Component Library**: Radix UI
+- **Icons**: Lucide React
+- **Markdown**: react-markdown + remark-gfm
+- **Office Integration**: Office.js
 
-#### 后端
-- **运行时**：Node.js 18+
-- **API**：Next.js API Routes
-- **AI 引擎**：@anthropic-ai/claude-agent-sdk
-- **类型检查**：TypeScript 5.7
+#### Backend
+- **Runtime**: Node.js 18+
+- **API**: Next.js API Routes
+- **AI Engine**: @anthropic-ai/claude-agent-sdk
+- **Type Checking**: TypeScript 5.7
 
-#### 开发工具
-- **包管理器**：npm
-- **证书生成**：office-addin-dev-certs
-- **HTTPS 服务器**：自定义 Express 服务器 (server.mjs)
+#### Development Tools
+- **Package Manager**: npm
+- **Certificate Generation**: office-addin-dev-certs
+- **HTTPS Server**: Custom Express server (server.mjs)
 
-### 项目结构
+### Project Structure
 
 ```
 DocuPilot/
-├── .claude/                    # Claude 技能系统
-│   ├── CLAUDE.md              # 系统提示词
+├── .claude/                    # Claude skill system
+│   ├── CLAUDE.md              # System prompt
 │   └── skills/
-│       ├── excel/             # Excel 技能
-│       │   ├── SKILL.md       # 技能定义
-│       │   └── TOOLS.md       # 代码模板
-│       ├── word/              # Word 技能
-│       └── powerpoint/        # PowerPoint 技能
+│       ├── excel/             # Excel skills
+│       │   ├── SKILL.md       # Skill definition
+│       │   └── TOOLS.md       # Code templates
+│       ├── word/              # Word skills
+│       └── powerpoint/        # PowerPoint skills
 ├── src/
 │   ├── app/
-│   │   ├── api/               # API 路由
-│   │   │   ├── chat/          # 聊天 API（Claude Agent SDK）
-│   │   │   ├── task-stream/    # SSE 任务推送
-│   │   │   ├── tool-result/   # 工具执行结果提交
-│   │   │   ├── files/         # 文件上传
-│   │   │   └── settings/      # 设置 API
-│   │   ├── taskpane/          # 任务窗格页面
-│   │   └── test-office/       # 测试页面
-│   ├── components/            # React 组件
-│   │   ├── ChatInput.tsx      # 聊天输入
-│   │   ├── MessageBubble.tsx  # 消息气泡
-│   │   ├── SettingsDialog.tsx # 设置对话框
-│   │   └── ui/                # UI 基础组件
+│   │   ├── api/               # API routes
+│   │   │   ├── chat/          # Chat API (Claude Agent SDK)
+│   │   │   ├── task-stream/   # SSE task push
+│   │   │   ├── tool-result/   # Tool execution result submission
+│   │   │   ├── files/         # File upload
+│   │   │   └── settings/      # Settings API
+│   │   ├── taskpane/          # Task pane page
+│   │   └── test-office/       # Test page
+│   ├── components/            # React components
+│   │   ├── ChatInput.tsx      # Chat input
+│   │   ├── MessageBubble.tsx  # Message bubble
+│   │   ├── SettingsDialog.tsx # Settings dialog
+│   │   └── ui/                # Base UI components
 │   ├── lib/
-│   │   ├── office/            # Office.js 封装
-│   │   │   ├── mcp-server.ts  # MCP Server（Office 代码执行）
-│   │   │   ├── bridge-factory.ts # Bridge 工厂（Excel/Word/PPT）
-│   │   │   ├── code-executor.ts # 代码执行器
-│   │   │   ├── error-patterns.ts # 错误模式识别
-│   │   │   ├── error-feedback-builder.ts # 错误反馈构建
-│   │   │   ├── tools.ts       # 工具定义
-│   │   │   └── host-detector.ts # 宿主检测
-│   │   └── use-chat.ts        # 聊天 Hook（SSE 集成）
-│   └── types/                 # TypeScript 类型定义
+│   │   ├── office/            # Office.js wrapper
+│   │   │   ├── mcp-server.ts  # MCP Server (Office code execution)
+│   │   │   ├── bridge-factory.ts # Bridge factory (Excel/Word/PPT)
+│   │   │   ├── code-executor.ts # Code executor
+│   │   │   ├── error-patterns.ts # Error pattern recognition
+│   │   │   ├── error-feedback-builder.ts # Error feedback builder
+│   │   │   ├── tools.ts       # Tool definitions
+│   │   │   └── host-detector.ts # Host detector
+│   │   └── use-chat.ts        # Chat hook (SSE integration)
+│   └── types/                 # TypeScript type definitions
 ├── public/
-│   ├── assets/                # 项目截图和资源
-│   │   ├── sample_excel.png   # Excel 界面截图
-│   │   ├── sample_word.png    # Word 界面截图
-│   │   └── sample_ppt.png     # PowerPoint 界面截图
-│   ├── commands.html          # Office 命令
-│   └── test-cases/            # 测试用例
+│   ├── assets/                # Project screenshots and resources
+│   │   ├── sample_excel.png  # Excel interface screenshot
+│   │   ├── sample_word.png   # Word interface screenshot
+│   │   └── sample_ppt.png    # PowerPoint interface screenshot
+│   ├── commands.html          # Office commands
+│   └── test-cases/            # Test cases
 ├── tests/
-│   └── office-skills/         # 技能测试系统
+│   └── office-skills/         # Skill test system
 ├── workspace/
-│   └── sessions/              # 用户会话数据
-├── manifest.xml               # Office Add-in 配置
-├── server.mjs                 # HTTPS 开发服务器
+│   └── sessions/              # User session data
+├── manifest.xml               # Office Add-in configuration
+├── server.mjs                 # HTTPS development server
 └── package.json
 ```
 
-### 本地开发
+### Local Development
 
-#### 开发命令
+#### Development Commands
 
 ```bash
-# HTTP 开发服务器（仅用于浏览器测试）
+# HTTP development server (browser testing only)
 npm run dev
 
-# HTTPS 开发服务器（Office Add-in 必需）
+# HTTPS development server (required for Office Add-in)
 npm run dev:https
 
-# 构建生产版本
+# Build production version
 npm run build
 
-# 启动生产服务器
+# Start production server
 npm start
 
-# 代码检查
+# Code linting
 npm run lint
 ```
 
-#### 环境变量配置
+#### Environment Variables Configuration
 
-创建 `.env.local` 文件：
+Create a `.env.local` file:
 
 ```env
-# 必需：Anthropic API Key
+# Required: Anthropic API Key
 ANTHROPIC_API_KEY=sk-ant-...
 
-# 可选：自定义 API 基础 URL（用于代理或企业部署）
+# Optional: Custom API base URL (for proxy or enterprise deployment)
 # ANTHROPIC_BASE_URL=https://your-proxy.com
 
-# 可选：指定模型名称
+# Optional: Specify model name
 # ANTHROPIC_MODEL=claude-sonnet-4-5-20250929
 
-# 可选：清理端点的 API Key（安全措施）
+# Optional: API Key for cleanup endpoint (security measure)
 # CLEANUP_API_KEY=your_secret_key
 ```
 
-#### HTTPS 证书生成
+#### HTTPS Certificate Generation
 
-Office Add-in 要求使用 HTTPS。项目会自动生成自签名证书：
+Office Add-ins require HTTPS. The project automatically generates self-signed certificates:
 
 ```bash
-# 首次运行时自动生成
+# Automatically generated on first run
 npm run dev:https
 
-# 证书位置：~/.office-addin-dev-certs/
+# Certificate location: ~/.office-addin-dev-certs/
 ```
 
-**macOS 信任证书**：
-
+**Trust Certificate on macOS**:
 ```bash
-# 在 Keychain Access 中将证书设置为"始终信任"
-# 或运行以下命令
+# Set as "Always Trust" in Keychain Access
+# Or run the following command
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ~/.office-addin-dev-certs/localhost.crt
 ```
 
-#### 调试技巧
+#### Debugging Tips
 
-1. **浏览器调试**：
-   - 在浏览器中打开 `https://localhost:3000/taskpane`
-   - 使用浏览器开发者工具查看日志和网络请求
+1. **Browser Debugging**:
+   - Open `https://localhost:3000/taskpane` in browser
+   - Use browser developer tools to view logs and network requests
 
-2. **Office 内调试**：
-   - **Windows**: 按 F12 打开调试工具
-   - **Mac**: 在 Safari 中启用开发者菜单，选择对应的网页检查器
+2. **Debugging in Office**:
+   - **Windows**: Press F12 to open debugging tools
+   - **Mac**: Enable developer menu in Safari, select corresponding web inspector
 
-3. **后端日志**：
-   - 查看终端中的 Next.js 服务器日志
-   - API 错误会显示在终端
+3. **Backend Logs**:
+   - View Next.js server logs in terminal
+   - API errors will be displayed in terminal
 
-4. **测试模式**：
-   - 访问 `https://localhost:3000/test-office`
-   - 使用测试面板验证技能功能
+4. **Test Mode**:
+   - Visit `https://localhost:3000/test-office`
+   - Use test panel to verify skill functionality
 
 ---
 
-## 🔧 扩展与自定义
+## 🔧 Extension & Customization
 
-### 添加新技能
+### Adding New Skills
 
-DocuPilot 使用模块化的技能系统，你可以轻松添加新的 Office 操作技能。
+DocuPilot uses a modular skill system, making it easy to add new Office operation skills.
 
-#### 步骤 1：创建技能目录
+#### Step 1: Create Skill Directory
 
 ```bash
 mkdir -p .claude/skills/my-skill
 ```
 
-#### 步骤 2：创建 SKILL.md
+#### Step 2: Create SKILL.md
 
-在 `.claude/skills/my-skill/SKILL.md` 中定义技能：
+Define the skill in `.claude/skills/my-skill/SKILL.md`:
 
 ```markdown
 ---
 name: my-skill
-description: 我的自定义技能描述
+description: My custom skill description
 ---
 
-# 我的技能
+# My Skill
 
-## 使用方式
+## Usage
 
-通过生成隐藏的 Office.js 代码来操作 Office 应用。
+Generate hidden Office.js code to operate Office applications.
 
-### 重要规则
+### Important Rules
 
-- 用户体验至上：用户只看到自然语言
-- 隐藏代码格式：`<!--OFFICE-CODE:excel\n代码\n-->`
-- 友好反馈：操作完成后告知用户结果
+- User experience first: Users only see natural language
+- Hidden code format: `<!--OFFICE-CODE:excel\n code\n-->`
+- Friendly feedback: Inform users of results after operation
 
-## 支持的功能
+## Supported Features
 
-- 功能 1：描述
-- 功能 2：描述
+- Feature 1: Description
+- Feature 2: Description
 
-## 示例
+## Examples
 
-### 示例 1：功能演示
+### Example 1: Feature Demo
 
-**用户请求**："做某件事"
+**User Request**: "Do something"
 
-**你的回复**：
+**Your Response**:
 \`\`\`
-好的，我来帮你处理。
+Okay, I'll help you with that.
 
 <!--OFFICE-CODE:excel
 Excel.run(async (context) => {
-  // 你的代码
+  // Your code
   await context.sync();
 });
 -->
 
-✅ 操作完成！
+✅ Operation complete!
 \`\`\`
 ```
 
-#### 步骤 3：创建 TOOLS.md（可选）
+#### Step 3: Create TOOLS.md (Optional)
 
-在 `.claude/skills/my-skill/TOOLS.md` 中提供代码模板：
+Provide code templates in `.claude/skills/my-skill/TOOLS.md`:
 
 ```markdown
-# 操作模板
+# Operation Templates
 
-## 模板 1
+## Template 1
 
 \`\`\`javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
-  // 模板代码
+  // Template code
   await context.sync();
 });
 \`\`\`
 ```
 
-#### 步骤 4：更新系统提示（可选）
+#### Step 4: Update System Prompt (Optional)
 
-如果需要在 `.claude/CLAUDE.md` 中引用新技能，添加相应说明。
+If needed, add corresponding instructions in `.claude/CLAUDE.md` to reference the new skill.
 
-### 自定义 Office 操作
+### Custom Office Operations
 
-#### 修改工具定义
+#### Modify Tool Definitions
 
-编辑 `src/lib/office/tools.ts` 添加新的工具：
+Edit `src/lib/office/tools.ts` to add new tools:
 
 ```typescript
 export const getToolsForHost = (hostType: OfficeHostType) => {
   const commonTools = [
-    // 通用工具
+    // Common tools
   ];
 
   const hostSpecificTools = {
     Excel: [
-      // Excel 特定工具
+      // Excel-specific tools
       {
         name: "my_custom_tool",
-        description: "我的自定义工具",
+        description: "My custom tool",
         input_schema: {
           type: "object",
           properties: {
-            // 参数定义
+            // Parameter definitions
           },
           required: []
         }
@@ -851,422 +847,421 @@ export const getToolsForHost = (hostType: OfficeHostType) => {
 };
 ```
 
-#### 添加工具处理逻辑
+#### Add Tool Handling Logic
 
-在 Claude 的响应中，根据工具名称执行相应操作。由于使用 Claude Agent SDK，工具调用是自动处理的。
+In Claude's response, execute corresponding operations based on tool name. Tool calls are automatically handled when using Claude Agent SDK.
 
-### API 配置选项
+### API Configuration Options
 
-#### 方式 1：前端设置界面（推荐）
+#### Method 1: Frontend Settings Interface (Recommended)
 
-1. 点击任务窗格右上角的 ⚙️ 按钮
-2. 填写 API 配置
-3. 点击保存
+1. Click the ⚙️ button in the top right of the task pane
+2. Fill in API configuration
+3. Click save
 
-**优点**：
+**Advantages**:
+- ✅ No need to restart application
+- ✅ Takes effect immediately
+- ✅ Easy to switch between different configurations
 
-- ✅ 无需重启应用
-- ✅ 立即生效
-- ✅ 便于切换不同配置
+**Security Note**: Configuration is saved in browser localStorage, not recommended for public devices.
 
-**安全提示**：配置保存在浏览器 localStorage，不建议在公共设备上使用。
+#### Method 2: Environment Variables (For Development/Deployment)
 
-#### 方式 2：环境变量（适合开发/部署）
-
-编辑 `.env.local`：
+Edit `.env.local`:
 
 ```env
 ANTHROPIC_API_KEY=your_key_here
-ANTHROPIC_BASE_URL=https://your-proxy.com  # 可选
-ANTHROPIC_MODEL=claude-sonnet-4-5-20250929  # 可选
+ANTHROPIC_BASE_URL=https://your-proxy.com  # Optional
+ANTHROPIC_MODEL=claude-sonnet-4-5-20250929  # Optional
 ```
 
-**优点**：
-- ✅ 配置与代码分离
-- ✅ 适合团队开发
-- ✅ 更安全
+**Advantages**:
+- ✅ Separation of configuration and code
+- ✅ Suitable for team development
+- ✅ More secure
 
-#### 配置优先级
+#### Configuration Priority
 
 ```
-前端设置 > .env.local > 系统环境变量
+Frontend Settings > .env.local > System Environment Variables
 ```
 
-#### 代理/企业部署
+#### Proxy/Enterprise Deployment
 
-如果你的网络环境需要通过代理访问 Anthropic API：
+If your network requires a proxy to access Anthropic API:
 
-1. **配置代理 URL**：
+1. **Configure Proxy URL**:
    ```env
    ANTHROPIC_BASE_URL=https://your-proxy.com/v1
    ```
 
-2. **确保代理兼容**：
-   - 代理必须转发标准的 Anthropic API 请求
-   - 保持 API 响应格式不变
+2. **Ensure Proxy Compatibility**:
+   - Proxy must forward standard Anthropic API requests
+   - Keep API response format unchanged
 
-3. **测试连接**：
-   - 发送测试消息验证配置
+3. **Test Connection**:
+   - Send a test message to verify configuration
 
 ---
 
-## 🧪 测试
+## 🧪 Testing
 
-### Office Skills 测试系统
+### Office Skills Testing System
 
-DocuPilot 提供了完整的技能测试框架，位于 `tests/office-skills/` 目录。
+DocuPilot provides a complete skill testing framework located in the `tests/office-skills/` directory.
 
-#### 访问测试面板
+#### Access Test Panel
 
 ```bash
-# 启动开发服务器
+# Start development server
 npm run dev:https
 
-# 在浏览器中访问
+# Open in browser
 https://localhost:3000/test-office
 ```
 
-#### 测试面板功能
+#### Test Panel Features
 
-- ✅ 选择应用类型（Excel/Word/PowerPoint）
-- ✅ 加载对应的测试用例
-- ✅ 一键执行单个或批量测试
-- ✅ 实时查看测试结果
-- ✅ 导出错误报告
+- ✅ Select application type (Excel/Word/PowerPoint)
+- ✅ Load corresponding test cases
+- ✅ Execute single or batch tests with one click
+- ✅ View test results in real-time
+- ✅ Export error reports
 
-#### 测试用例格式
+#### Test Case Format
 
-测试用例位于 `public/test-cases/` 目录：
+Test cases are located in the `public/test-cases/` directory:
 
 ```json
 {
   "id": "test-001",
-  "name": "测试名称",
-  "description": "测试描述",
-  "category": "分类",
-  "prompt": "发送给 AI 的提示词",
-  "expectedBehavior": "预期行为描述"
+  "name": "Test Name",
+  "description": "Test Description",
+  "category": "Category",
+  "prompt": "Prompt to send to AI",
+  "expectedBehavior": "Expected behavior description"
 }
 ```
 
-#### 创建新测试用例
+#### Creating New Test Cases
 
-1. 编辑对应的测试用例文件：
+1. Edit the corresponding test case file:
    - `public/test-cases/excel-test-cases.json`
    - `public/test-cases/word-test-cases.json`
    - `public/test-cases/powerpoint-test-cases.json`
 
-2. 添加新的测试对象
+2. Add new test object
 
-3. 在测试面板中运行
+3. Run in test panel
 
-详细文档：[tests/office-skills/README.md](tests/office-skills/README.md)
+Detailed documentation: [tests/office-skills/README.md](tests/office-skills/README.md)
 
 ---
 
-## 🤝 贡献指南
+## 🤝 Contributing
 
-我们欢迎所有形式的贡献！无论是新功能、Bug 修复、文档改进还是新技能。
+We welcome all forms of contributions! Whether it's new features, bug fixes, documentation improvements, or new skills.
 
-### 如何贡献
+### How to Contribute
 
-1. **Fork 项目**
+1. **Fork the Project**
    ```bash
-   # 点击 GitHub 页面右上角的 Fork 按钮
+   # Click the Fork button in the top right of the GitHub page
    ```
 
-2. **克隆你的 Fork**
+2. **Clone Your Fork**
    ```bash
    git clone https://github.com/YOUR_USERNAME/docupilot.git
    cd docupilot
    ```
 
-3. **创建特性分支**
+3. **Create Feature Branch**
    ```bash
    git checkout -b feature/my-new-feature
-   # 或
+   # or
    git checkout -b fix/bug-description
    ```
 
-4. **进行修改**
-   - 编写代码
-   - 添加测试
-   - 更新文档
+4. **Make Changes**
+   - Write code
+   - Add tests
+   - Update documentation
 
-5. **提交修改**
+5. **Commit Changes**
    ```bash
    git add .
-   git commit -m "feat: 添加新功能描述"
-   # 或
-   git commit -m "fix: 修复某个问题"
+   git commit -m "feat: add new feature description"
+   # or
+   git commit -m "fix: fix some issue"
    ```
 
-6. **推送到 GitHub**
+6. **Push to GitHub**
    ```bash
    git push origin feature/my-new-feature
    ```
 
-7. **创建 Pull Request**
-   - 访问你的 Fork 页面
-   - 点击 "New Pull Request"
-   - 填写 PR 描述
-   - 提交
+7. **Create Pull Request**
+   - Visit your fork page
+   - Click "New Pull Request"
+   - Fill in PR description
+   - Submit
 
-### 贡献类型
+### Contribution Types
 
-#### 🎯 新技能
+#### 🎯 New Skills
 
-贡献一个新的 Office 操作技能：
-1. 在 `.claude/skills/` 下创建新目录
-2. 编写 `SKILL.md` 和 `TOOLS.md`
-3. 添加测试用例
-4. 提交 PR，说明技能的用途和使用方法
+Contribute a new Office operation skill:
+1. Create new directory under `.claude/skills/`
+2. Write `SKILL.md` and `TOOLS.md`
+3. Add test cases
+4. Submit PR explaining the skill's purpose and usage
 
-#### 🐛 Bug 修复
+#### 🐛 Bug Fixes
 
-发现 Bug？帮我们修复：
-1. 在 Issues 中搜索是否已有相关报告
-2. 如果没有，创建新 Issue 描述问题
-3. Fork 并修复
-4. 提交 PR 并关联 Issue
+Found a bug? Help us fix it:
+1. Search Issues to see if there's already a related report
+2. If not, create new Issue describing the problem
+3. Fork and fix
+4. Submit PR and link to Issue
 
-#### 📚 文档改进
+#### 📚 Documentation Improvements
 
-文档永远可以更好：
-- 修正错误或不清晰的描述
-- 添加使用示例
-- 翻译成其他语言
-- 改进 README 或其他文档
+Documentation can always be better:
+- Fix errors or unclear descriptions
+- Add usage examples
+- Translate to other languages
+- Improve README or other documentation
 
-#### ✨ 新功能
+#### ✨ New Features
 
-想要添加新功能？
-1. 先在 Issues 中讨论你的想法
-2. 获得反馈后开始开发
-3. 确保添加相应的测试
-4. 更新相关文档
-5. 提交 PR
+Want to add a new feature?
+1. Discuss your idea in Issues first
+2. Start development after getting feedback
+3. Ensure corresponding tests are added
+4. Update relevant documentation
+5. Submit PR
 
-### 代码规范
+### Code Standards
 
-- **TypeScript**：使用严格模式，提供类型定义
-- **命名**：使用有意义的变量和函数名
-- **注释**：为复杂逻辑添加注释
-- **格式**：运行 `npm run lint` 检查代码风格
+- **TypeScript**: Use strict mode, provide type definitions
+- **Naming**: Use meaningful variable and function names
+- **Comments**: Add comments for complex logic
+- **Formatting**: Run `npm run lint` to check code style
 
-### Commit 规范
+### Commit Conventions
 
-使用语义化的 commit 消息：
+Use semantic commit messages:
 
 ```
-feat: 添加新功能
-fix: 修复 Bug
-docs: 文档更新
-style: 代码格式调整
-refactor: 代码重构
-test: 测试相关
-chore: 构建/工具相关
+feat: Add new feature
+fix: Fix bug
+docs: Documentation update
+style: Code formatting adjustment
+refactor: Code refactoring
+test: Test related
+chore: Build/tool related
 ```
 
-### 行为准则
+### Code of Conduct
 
-- 尊重所有贡献者
-- 欢迎新手提问
-- 建设性地提供反馈
-- 保持友好和专业
+- Respect all contributors
+- Welcome newcomers' questions
+- Provide constructive feedback
+- Stay friendly and professional
 
 ---
 
-## ❓ 常见问题
+## ❓ FAQ
 
-### 安装与配置
+### Installation & Configuration
 
-#### Q0: 一键安装脚本失败？
+#### Q0: One-click installation script failed?
 
-**A**: curl 安装方式的常见问题：
+**A**: Common issues with curl installation:
 
-1. **网络问题**：
+1. **Network issues**:
    ```bash
-   # 如果无法访问 GitHub，可以尝试：
-   # 1. 使用代理
-   # 2. 手动下载脚本后执行
+   # If unable to access GitHub, try:
+   # 1. Use a proxy
+   # 2. Download script manually and execute
    wget https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh
    bash install.sh
    ```
 
-2. **权限问题**：
+2. **Permission issues**:
    ```bash
-   # 如果提示权限不足，使用完整路径
+   # If permission denied, use full path
    DOCUPILOT_DIR=$HOME/docupilot curl -fsSL https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh | bash
    ```
 
-3. **Node.js 版本问题**：
+3. **Node.js version issues**:
    ```bash
-   # 检查 Node.js 版本
+   # Check Node.js version
    node -v
    
-   # 如果版本低于 18.0.0，请升级
-   # macOS (使用 Homebrew)
+   # If version is below 18.0.0, upgrade
+   # macOS (using Homebrew)
    brew install node@20
    
-   # Linux (使用 nvm)
+   # Linux (using nvm)
    nvm install 20
    nvm use 20
    ```
 
-4. **目录已存在**：
+4. **Directory already exists**:
    ```bash
-   # 删除现有目录重新安装
+   # Remove existing directory and reinstall
    rm -rf ./docupilot
    curl -fsSL https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh | bash
    
-   # 或安装到其他目录
+   # Or install to different directory
    DOCUPILOT_DIR=./docupilot-new curl -fsSL https://raw.githubusercontent.com/docupilot/docupilot/main/scripts/install.sh | bash
    ```
 
-5. **Windows 用户**：
-   一键安装脚本仅支持 macOS/Linux。Windows 用户请使用手动安装方式：
+5. **Windows users**:
+   One-click installation script only supports macOS/Linux. Windows users please use manual installation:
    ```bash
    git clone https://github.com/docupilot/docupilot.git
    cd docupilot
    npm install
    ```
 
-#### Q1: API Key 配置后不生效？
+#### Q1: API Key not working after configuration?
 
-**A**: 检查以下几点：
-1. ✅ API Key 格式正确（以 `sk-ant-` 开头）
-2. ✅ `.env.local` 文件在项目根目录
-3. ✅ 重启开发服务器（修改 .env.local 后需要）
-4. ✅ 如果使用前端设置，确保点击了"保存"按钮
+**A**: Check the following:
+1. ✅ API Key format is correct (starts with `sk-ant-`)
+2. ✅ `.env.local` file is in project root directory
+3. ✅ Restart development server (required after modifying .env.local)
+4. ✅ If using frontend settings, ensure "Save" button was clicked
 
-#### Q2: Office Add-in 加载失败？
+#### Q2: Office Add-in loading failed?
 
-**A**: 常见原因：
-1. **证书问题**：
-   - 确保信任了自签名证书
-   - macOS: 在 Keychain Access 中设置为"始终信任"
-   - Windows: 按提示信任证书
+**A**: Common causes:
+1. **Certificate issue**:
+   - Ensure self-signed certificate is trusted
+   - macOS: Set to "Always Trust" in Keychain Access
+   - Windows: Trust certificate when prompted
 
-2. **manifest.xml 路径错误**：
-   - 确保文件在项目根目录
-   - 检查 XML 格式是否正确
+2. **manifest.xml path error**:
+   - Ensure file is in project root directory
+   - Check XML format is correct
 
-3. **服务器未启动**：
-   - 运行 `npm run dev:https`
-   - 确保 https://localhost:3000 可访问
+3. **Server not started**:
+   - Run `npm run dev:https`
+   - Ensure https://localhost:3000 is accessible
 
-#### Q3: HTTPS 证书错误？
+#### Q3: HTTPS certificate error?
 
-**A**: Office Add-in 必须使用 HTTPS。以下是完整的证书问题解决方案：
+**A**: Office Add-ins require HTTPS. Here's the complete solution for certificate issues:
 
-**常见错误症状**：
-- ❌ 浏览器显示"您的连接不是私密连接"
-- ❌ Office 显示"无法加载加载项"
-- ❌ 控制台错误：`ERR_CERT_AUTHORITY_INVALID`
-- ❌ 服务器启动失败：`ENOENT: no such file or directory`
+**Common Error Symptoms**:
+- ❌ Browser shows "Your connection is not private"
+- ❌ Office shows "Unable to load add-in"
+- ❌ Console error: `ERR_CERT_AUTHORITY_INVALID`
+- ❌ Server startup fails: `ENOENT: no such file or directory`
 
-**解决方案 - macOS**：
+**Solution - macOS**:
 
-1. **自动生成证书**（首次运行）：
+1. **Auto-generate certificate** (first run):
    ```bash
    npm run dev:https
    ```
    
-   项目使用 `office-addin-dev-certs` 自动生成证书到：
-   - `~/.office-addin-dev-certs/localhost.crt`（证书文件）
-   - `~/.office-addin-dev-certs/localhost.key`（私钥文件）
+   The project uses `office-addin-dev-certs` to automatically generate certificates to:
+   - `~/.office-addin-dev-certs/localhost.crt` (certificate file)
+   - `~/.office-addin-dev-certs/localhost.key` (private key file)
 
-2. **信任证书**（关键步骤）：
+2. **Trust the certificate** (critical step):
    
-   方法 A - 使用命令行（推荐）：
+   Method A - Using command line (recommended):
    ```bash
    sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ~/.office-addin-dev-certs/localhost.crt
    ```
    
-   方法 B - 使用钥匙串访问：
+   Method B - Using Keychain Access:
    ```bash
-   # 1. 打开钥匙串访问应用
+   # 1. Open Keychain Access app
    open /Applications/Utilities/Keychain\ Access.app
    
-   # 2. 或者直接打开证书所在目录
+   # 2. Or open certificate directory directly
    open ~/.office-addin-dev-certs
    
-   # 3. 双击 localhost.crt 文件导入到钥匙串
-   # 4. 在"系统"钥匙串中找到 "localhost"
-   # 5. 双击打开，展开"信任"部分
-   # 6. 将"使用此证书时"设置为"始终信任"
-   # 7. 关闭窗口并输入管理员密码
+   # 3. Double-click localhost.crt file to import to keychain
+   # 4. Find "localhost" in "System" keychain
+   # 5. Double-click to open, expand "Trust" section
+   # 6. Set "When using this certificate" to "Always Trust"
+   # 7. Close window and enter administrator password
    ```
 
-3. **重启浏览器和 Office**：
-   信任证书后，需要完全重启浏览器和 Office 应用。
+3. **Restart browser and Office**:
+   After trusting the certificate, you must fully restart browsers and Office applications.
 
-4. **验证证书**：
+4. **Verify certificate**:
    ```bash
-   # 在浏览器中打开
+   # Open in browser
    open https://localhost:3000/taskpane
    
-   # 应该看到正常的页面，而不是证书警告
+   # Should see normal page without certificate warning
    ```
 
-**解决方案 - Windows**：
+**Solution - Windows**:
 
-1. **自动生成证书**（首次运行）：
+1. **Auto-generate certificate** (first run):
    ```bash
    npm run dev:https
    ```
    
-   证书将生成到：
+   Certificates will be generated to:
    - `%USERPROFILE%\.office-addin-dev-certs\localhost.crt`
    - `%USERPROFILE%\.office-addin-dev-certs\localhost.key`
 
-2. **信任证书**（关键步骤）：
+2. **Trust the certificate** (critical step):
    
-   方法 A - 使用命令行（需要管理员权限）：
+   Method A - Using command line (requires administrator privileges):
    ```powershell
-   # 在 PowerShell（管理员）中运行
+   # Run in PowerShell (Administrator)
    $certPath = "$env:USERPROFILE\.office-addin-dev-certs\localhost.crt"
    Import-Certificate -FilePath $certPath -CertStoreLocation Cert:\LocalMachine\Root
    ```
    
-   方法 B - 使用图形界面：
+   Method B - Using GUI:
    ```
-   1. 打开证书文件：
-      - 按 Win+R，输入 %USERPROFILE%\.office-addin-dev-certs
-      - 双击 localhost.crt 文件
+   1. Open certificate file:
+      - Press Win+R, type %USERPROFILE%\.office-addin-dev-certs
+      - Double-click localhost.crt file
    
-   2. 安装证书：
-      - 点击"安装证书"
-      - 选择"本地计算机"（需要管理员权限）
-      - 点击"下一步"
-      - 选择"将所有的证书都放入下列存储"
-      - 点击"浏览"，选择"受信任的根证书颁发机构"
-      - 点击"确定" → "下一步" → "完成"
-      - 出现安全警告，点击"是"
+   2. Install certificate:
+      - Click "Install Certificate"
+      - Select "Local Machine" (requires administrator privileges)
+      - Click "Next"
+      - Select "Place all certificates in the following store"
+      - Click "Browse", select "Trusted Root Certification Authorities"
+      - Click "OK" → "Next" → "Finish"
+      - When security warning appears, click "Yes"
    
-   3. 验证安装：
-      - 按 Win+R，输入 certmgr.msc
-      - 展开"受信任的根证书颁发机构" → "证书"
-      - 查找 "localhost" 证书
+   3. Verify installation:
+      - Press Win+R, type certmgr.msc
+      - Expand "Trusted Root Certification Authorities" → "Certificates"
+      - Look for "localhost" certificate
    ```
 
-3. **重启浏览器和 Office**：
-   安装证书后，必须重启所有浏览器和 Office 应用。
+3. **Restart browser and Office**:
+   After installing the certificate, you must restart all browsers and Office applications.
 
-4. **验证证书**：
+4. **Verify certificate**:
    ```bash
-   # 在浏览器中打开
+   # Open in browser
    start https://localhost:3000/taskpane
    
-   # 应该看到正常的页面，而不是证书警告
+   # Should see normal page without certificate warning
    ```
 
-**证书问题排查**：
+**Certificate Troubleshooting**:
 
-如果上述方法无效，尝试以下步骤：
+If the above methods don't work, try these steps:
 
-1. **完全清理并重新生成证书**：
+1. **Clean and regenerate certificates**:
    ```bash
    # macOS/Linux
    rm -rf ~/.office-addin-dev-certs
@@ -1274,11 +1269,11 @@ chore: 构建/工具相关
    # Windows PowerShell
    Remove-Item -Recurse -Force "$env:USERPROFILE\.office-addin-dev-certs"
    
-   # 重新生成
+   # Regenerate
    npm run dev:https
    ```
 
-2. **检查端口占用**：
+2. **Check port usage**:
    ```bash
    # macOS/Linux
    lsof -i :3000
@@ -1286,118 +1281,118 @@ chore: 构建/工具相关
    # Windows
    netstat -ano | findstr :3000
    
-   # 如果端口被占用，关闭占用进程或修改 server.mjs 中的端口
+   # If port is in use, close the process or modify port in server.mjs
    ```
 
-3. **手动安装 office-addin-dev-certs**（如果自动生成失败）：
+3. **Manually install office-addin-dev-certs** (if auto-generation fails):
    ```bash
    npx office-addin-dev-certs install
    ```
 
-4. **浏览器临时绕过（仅用于测试）**：
-   - Chrome: 在警告页面输入 `thisisunsafe`（不显示）
-   - Firefox: 点击"高级" → "接受风险并继续"
-   - Safari: 点击"显示详细信息" → "访问此网站"
+4. **Browser temporary bypass** (for testing only):
+   - Chrome: On warning page, type `thisisunsafe` (not displayed)
+   - Firefox: Click "Advanced" → "Accept the Risk and Continue"
+   - Safari: Click "Show Details" → "visit this website"
    
-   ⚠️ **注意**：这只能解决浏览器访问问题，Office 加载项仍需要正确信任证书。
+   ⚠️ **Note**: This only solves browser access issues. Office add-ins still require properly trusted certificates.
 
-5. **防火墙/杀毒软件检查**：
-   某些安全软件可能阻止本地证书。临时禁用后重试。
+5. **Firewall/Antivirus check**:
+   Some security software may block local certificates. Try temporarily disabling and retry.
 
-**最佳实践**：
-- ✅ 开发期间保持证书文件不变
-- ✅ 团队成员各自生成和信任自己的证书
-- ✅ 不要将证书文件提交到 Git 仓库
-- ✅ 生产环境使用正式的 SSL 证书
+**Best Practices**:
+- ✅ Keep certificate files unchanged during development
+- ✅ Each team member generates and trusts their own certificates
+- ✅ Do not commit certificate files to Git repository
+- ✅ Use official SSL certificates in production environment
 
-### 使用问题
+### Usage Issues
 
-#### Q4: AI 响应很慢或超时？
+#### Q4: AI response is slow or times out?
 
-**A**: 可能原因：
-1. **网络问题**：
-   - 检查网络连接
-   - 如在国内，考虑配置代理
-   - 使用 `ANTHROPIC_BASE_URL` 设置代理
+**A**: Possible reasons:
+1. **Network issue**:
+   - Check network connection
+   - If in China, consider configuring proxy
+   - Use `ANTHROPIC_BASE_URL` to set proxy
 
-2. **复杂任务**：
-   - 某些任务需要更长时间
-   - 切换到 Plan 模式查看执行计划
+2. **Complex task**:
+   - Some tasks require more time
+   - Switch to Plan mode to view execution plan
 
-3. **API 配额**：
-   - 检查 Anthropic 账户配额
+3. **API quota**:
+   - Check Anthropic account quota
 
-#### Q5: Office 操作没有执行？
+#### Q5: Office operations not executing?
 
-**A**: 调试步骤：
-1. **查看浏览器控制台**：
-   - 检查是否有 JavaScript 错误
-   - 查看是否有 Office.js API 错误
+**A**: Debugging steps:
+1. **Check browser console**:
+   - Check for JavaScript errors
+   - Look for Office.js API errors
 
-2. **检查隐藏代码**：
-   - AI 的响应中应包含 `<!--OFFICE-CODE:...-->` 注释
-   - 如果没有，说明 AI 没有正确生成代码
+2. **Check hidden code**:
+   - AI response should contain `<!--OFFICE-CODE:...-->` comments
+   - If not, AI didn't generate code correctly
 
-3. **权限问题**：
-   - 确保 Office 文档已保存
-   - 某些操作需要特定权限
+3. **Permission issue**:
+   - Ensure Office document is saved
+   - Some operations require specific permissions
 
-#### Q6: 上传的文件找不到？
+#### Q6: Can't find uploaded file?
 
-**A**: 文件管理说明：
-- 文件位置：`workspace/sessions/{session_id}/uploads/`
-- 文件名包含时间戳前缀：`1234567890_filename.xlsx`
-- 使用通配符查找：`workspace/sessions/*/uploads/*.xlsx`
-- 临时文件会在 1 小时后自动清理
+**A**: File management explanation:
+- File location: `workspace/sessions/{session_id}/uploads/`
+- Filename includes timestamp prefix: `1234567890_filename.xlsx`
+- Use wildcards to find: `workspace/sessions/*/uploads/*.xlsx`
+- Temporary files are automatically cleaned after 1 hour
 
-### 开发问题
+### Development Issues
 
-#### Q7: 如何调试技能代码？
+#### Q7: How to debug skill code?
 
-**A**: 调试方法：
-1. **测试面板**：
-   - 访问 `https://localhost:3000/test-office`
-   - 逐个测试技能功能
+**A**: Debugging methods:
+1. **Test panel**:
+   - Visit `https://localhost:3000/test-office`
+   - Test skill functionality individually
 
-2. **浏览器调试**：
-   - 打开浏览器开发者工具
-   - 查看 Network 和 Console
+2. **Browser debugging**:
+   - Open browser developer tools
+   - Check Network and Console
 
-3. **日志输出**：
-   - 在技能代码中添加 `console.log()`
-   - 查看浏览器控制台输出
+3. **Log output**:
+   - Add `console.log()` in skill code
+   - View browser console output
 
-#### Q8: 如何添加新的 Office.js API？
+#### Q8: How to add new Office.js API?
 
-**A**: 步骤：
-1. 查阅 [Office.js 文档](https://docs.microsoft.com/office/dev/add-ins/)
-2. 在对应技能的 `TOOLS.md` 中添加模板
-3. 在 `SKILL.md` 中添加使用说明
-4. 创建测试用例验证
+**A**: Steps:
+1. Consult [Office.js documentation](https://docs.microsoft.com/office/dev/add-ins/)
+2. Add template in corresponding skill's `TOOLS.md`
+3. Add usage instructions in `SKILL.md`
+4. Create test cases to verify
 
-### 性能优化
+### Performance Optimization
 
-#### Q9: 如何提升响应速度？
+#### Q9: How to improve response speed?
 
-**A**: 优化建议：
-1. **使用更快的模型**（如果 API 支持）
-2. **简化提示词**：清晰、简短的需求
-3. **批量操作**：一次性完成多个操作
-4. **本地缓存**：重复任务使用历史记录
+**A**: Optimization suggestions:
+1. **Use faster model** (if API supports)
+2. **Simplify prompts**: Clear, concise requirements
+3. **Batch operations**: Complete multiple operations at once
+4. **Local caching**: Use history for repetitive tasks
 
-#### Q10: 大文件处理卡顿？
+#### Q10: Large file processing lag?
 
-**A**: 解决方案：
-1. **分批处理**：将大数据集拆分处理
-2. **限制范围**：只处理必要的数据
-3. **使用筛选**：先筛选再处理
-4. **异步操作**：避免阻塞 UI
+**A**: Solutions:
+1. **Batch processing**: Split large datasets for processing
+2. **Limit scope**: Only process necessary data
+3. **Use filters**: Filter first, then process
+4. **Async operations**: Avoid blocking UI
 
 ---
 
-## 📄 许可证
+## 📄 License
 
-本项目采用 [MIT License](LICENSE) 开源许可证。
+This project is licensed under the [MIT License](LICENSE).
 
 ```
 MIT License
@@ -1409,37 +1404,37 @@ of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction...
 ```
 
-这意味着你可以：
-- ✅ 自由使用
-- ✅ 修改代码
-- ✅ 商业使用
-- ✅ 分发副本
+This means you can:
+- ✅ Use freely
+- ✅ Modify code
+- ✅ Commercial use
+- ✅ Distribute copies
 
 ---
 
-## 🔗 相关链接
+## 🔗 Related Links
 
-- 📚 **完整文档**：[doc/](doc/)
-- 🐛 **报告问题**：[GitHub Issues](https://github.com/docupilot/docupilot/issues)
-- 💬 **讨论交流**：[GitHub Discussions](https://github.com/docupilot/docupilot/discussions)
-- 🌟 **Star 项目**：如果觉得有用，请给我们一个 Star！
+- 📚 **Full Documentation**: [doc/](doc/)
+- 🐛 **Report Issues**: [GitHub Issues](https://github.com/docupilot/docupilot/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/docupilot/docupilot/discussions)
+- 🌟 **Star the Project**: If you find it useful, please give us a Star!
 
-### 文档索引
+### Documentation Index
 
-- [快速启动指南](doc/QUICK_START.md)
-- [用户使用指南](doc/USER_GUIDE.md)
-- [测试系统文档](tests/office-skills/README.md)
-- [API 配置说明](doc/API_KEY_SETUP.md)
-- [故障排除指南](doc/TROUBLESHOOTING.md)
+- [Quick Start Guide](doc/QUICK_START.md)
+- [User Guide](doc/USER_GUIDE.md)
+- [Testing System Documentation](tests/office-skills/README.md)
+- [API Configuration Guide](doc/API_KEY_SETUP.md)
+- [Troubleshooting Guide](doc/TROUBLESHOOTING.md)
 
 ---
 
 <div align="center">
-用自然语言，让 AI 帮你高效完成 Office 工作！
 
+**Use natural language to let AI help you efficiently complete Office work!**
 
-Made with ❤️ by DocuPilotAI
+Made with ❤️ by DocuPilotAI Team
 
-[⬆ 回到顶部](#docupilot)
+[⬆ Back to Top](#docupilot)
 
 </div>
