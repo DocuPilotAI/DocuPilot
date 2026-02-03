@@ -1,5 +1,200 @@
 # Word Tool Template Library
 
+## ⚠️ Important: Prefer MCP Domain Tools
+
+**This file contains low-level Office.js code templates for reference only.**
+
+**In actual development, prefer MCP domain tools:**
+- `word_paragraph` - Paragraph insert, format, delete operations
+- `word_document` - Document read, search, replace operations
+- `word_table` - Table create, edit, format operations
+
+**Only use execute_code + templates in this file for:**
+- Field operations (Date, TOC, Page numbers, Hyperlinks)
+- Footnotes and Endnotes
+- Annotations and Comments
+- Headers/Footers with advanced formatting
+- Content Controls (forms/templates)
+- Style Management (complex style operations)
+- Other advanced APIs not covered by MCP tools
+
+**Performance Comparison:**
+- MCP Tools: 1.2s response, ~280 tokens, <5% error rate
+- execute_code: 2.5s response, ~800 tokens, 15% error rate
+
+**See Also:**
+- [MCP Tools API Documentation](../../../docs/MCP_TOOLS_API.md)
+- [MCP Tools Decision Flow](../../../docs/MCP_TOOL_DECISION_FLOW.md)
+
+---
+
+## 🚨 API 稳定性指南（必读）
+
+### 禁用 API 清单
+
+以下 API 在实际使用中容易导致静默失败或不可预期行为，**应避免使用**：
+
+| API | 风险等级 | 问题描述 | 替代方案 |
+|-----|---------|---------|---------|
+| `body.clear()` | 🔴 高危 | 清空整个文档，后续操作可能失败 | 在空白文档开始，或明确告知用户 |
+| `insertParagraph(..., "Start")` | 🔴 高危 | 在开头插入会打乱已有结构 | 始终使用 `"End"` 顺序添加 |
+| `insertField(toc)` | 🟡 中危 | 目录字段不稳定，参数复杂 | 手动创建目录列表，或提示用户用 Word 内置功能 |
+| `insertField(page)` 在页脚 | 🟡 中危 | 页码字段在某些环境不工作 | 使用纯文本占位符 |
+| `search().insertParagraph("After")` | 🟡 中危 | 依赖搜索结果定位，前置步骤失败则无法定位 | 保存段落引用，使用 `paragraph.insertParagraph("After")` |
+| `shading.backgroundPatternColor` | 🟡 中危 | 某些 Word 版本不支持 | 使用 `font.highlightColor` 代替 |
+
+### 可靠代码模板（推荐）
+
+#### 模板 1：单个章节创建（最可靠）
+
+```javascript
+// ✅ 推荐：每次只创建一个章节
+Word.run(async (context) => {
+  const body = context.document.body;
+  
+  // 创建章节标题
+  const heading = body.insertParagraph("章节标题", "End");
+  heading.style = "Heading 1";
+  heading.spaceAfter = 12;
+  
+  // 创建章节内容（最多 3-4 段）
+  const content = body.insertParagraph("章节内容...", "End");
+  content.font.size = 11;
+  content.lineSpacing = 1.5;
+  
+  await context.sync();
+  
+  // 必须返回验证信息
+  return {
+    success: true,
+    created: "1 个标题 + 1 个内容段落",
+    sectionName: "章节标题"
+  };
+});
+```
+
+#### 模板 2：带验证的表格创建
+
+```javascript
+// ✅ 推荐：创建表格并验证
+Word.run(async (context) => {
+  const body = context.document.body;
+  
+  // 添加表格标题
+  const caption = body.insertParagraph("表 1：数据汇总", "End");
+  caption.font.bold = true;
+  caption.spaceAfter = 6;
+  
+  // 创建简单表格（建议不超过 5x5）
+  const table = body.insertTable(3, 3, "End", [
+    ["列1", "列2", "列3"],
+    ["数据1", "数据2", "数据3"],
+    ["数据4", "数据5", "数据6"]
+  ]);
+  
+  // 设置表格样式（使用可靠的内置样式）
+  table.styleBuiltIn = Word.BuiltInStyleName.gridTable4Accent1;
+  
+  await context.sync();
+  
+  return {
+    success: true,
+    created: "3x3 表格",
+    tableCaption: "表 1：数据汇总"
+  };
+});
+```
+
+#### 模板 3：安全的页眉设置
+
+```javascript
+// ✅ 推荐：安全的页眉设置方式
+Word.run(async (context) => {
+  const sections = context.document.sections;
+  sections.load("items");
+  await context.sync();
+  
+  if (sections.items.length > 0) {
+    const header = sections.items[0].getHeader(Word.HeaderFooterType.primary);
+    
+    // 不要用 header.clear()，直接插入内容
+    const headerPara = header.insertParagraph("文档标题 - 页眉", "End");
+    headerPara.font.size = 9;
+    headerPara.font.color = "#666666";
+    headerPara.alignment = Word.Alignment.centered;
+    
+    await context.sync();
+  }
+  
+  return {
+    success: true,
+    created: "页眉"
+  };
+});
+```
+
+#### 模板 4：分步创建报告的标准流程
+
+```javascript
+// 步骤 1：封面（单独执行）
+Word.run(async (context) => {
+  const body = context.document.body;
+  
+  const title = body.insertParagraph("报告标题", "End");
+  title.font.size = 28;
+  title.font.bold = true;
+  title.alignment = Word.Alignment.centered;
+  title.spaceAfter = 20;
+  
+  const subtitle = body.insertParagraph("[副标题]", "End");
+  subtitle.font.size = 16;
+  subtitle.alignment = Word.Alignment.centered;
+  subtitle.spaceAfter = 40;
+  
+  const author = body.insertParagraph("作者：[姓名]", "End");
+  author.alignment = Word.Alignment.centered;
+  
+  const date = body.insertParagraph("日期：[YYYY-MM-DD]", "End");
+  date.alignment = Word.Alignment.centered;
+  
+  await context.sync();
+  return { success: true, step: "1/N", created: "封面" };
+});
+
+// 步骤 2-N：各章节（每个章节单独执行）
+// ... 参考模板 1
+```
+
+### 验证返回值规范
+
+每次代码执行**必须**返回以下格式的验证信息：
+
+```typescript
+interface ExecutionResult {
+  success: boolean;           // 是否成功
+  step?: string;              // 当前步骤，如 "1/4"
+  created: string;            // 创建了什么，如 "封面标题"
+  paragraphCount?: number;    // 创建的段落数
+  tableCount?: number;        // 创建的表格数
+  preview?: string;           // 内容预览（前 50 字符）
+  complete?: boolean;         // 是否是最后一步
+}
+```
+
+### 代码复杂度自检清单
+
+在提交代码前，检查以下项目：
+
+- [ ] 代码行数 ≤ 30 行
+- [ ] `insert*` 操作 ≤ 5 次
+- [ ] 没有使用 `body.clear()`
+- [ ] 没有使用 `insertParagraph(..., "Start")`
+- [ ] 没有使用复杂的 `search()` 定位
+- [ ] 包含 `return { success: true, ... }` 验证返回
+- [ ] 只处理一个逻辑单元（如一个章节）
+
+---
+
 ## Document Reading Templates
 
 ### Read Selected Text

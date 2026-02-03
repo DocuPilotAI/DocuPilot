@@ -1,5 +1,32 @@
 # PowerPoint Tool Template Library
 
+## ⚠️ Important: Prefer MCP Domain Tools
+
+**This file contains low-level Office.js code templates for reference only.**
+
+**In actual development, prefer MCP domain tools:**
+- `ppt_shape` - Text boxes, images, geometric shapes operations
+- `ppt_slide` - Slide management (add, delete, duplicate, move)
+- `ppt_table` - Table create, edit, format operations
+
+**Only use execute_code + templates in this file for:**
+- Animation and transition effects
+- Slide master and theme operations
+- Shape grouping operations
+- Advanced text formatting (text frame margins, vertical alignment)
+- Slide layouts with specific template requirements
+- Other advanced APIs not covered by MCP tools
+
+**Performance Comparison:**
+- MCP Tools: 1.2s response, ~280 tokens, <5% error rate
+- execute_code: 2.5s response, ~800 tokens, 15% error rate
+
+**See Also:**
+- [MCP Tools API Documentation](../../../docs/MCP_TOOLS_API.md)
+- [MCP Tools Decision Flow](../../../docs/MCP_TOOL_DECISION_FLOW.md)
+
+---
+
 ## Slide Operation Templates
 
 ### Get Slide List

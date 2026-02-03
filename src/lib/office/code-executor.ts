@@ -15,11 +15,21 @@ export interface OfficeCodeBlock {
 }
 
 export interface ExecutionError {
-  type: 'InvalidArgument' | 'InvalidReference' | 'ApiNotFound' | 'GeneralException' | 'NetworkError' | 'UnknownError';
+  type: 'InvalidArgument' | 'InvalidReference' | 'ApiNotFound' | 'GeneralException' | 'NetworkError' | 'UnknownError' | 'SilentFailure' | 'ValidationFailure';
   code?: string;
   message: string;
   stackTrace?: string;
   debugInfo?: any;
+}
+
+// 执行验证结果
+export interface ExecutionValidation {
+  hasReturnValue: boolean;
+  returnValueType: string;
+  executionTime: number;
+  possibleSilentFailure: boolean;
+  validationPassed: boolean;
+  warnings: string[];
 }
 
 export interface ErrorReport {
@@ -206,6 +216,94 @@ function normalizeOfficeCode(input: string): string {
 }
 
 /**
+ * 验证执行结果
+ * 检测静默失败和不完整执行
+ */
+function validateExecutionResult(
+  result: any,
+  duration: number,
+  code: string
+): ExecutionValidation {
+  const warnings: string[] = [];
+  let possibleSilentFailure = false;
+  let validationPassed = true;
+  
+  const hasReturnValue = result !== undefined && result !== null;
+  const returnValueType = result === null ? 'null' : typeof result;
+  
+  // 检测静默失败的启发式规则
+  
+  // 规则 1：执行时间过短且无返回值
+  if (!hasReturnValue && duration < 50) {
+    possibleSilentFailure = true;
+    warnings.push(`执行时间过短 (${duration}ms) 且无返回值，可能存在静默失败`);
+    validationPassed = false;
+  }
+  
+  // 规则 2：代码包含多个 insert 操作但执行时间过短
+  const insertCount = (code.match(/\.insert[A-Z][a-zA-Z]*\(/g) || []).length;
+  if (insertCount > 3 && duration < 100) {
+    possibleSilentFailure = true;
+    warnings.push(`代码包含 ${insertCount} 个插入操作，但执行时间仅 ${duration}ms，可能部分操作未执行`);
+    validationPassed = false;
+  }
+  
+  // 规则 3：检查返回值是否包含验证信息
+  if (hasReturnValue && typeof result === 'object') {
+    if (!('success' in result)) {
+      warnings.push('返回值缺少 success 字段，无法确认执行是否成功');
+    }
+    if ('success' in result && result.success === true) {
+      validationPassed = true;
+      possibleSilentFailure = false; // 有明确的成功标记，清除静默失败警告
+    }
+  }
+  
+  // 规则 4：检查代码是否包含 context.sync()
+  if (!code.includes('context.sync()')) {
+    warnings.push('代码缺少 context.sync() 调用，操作可能未同步到文档');
+  }
+  
+  // 规则 5：检查是否使用了高风险 API
+  if (code.includes('body.clear()')) {
+    warnings.push('代码使用了 body.clear()，这是高风险操作');
+  }
+  if (/insertParagraph\([^)]*,\s*["']Start["']\)/.test(code)) {
+    warnings.push('代码使用了 insertParagraph(..., "Start")，可能导致内容顺序混乱');
+  }
+  
+  return {
+    hasReturnValue,
+    returnValueType,
+    executionTime: duration,
+    possibleSilentFailure,
+    validationPassed,
+    warnings
+  };
+}
+
+/**
+ * 获取代码中预期的操作数量
+ */
+function getExpectedOperations(code: string): {
+  insertParagraph: number;
+  insertTable: number;
+  insertBreak: number;
+  total: number;
+} {
+  const insertParagraph = (code.match(/insertParagraph\(/g) || []).length;
+  const insertTable = (code.match(/insertTable\(/g) || []).length;
+  const insertBreak = (code.match(/insertBreak\(/g) || []).length;
+  
+  return {
+    insertParagraph,
+    insertTable,
+    insertBreak,
+    total: insertParagraph + insertTable + insertBreak
+  };
+}
+
+/**
  * 执行 Office.js 代码
  */
 export async function executeOfficeCode(
@@ -279,19 +377,49 @@ export async function executeOfficeCode(
     
     const duration = Date.now() - startTime;
     
+    // 执行验证
+    const validation = validateExecutionResult(result, duration, normalized);
+    const expectedOps = getExpectedOperations(normalized);
+    
     if (DEBUG_EXECUTOR) {
-      console.log('✅ Execution successful');
+      console.log('✅ Execution completed');
       console.log('Duration:', duration + 'ms');
       console.log('Execution completed flag:', executionCompleted);
       console.log('Result:', result);
       console.log('Result type:', typeof result);
+      console.log('Expected operations:', expectedOps);
+      console.log('Validation result:', validation);
       
-      // 警告：如果返回值为undefined且执行时间很短，可能是静默失败
-      if (result === undefined && duration < 100) {
-        console.warn('⚠️ Warning: Execution succeeded but returned undefined in < 100ms. Possible silent failure.');
+      if (validation.possibleSilentFailure) {
+        console.warn('⚠️ Possible silent failure detected!');
+        console.warn('Validation warnings:', validation.warnings);
       }
       
       console.groupEnd();
+    }
+    
+    // 如果检测到可能的静默失败，返回警告但仍标记为成功
+    // 这样 Agent 可以看到警告并决定是否需要验证
+    if (validation.possibleSilentFailure) {
+      return { 
+        success: true, 
+        result: {
+          ...result,
+          __validation: validation,
+          __warning: '执行可能存在静默失败，建议验证文档状态'
+        }
+      };
+    }
+    
+    // 如果有验证警告，附加到结果中
+    if (validation.warnings.length > 0 && !validation.possibleSilentFailure) {
+      return { 
+        success: true, 
+        result: {
+          ...result,
+          __validation: validation
+        }
+      };
     }
     
     return { success: true, result };

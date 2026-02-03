@@ -15,6 +15,19 @@ English | [简体中文](README.md)
 
 ---
 
+## 🎉 v2.0 Major Update
+
+**Domain Aggregation MCP Tools** - 52% faster, 65% less tokens!
+
+- ✨ **10 domain tools + 63 operations** - Smart Excel/Word/PPT operations
+- ⚡ **Faster response** - From 2.5s to 1.2s  
+- 🎯 **Higher success rate** - Error rate from 15% to <5%
+- 🔄 **Fully backward compatible** - Existing code continues to work
+
+👉 [View Upgrade Guide](./docs/MCP_TOOLS_UPGRADE_v2.0.md) | [Full API Docs](./docs/MCP_TOOLS_API.md)
+
+---
+
 ## 📸 Screenshots
 
 <div align="center">

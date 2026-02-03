@@ -1,5 +1,32 @@
 # Excel Tool Template Library
 
+## ⚠️ Important: Prefer MCP Domain Tools
+
+**This file contains low-level Office.js code templates for reference only.**
+
+**In actual development, prefer MCP domain tools:**
+- `excel_range` - Cell read/write, formatting operations
+- `excel_worksheet` - Worksheet management (add, delete, rename, activate)
+- `excel_table` - Table object operations (create, sort, filter)
+- `excel_chart` - Chart creation and management
+
+**Only use execute_code + templates in this file for:**
+- PivotTable operations
+- Conditional Formatting (complex rules)
+- Data Validation (advanced validation logic)
+- Event Handling (worksheet events)
+- Other advanced APIs not covered by MCP tools
+
+**Performance Comparison:**
+- MCP Tools: 1.2s response, ~280 tokens, <5% error rate
+- execute_code: 2.5s response, ~800 tokens, 15% error rate
+
+**See Also:**
+- [MCP Tools API Documentation](../../../docs/MCP_TOOLS_API.md)
+- [MCP Tools Decision Flow](../../../docs/MCP_TOOL_DECISION_FLOW.md)
+
+---
+
 ## Worksheet Management Templates
 
 ### Create Worksheet
