@@ -71,7 +71,7 @@ No need to memorize complex menus and functions - **just use conversation to get
 - "Create a PPT about market analysis"
 
 ### 🤖 Claude Agent Intelligence Engine
-Powered by **Claude 3.5 Sonnet**'s advanced AI capabilities:
+Powered by **Claude 4.5 Sonnet**'s advanced AI capabilities:
 - Understand complex task requirements
 - Automatically break down multi-step operations
 - Complete professional tasks with high quality
