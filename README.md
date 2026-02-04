@@ -9,7 +9,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
 
-English | [简体中文](README.md)
+English | [简体中文](README_ZH.md)
 
 </div>
 
