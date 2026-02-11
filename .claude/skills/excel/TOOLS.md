@@ -1,35 +1,35 @@
-# Excel Tool Template Library
+# Excel 工具模板库
 
-## ⚠️ Important: Prefer MCP Domain Tools
+## ⚠️ 重要：优先使用 MCP 领域工具
 
-**This file contains low-level Office.js code templates for reference only.**
+**本文件仅包含供参考的低层 Office.js 代码模板。**
 
-**In actual development, prefer MCP domain tools:**
-- `excel_range` - Cell read/write, formatting operations
-- `excel_worksheet` - Worksheet management (add, delete, rename, activate)
-- `excel_table` - Table object operations (create, sort, filter)
-- `excel_chart` - Chart creation and management
+**实际开发中请优先使用 MCP 领域工具：**
+- `excel_range` - 单元格读写、格式设置操作
+- `excel_worksheet` - 工作表管理（添加、删除、重命名、激活）
+- `excel_table` - 表格对象操作（创建、排序、筛选）
+- `excel_chart` - 图表创建与管理
 
-**Only use execute_code + templates in this file for:**
-- PivotTable operations
-- Conditional Formatting (complex rules)
-- Data Validation (advanced validation logic)
-- Event Handling (worksheet events)
-- Other advanced APIs not covered by MCP tools
+**仅对以下情况使用 execute_code + 本文件模板：**
+- 数据透视表操作
+- 条件格式（复杂规则）
+- 数据验证（高级验证逻辑）
+- 事件处理（工作表事件）
+- MCP 工具未覆盖的其他高级 API
 
-**Performance Comparison:**
-- MCP Tools: 1.2s response, ~280 tokens, <5% error rate
-- execute_code: 2.5s response, ~800 tokens, 15% error rate
+**性能对比：**
+- MCP 工具：1.2s 响应，~280 tokens，<5% 错误率
+- execute_code：2.5s 响应，~800 tokens，15% 错误率
 
-**See Also:**
-- [MCP Tools API Documentation](../../../docs/MCP_TOOLS_API.md)
-- [MCP Tools Decision Flow](../../../docs/MCP_TOOL_DECISION_FLOW.md)
+**另见：**
+- [MCP 工具 API 文档](../../../docs/MCP_TOOLS_API.md)
+- [MCP 工具决策流程](../../../docs/MCP_TOOL_DECISION_FLOW.md)
 
 ---
 
-## Worksheet Management Templates
+## 工作表管理模板
 
-### Create Worksheet
+### 创建工作表
 ```javascript
 Excel.run(async (context) => {
   const sheets = context.workbook.worksheets;
@@ -39,9 +39,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Create Worksheet (With Validation)
+### 创建工作表（带验证）
 ```javascript
-// ⚠️ Best Practice: Check if worksheet already exists
+// ⚠️ 最佳实践：检查工作表是否已存在
 Excel.run(async (context) => {
   const sheets = context.workbook.worksheets;
   const existingSheet = sheets.getItemOrNullObject("NewSheet");
@@ -49,10 +49,10 @@ Excel.run(async (context) => {
   
   let sheet;
   if (existingSheet.isNullObject) {
-    // Worksheet doesn't exist, create new one
+    // 工作表不存在，创建新的
     sheet = sheets.add("NewSheet");
   } else {
-    // Worksheet exists, use existing one
+    // 工作表已存在，使用现有
     sheet = existingSheet;
   }
   
@@ -61,7 +61,7 @@ Excel.run(async (context) => {
 });
 ```
 
-### Rename Worksheet
+### 重命名工作表
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -70,9 +70,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Delete Worksheet
+### 删除工作表
 ```javascript
-// ⚠️ Important: Check if worksheet exists before deletion, recommend using "Delete Worksheet (With Validation)" template
+// ⚠️ 重要：删除前检查工作表是否存在，建议使用「删除工作表（带验证）」模板
 try {
   await Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getItem("SheetToDelete");
@@ -85,9 +85,9 @@ try {
 }
 ```
 
-### Delete Worksheet (With Validation)
+### 删除工作表（带验证）
 ```javascript
-// ⚠️ Best Practice: Check worksheet exists before deletion (Recommended)
+// ⚠️ 最佳实践：删除前检查工作表存在性（推荐）
 await Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getItemOrNullObject("SheetToDelete");
   await context.sync();
@@ -95,14 +95,14 @@ await Excel.run(async (context) => {
   if (!sheet.isNullObject) {
     sheet.delete();
     await context.sync();
-    console.log("Worksheet deleted");
+    console.log("工作表已删除");
   } else {
-    console.log("Worksheet doesn't exist, no need to delete");
+    console.log("工作表不存在，无需删除");
   }
 });
 ```
 
-### Copy Worksheet
+### 复制工作表
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -112,11 +112,11 @@ Excel.run(async (context) => {
 });
 ```
 
-## Data Reading Templates
+## 数据读取模板
 
-### Read Selected Range
+### 读取选中区域
 ```javascript
-// Get currently selected cell range
+// 获取当前选中的单元格区域
 Excel.run(async (context) => {
   const range = context.workbook.getSelectedRange();
   range.load(["values", "address", "formulas", "numberFormat"]);
@@ -131,9 +131,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Read Specific Range
+### 读取指定区域
 ```javascript
-// Read cells at specific address
+// 读取指定地址的单元格
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("A1:D10");
@@ -144,21 +144,21 @@ Excel.run(async (context) => {
 });
 ```
 
-### Read Multiple Non-contiguous Ranges (Important!)
+### 读取多个非连续区域（重要！）
 ```javascript
-// ⚠️ Note: getRangeAreas is a workbook-level method, not sheet-level
-// Wrong usage: sheet.getRangeAreas("B3,F3,J3") ❌
-// Correct usage: workbook.getRangeAreas() ✅
+// ⚠️ 注意：getRangeAreas 是工作簿级方法，非工作表级
+// 错误用法：sheet.getRangeAreas("B3,F3,J3") ❌
+// 正确用法：workbook.getRangeAreas() ✅
 
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const sheetName = sheet.name;
   
-  // Use workbook.getRangeAreas() to read multiple non-contiguous ranges
+  // 使用 workbook.getRangeAreas() 读取多个非连续区域
   const rangeAreas = context.workbook.getRangeAreas(`${sheetName}!B3,${sheetName}!F3,${sheetName}!J3`);
   rangeAreas.load("address");
   
-  // Or read each cell separately
+  // 或分别读取每个单元格
   const range1 = sheet.getRange("B3");
   const range2 = sheet.getRange("F3");
   const range3 = sheet.getRange("J3");
@@ -177,9 +177,9 @@ Excel.run(async (context) => {
 });
 ```
 
-## Data Writing Templates
+## 数据写入模板
 
-### Write Single Value
+### 写入单个值
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -189,7 +189,7 @@ Excel.run(async (context) => {
 });
 ```
 
-### Write Array Data
+### 写入数组数据
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -203,9 +203,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Write to Multiple Non-contiguous Ranges
+### 写入多个非连续区域
 ```javascript
-// Method 1: Write each range separately (Recommended)
+// 方法 1：分别写入每个区域（推荐）
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
@@ -216,34 +216,34 @@ Excel.run(async (context) => {
   await context.sync();
 });
 
-// Method 2: Use workbook.getRangeAreas() (Cross-sheet scenarios)
+// 方法 2：使用 workbook.getRangeAreas()（跨工作表场景）
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const sheetName = sheet.name;
   
-  // Note: Must use complete address (including sheet name)
+  // 注意：必须使用完整地址（含工作表名）
   const rangeAreas = context.workbook.getRangeAreas(
     `${sheetName}!B3,${sheetName}!F3,${sheetName}!J3`
   );
   
-  // RangeAreas has limited operations, usually used for formatting and batch operations
+  // RangeAreas 操作受限，通常用于格式设置和批量操作
   rangeAreas.format.fill.color = "yellow";
   
   await context.sync();
 });
 ```
 
-## Table Operation Templates
+## 表格操作模板
 
-### Create Table
+### 创建表格
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
-  // Create table with header row
+  // 创建带表头的表格
   const table = sheet.tables.add("A1:D5", true);
   table.name = "SalesTable";
   
-  // Set headers
+  // 设置表头
   table.getHeaderRowRange().values = [["Date", "Product", "Category", "Amount"]];
   
   // Set data
@@ -254,23 +254,23 @@ Excel.run(async (context) => {
     ["2023-01-04", "Widget D", "Home", 300]
   ];
   
-  // Auto-fit columns
+  // 自动调整列宽
   sheet.getUsedRange().format.autofitColumns();
   
   await context.sync();
 });
 ```
 
-### Sort Table
+### 排序表格
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const table = sheet.tables.getItem("SalesTable");
   
-  // Sort by 4th column (Amount) in descending order
+  // 按第 4 列（Amount）降序排序
   table.sort.apply([
     {
-      key: 3, // 4th column, index starts from 0
+      key: 3, // 第 4 列，索引从 0 开始
       ascending: false
     }
   ]);
@@ -279,13 +279,13 @@ Excel.run(async (context) => {
 });
 ```
 
-### Filter Table
+### 筛选表格
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const table = sheet.tables.getItem("SalesTable");
   
-  // Filter 3rd column (Category) for "Electronics"
+  // 筛选第 3 列（Category）为 "Electronics"
   table.columns.getItemAt(2).filter.apply({
     filterOn: Excel.FilterOn.values,
     values: ["Electronics"]
@@ -295,52 +295,52 @@ Excel.run(async (context) => {
 });
 ```
 
-## Pivot Table Templates
+## 数据透视表模板
 
-### Create Pivot Table
+### 创建数据透视表
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
-  // Assume data is in A1:D5
+  // 假设数据在 A1:D5
   const sourceRange = sheet.getRange("A1:D5");
   
-  // Create pivot table at F1
+  // 在 F1 创建数据透视表
   const pivotTable = sheet.pivotTables.add("PivotTable1", sourceRange, "F1");
   
-  // Add row fields
+  // 添加行字段
   pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Category"));
   pivotTable.rowHierarchies.add(pivotTable.hierarchies.getItem("Product"));
   
-  // Add data field (default sum)
+  // 添加数据字段（默认求和）
   pivotTable.dataHierarchies.add(pivotTable.hierarchies.getItem("Amount"));
   
   await context.sync();
 });
 ```
 
-### Add Column Hierarchy and Filters
+### 添加列层级和筛选
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Add column field
+  // 添加列字段
   pivotTable.columnHierarchies.add(pivotTable.hierarchies.getItem("Region"));
   
-  // Add filter field
+  // 添加筛选字段
   pivotTable.filterHierarchies.add(pivotTable.hierarchies.getItem("Category"));
   
   await context.sync();
 });
 ```
 
-### Pivot Table Date Filter
+### 数据透视表日期筛选
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Get or add date hierarchy
+  // 获取或添加日期层级
   let dateHierarchy = pivotTable.rowHierarchies.getItemOrNullObject("Date");
   await context.sync();
   
@@ -349,7 +349,7 @@ Excel.run(async (context) => {
     await context.sync();
   }
   
-  // Apply date filter: only show data after 2020-08-01
+  // 应用日期筛选：仅显示 2020-08-01 之后的数据
   const filterField = dateHierarchy.fields.getItem("Date");
   const dateFilter = {
     condition: Excel.DateFilterCondition.afterOrEqualTo,
@@ -364,17 +364,17 @@ Excel.run(async (context) => {
 });
 ```
 
-### Pivot Table Label Filter
+### 数据透视表标签筛选
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Get field
+  // 获取字段
   const filterField = pivotTable.rowHierarchies.getItem("Category")
     .fields.getItem("Category");
   
-  // Label filter: exclude items starting with "Electronics"
+  // 标签筛选：排除以 "Electronics" 开头的项
   const labelFilter = {
     condition: Excel.LabelFilterCondition.beginsWith,
     substring: "Electronics",
@@ -386,27 +386,27 @@ Excel.run(async (context) => {
 });
 ```
 
-### Pivot Table Value Filter
+### 数据透视表值筛选
 ```javascript
-// ⚠️ Value filter: Filter row field items by aggregated values
+// ⚠️ 值筛选：按聚合值筛选行字段项
 await Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const pivotTable = sheet.pivotTables.getItemOrNullObject("PivotTable1");
   await context.sync();
   
   if (pivotTable.isNullObject) {
-    console.log("Pivot table doesn't exist");
+    console.log("数据透视表不存在");
     return;
   }
   
-  // Get field in row hierarchy
+  // 获取行层级中的字段
   const productHierarchy = pivotTable.rowHierarchies.getItemOrNullObject("Product");
   await context.sync();
   
   if (!productHierarchy.isNullObject) {
     const filterField = productHierarchy.fields.getItem("Product");
     
-    // Value filter: only show items with sales greater than 500
+    // 值筛选：仅显示销售额大于 500 的项
     const valueFilter = {
       condition: Excel.ValueFilterCondition.greaterThan,
       comparator: 500,
@@ -419,17 +419,17 @@ await Excel.run(async (context) => {
 });
 ```
 
-### Clear Pivot Table Filters
+### 清除数据透视表筛选
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Load all hierarchies
+  // 加载所有层级
   pivotTable.hierarchies.load("items");
   await context.sync();
   
-  // Clear filters from all fields
+  // 清除所有字段的筛选
   for (const hierarchy of pivotTable.hierarchies.items) {
     hierarchy.fields.load("items");
     await context.sync();
@@ -443,25 +443,25 @@ Excel.run(async (context) => {
 });
 ```
 
-### Create Slicer
+### 创建切片器
 ```javascript
-// ⚠️ Create slicer for interactive pivot table filtering
+// ⚠️ 创建用于交互式数据透视表筛选的切片器
 await Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // First check if pivot table exists
+  // 首先检查数据透视表是否存在
   const pivotTable = sheet.pivotTables.getItemOrNullObject("PivotTable1");
   await context.sync();
   
   if (pivotTable.isNullObject) {
-    console.log("Pivot table doesn't exist, cannot create slicer");
+    console.log("数据透视表不存在，无法创建切片器");
     return;
   }
   
-  // Create slicer for interactive filtering
+  // 创建用于交互式筛选的切片器
   const slicer = sheet.slicers.add(
-    "PivotTable1",  // Pivot table name
-    "Category"      // Filter field
+    "PivotTable1",  // 数据透视表名称
+    "Category"      // 筛选字段
   );
   
   slicer.name = "Category Slicer";
@@ -474,38 +474,38 @@ await Excel.run(async (context) => {
 });
 ```
 
-### Filter with Slicer
+### 使用切片器筛选
 ```javascript
 Excel.run(async (context) => {
   const slicer = context.workbook.slicers.getItem("Category Slicer");
   
-  // Select specific items for filtering
+  // 选择要筛选的特定项
   slicer.selectItems(["Electronics", "Home", "Clothing"]);
   
   await context.sync();
 });
 ```
 
-### Switch Pivot Table Layout
+### 切换数据透视表布局
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Switch layout type: Compact, Outline, Tabular
+  // 切换布局类型：紧凑、大纲、表格
   pivotTable.layout.layoutType = "Outline";  // or "Compact", "Tabular"
   
   await context.sync();
 });
 ```
 
-### Get Pivot Table Data
+### 获取数据透视表数据
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Get data range
+  // 获取数据区域
   const dataRange = pivotTable.layout.getDataBodyRange();
   dataRange.load("address, values");
   
@@ -518,7 +518,7 @@ Excel.run(async (context) => {
 });
 ```
 
-### Format Pivot Table
+### 格式化数据透视表
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
@@ -526,14 +526,14 @@ Excel.run(async (context) => {
   
   const pivotLayout = pivotTable.layout;
   
-  // Set empty cell display text
+  // 设置空单元格显示文本
   pivotLayout.emptyCellText = "--";
   pivotLayout.fillEmptyCells = true;
   
-  // Preserve formatting settings
+  // 保留格式设置
   pivotLayout.preserveFormatting = true;
   
-  // Set data range alignment
+  // 设置数据区域对齐
   const dataRange = pivotLayout.getDataBodyRange();
   dataRange.format.horizontalAlignment = Excel.HorizontalAlignment.right;
   
@@ -541,41 +541,41 @@ Excel.run(async (context) => {
 });
 ```
 
-### Refresh Pivot Table
+### 刷新数据透视表
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Refresh pivot table data
+  // 刷新数据透视表数据
   pivotTable.refresh();
   
   await context.sync();
 });
 ```
 
-### Delete Pivot Table
+### 删除数据透视表
 ```javascript
 Excel.run(async (context) => {
   const pivotTable = context.workbook.worksheets.getActiveWorksheet()
     .pivotTables.getItem("PivotTable1");
   
-  // Delete pivot table
+  // 删除数据透视表
   pivotTable.delete();
   
   await context.sync();
 });
 ```
 
-## Data Validation Templates
+## 数据验证模板
 
-### Set Numeric Validation
+### 设置数值验证
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("B2:B10");
   
-  // Only allow integers greater than 0
+  // 仅允许大于 0 的整数
   range.dataValidation.rule = {
     wholeNumber: {
       formula1: 0,
@@ -583,26 +583,26 @@ Excel.run(async (context) => {
     }
   };
   
-  // Set input prompt
+  // 设置输入提示
   range.dataValidation.prompt = {
     showPrompt: true,
-    title: "Input Limitation",
-    message: "Please enter an integer greater than 0"
+    title: "输入限制",
+    message: "请输入大于 0 的整数"
   };
   
-  // Set error alert
+  // 设置错误提示
   range.dataValidation.errorAlert = {
     showAlert: true,
     style: Excel.DataValidationAlertStyle.stop,
-    title: "Invalid Input",
-    message: "Value must be greater than 0"
+    title: "输入无效",
+    message: "值必须大于 0"
   };
   
   await context.sync();
 });
 ```
 
-### Set Dropdown List
+### 设置下拉列表
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -619,37 +619,37 @@ Excel.run(async (context) => {
 });
 ```
 
-## Comments & Named Items
+## 评论与命名项
 
-### Add Comment
+### 添加评论
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const comments = sheet.comments;
   
-  // Add comment at A1
+  // 在 A1 添加评论
   comments.add("A1", "This is a comment.");
   
   await context.sync();
 });
 ```
 
-### Create Named Range
+### 创建命名区域
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("A1:B10");
   
-  // Create named range "MyData"
+  // 创建命名区域 "MyData"
   context.workbook.names.add("MyData", range);
   
   await context.sync();
 });
 ```
 
-## Chart Creation Templates
+## 图表创建模板
 
-### Column Chart
+### 柱状图
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -668,7 +668,7 @@ Excel.run(async (context) => {
 });
 ```
 
-### Line Chart
+### 折线图
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -685,14 +685,14 @@ Excel.run(async (context) => {
 });
 ```
 
-## Formatting Templates
+## 格式设置模板
 
-### Font Formatting
+### 字体格式
 ```javascript
 Excel.run(async (context) => {
   const range = context.workbook.getSelectedRange();
   
-  // Font properties are under format.font
+  // 字体属性在 format.font 下
   range.format.font.name = "Arial";
   range.format.font.size = 12;
   range.format.font.bold = true;
@@ -704,72 +704,72 @@ Excel.run(async (context) => {
 });
 ```
 
-### Fill Color
+### 填充颜色
 ```javascript
 Excel.run(async (context) => {
   const range = context.workbook.getSelectedRange();
   
-  // Fill color is under format.fill
-  range.format.fill.color = "#FFFF00"; // Yellow background
+  // 填充颜色在 format.fill 下
+  range.format.fill.color = "#FFFF00"; // 黄色背景
   
   await context.sync();
 });
 ```
 
-### Number Format
+### 数字格式
 ```javascript
 Excel.run(async (context) => {
   const range = context.workbook.getSelectedRange();
   
-  // Number format uses 2D array structure
-  range.numberFormat = [["#,##0.00"]]; // Thousands separator, two decimal places
-  // Other examples:
-  // range.numberFormat = [["0.00%"]]; // Percentage
-  // range.numberFormat = [["$#,##0.00"]]; // Currency
-  // range.numberFormat = [["m/d/yyyy"]]; // Date format
+  // 数字格式使用二维数组结构
+  range.numberFormat = [["#,##0.00"]]; // 千分位分隔符，两位小数
+  // 其他示例：
+  // range.numberFormat = [["0.00%"]]; // 百分比
+  // range.numberFormat = [["$#,##0.00"]]; // 货币
+  // range.numberFormat = [["m/d/yyyy"]]; // 日期格式
   
   await context.sync();
 });
 ```
 
-### Alignment
+### 对齐
 ```javascript
 Excel.run(async (context) => {
   const range = context.workbook.getSelectedRange();
   
-  // Alignment properties are directly under format
+  // 对齐属性直接在 format 下
   range.format.horizontalAlignment = Excel.HorizontalAlignment.center;
   range.format.verticalAlignment = Excel.VerticalAlignment.center;
   range.format.wrapText = true;
-  range.format.textOrientation = 0; // 0-90 degrees
+  range.format.textOrientation = 0; // 0-90 度
   
   await context.sync();
 });
 ```
 
-### Border Formatting
+### 边框格式
 ```javascript
-// ⚠️ API Rule: Use format.borders (plural collection), not format.border (doesn't exist)
+// ⚠️ API 规则：使用 format.borders（复数集合），而非 format.border（不存在）
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("A1:D10");
   
-  // Available BorderIndex values:
-  // - edgeTop, edgeBottom, edgeLeft, edgeRight (outer borders)
-  // - insideHorizontal, insideVertical (inner borders)
-  // - diagonalDown, diagonalUp (diagonal lines)
+  // 可用的 BorderIndex 值：
+  // - edgeTop, edgeBottom, edgeLeft, edgeRight（外边框）
+  // - insideHorizontal, insideVertical（内边框）
+  // - diagonalDown, diagonalUp（对角线）
   
-  // Set outer borders
+  // 设置外边框
   range.format.borders.getItem(Excel.BorderIndex.edgeTop).style = Excel.BorderLineStyle.continuous;
   range.format.borders.getItem(Excel.BorderIndex.edgeBottom).style = Excel.BorderLineStyle.continuous;
   range.format.borders.getItem(Excel.BorderIndex.edgeLeft).style = Excel.BorderLineStyle.continuous;
   range.format.borders.getItem(Excel.BorderIndex.edgeRight).style = Excel.BorderLineStyle.continuous;
   
-  // Set inner borders (only for multi-cell ranges)
+  // 设置内边框（仅适用于多单元格区域）
   range.format.borders.getItem(Excel.BorderIndex.insideHorizontal).style = Excel.BorderLineStyle.continuous;
   range.format.borders.getItem(Excel.BorderIndex.insideVertical).style = Excel.BorderLineStyle.continuous;
   
-  // Customize border properties
+  // 自定义边框属性
   const topBorder = range.format.borders.getItem(Excel.BorderIndex.edgeTop);
   topBorder.color = "#000000";
   topBorder.weight = Excel.BorderWeight.thick; // thin, medium, thick, hairline
@@ -778,13 +778,13 @@ Excel.run(async (context) => {
 });
 ```
 
-### Border Formatting (All Borders Loop)
+### 边框格式（所有边框循环）
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("A1:D10");
   
-  // Apply same style to all borders using loop
+  // 使用循环对所有边框应用相同样式
   const borderIndices = [
     Excel.BorderIndex.edgeTop,
     Excel.BorderIndex.edgeBottom,
@@ -805,12 +805,12 @@ Excel.run(async (context) => {
 });
 ```
 
-### Clear Borders
+### 清除边框
 ```javascript
 Excel.run(async (context) => {
   const range = context.workbook.getSelectedRange();
   
-  // Clear all borders by setting style to none
+  // 通过将样式设为 none 清除所有边框
   const borderIndices = [
     Excel.BorderIndex.edgeTop,
     Excel.BorderIndex.edgeBottom,
@@ -828,7 +828,7 @@ Excel.run(async (context) => {
 });
 ```
 
-### Set Conditional Format
+### 设置条件格式
 ```javascript
 Excel.run(async (context) => {
   const range = context.workbook.getSelectedRange();
@@ -847,35 +847,35 @@ Excel.run(async (context) => {
 });
 ```
 
-## Formula Templates
+## 公式模板
 
-### Common Formulas
+### 常用公式
 ```javascript
-// Sum
+// 求和
 "=SUM(A1:A10)"
 
-// Average
+// 平均值
 "=AVERAGE(A1:A10)"
 
-// Count
+// 计数
 "=COUNT(A1:A10)"
-"=COUNTA(A1:A10)"  // Non-empty count
+"=COUNTA(A1:A10)"  // 非空计数
 
-// Conditional count
+// 条件计数
 "=COUNTIF(A1:A10, \">100\")"
 
-// Lookup
+// 查找
 "=VLOOKUP(E1, A1:B10, 2, FALSE)"
 
-// Conditional sum
+// 条件求和
 "=SUMIF(A1:A10, \">100\", B1:B10)"
 ```
 
-## Complete Conditional Formatting Templates
+## 完整条件格式模板
 
-### Cell Value Conditional Format
+### 单元格值条件格式
 ```javascript
-// Highlight cells greater than 100
+// 高亮大于 100 的单元格
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("A1:D10");
@@ -884,7 +884,7 @@ Excel.run(async (context) => {
     Excel.ConditionalFormatType.cellValue
   );
   
-  // Set cells greater than 100 to green background
+  // 将大于 100 的单元格设置为绿色背景
   conditionalFormat.cellValue.format.fill.color = "#90EE90";
   conditionalFormat.cellValue.rule = { 
     formula1: "100", 
@@ -895,9 +895,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Data Bar Format
+### 数据条格式
 ```javascript
-// Add data bars to range
+// 向区域添加数据条
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("B2:B10");
@@ -906,7 +906,7 @@ Excel.run(async (context) => {
     Excel.ConditionalFormatType.dataBar
   );
   
-  // Set data bar direction and color
+  // 设置数据条方向和颜色
   conditionalFormat.dataBar.barDirection = Excel.ConditionalDataBarDirection.leftToRight;
   conditionalFormat.dataBar.positiveFormat.fillColor = "#4472C4";
   
@@ -914,9 +914,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Icon Set Format
+### 图标集格式
 ```javascript
-// Display red-green arrow icon set
+// 显示红绿箭头图标集
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("C2:C10");
@@ -928,7 +928,7 @@ Excel.run(async (context) => {
   const iconSetCF = conditionalFormat.iconSet;
   iconSetCF.style = Excel.IconSet.threeArrows;
   
-  // Set icon criteria
+  // 设置图标条件
   iconSetCF.criteria = [
     {},
     {
@@ -947,9 +947,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Preset Conditional Format (Above Average)
+### 预设条件格式（高于平均值）
 ```javascript
-// Highlight cells above average
+// 高亮高于平均值的单元格
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("D2:D10");
@@ -958,7 +958,7 @@ Excel.run(async (context) => {
     Excel.ConditionalFormatType.presetCriteria
   );
   
-  // Set cells above average to yellow background
+  // 将高于平均值的单元格设置为黄色背景
   conditionalFormat.preset.format.fill.color = "yellow";
   conditionalFormat.preset.rule = {
     criterion: Excel.ConditionalFormatPresetCriterion.aboveAverage
@@ -968,9 +968,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Top/Bottom N Format
+### 前 N/后 N 格式
 ```javascript
-// Highlight top 10
+// 高亮前 10
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("E2:E20");
@@ -979,7 +979,7 @@ Excel.run(async (context) => {
     Excel.ConditionalFormatType.topBottom
   );
   
-  // Highlight top 10 items
+  // 高亮前 10 项
   conditionalFormat.topBottom.format.fill.color = "#FFC000";
   conditionalFormat.topBottom.rule = {
     rank: 10,
@@ -990,9 +990,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Custom Formula Conditional Format
+### 自定义公式条件格式
 ```javascript
-// Set conditional format using custom formula
+// 使用自定义公式设置条件格式
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("B2:B10");
@@ -1001,7 +1001,7 @@ Excel.run(async (context) => {
     Excel.ConditionalFormatType.custom
   );
   
-  // If cell value is greater than left cell, set to green
+  // 若单元格值大于左侧单元格，设为绿色
   conditionalFormat.custom.rule.formula = '=B2>A2';
   conditionalFormat.custom.format.font.color = "green";
   
@@ -1009,11 +1009,11 @@ Excel.run(async (context) => {
 });
 ```
 
-## Event Handling Templates
+## 事件处理模板
 
-### Monitor Cell Data Changes
+### 监控单元格数据变化
 ```javascript
-// Register data change event handler
+// 注册数据变化事件处理器
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
@@ -1031,9 +1031,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Monitor Selection Changes
+### 监控选择变化
 ```javascript
-// Monitor user-selected cell changes
+// 监控用户选中的单元格变化
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
@@ -1049,9 +1049,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Worksheet Activation Event
+### 工作表激活事件
 ```javascript
-// Monitor worksheet activation
+// 监控工作表激活
 Excel.run(async (context) => {
   const sheets = context.workbook.worksheets;
   
@@ -1069,9 +1069,9 @@ Excel.run(async (context) => {
 });
 ```
 
-### Calculation Complete Event
+### 计算完成事件
 ```javascript
-// Monitor worksheet calculation completion
+// 监控工作表计算完成
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
@@ -1087,9 +1087,9 @@ Excel.run(async (context) => {
 });
 ```
 
-## Shape Operation Templates
+## 形状操作模板
 
-### Add Rectangle Shape
+### 添加矩形形状
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -1102,21 +1102,21 @@ Excel.run(async (context) => {
   rectangle.width = 200;
   rectangle.name = "MyRectangle";
   
-  // Set fill color
+  // 设置填充颜色
   rectangle.fill.setSolidColor("#4472C4");
   
   await context.sync();
 });
 ```
 
-### Insert Image
+### 插入图片
 ```javascript
-// Insert Base64 encoded image
+// 插入 Base64 编码的图片
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const shapes = sheet.shapes;
   
-  // Sample Base64 image (replace with actual image data)
+  // 示例 Base64 图片（替换为实际图片数据）
   const base64Image = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
   
   const image = shapes.addImage(base64Image);
@@ -1130,17 +1130,17 @@ Excel.run(async (context) => {
 });
 ```
 
-### Add Line
+### 添加线条
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const shapes = sheet.shapes;
   
-  // Add straight line (from point [200,50] to [300,150])
+  // 添加直线（从点 [200,50] 到 [300,150]）
   const line = shapes.addLine(200, 50, 300, 150, Excel.ConnectorType.straight);
   line.name = "MyLine";
   
-  // Set line style
+  // 设置线条样式
   line.lineFormat.color = "red";
   line.lineFormat.weight = 2;
   
@@ -1148,7 +1148,7 @@ Excel.run(async (context) => {
 });
 ```
 
-### Create Text Box
+### 创建文本框
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -1161,7 +1161,7 @@ Excel.run(async (context) => {
   textBox.width = 200;
   textBox.name = "MyTextBox";
   
-  // Set text format
+  // 设置文本格式
   textBox.textFrame.textRange.font.color = "blue";
   textBox.textFrame.textRange.font.size = 14;
   
@@ -1169,17 +1169,17 @@ Excel.run(async (context) => {
 });
 ```
 
-### Group Shapes
+### 组合形状
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const shapes = sheet.shapes;
   
-  // Get shapes to group
+  // 获取要组合的形状
   const shape1 = shapes.getItem("Shape1");
   const shape2 = shapes.getItem("Shape2");
   
-  // Create shape group
+  // 创建形状组
   shape1.load("id");
   shape2.load("id");
   await context.sync();
@@ -1192,26 +1192,26 @@ Excel.run(async (context) => {
 });
 ```
 
-## Notes Templates
+## 批注模板
 
-### Add Cell Note
+### 添加单元格批注
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Add note at A1 cell
+  // 在 A1 单元格添加批注
   sheet.notes.add("A1", "This is an important note.");
   
   await context.sync();
 });
 ```
 
-### Modify Note Content
+### 修改批注内容
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Get and modify note at A1
+  // 获取并修改 A1 的批注
   const note = sheet.notes.getItem("A1");
   note.content = "Updated note content.";
   
@@ -1219,7 +1219,7 @@ Excel.run(async (context) => {
 });
 ```
 
-### Set Note Visibility
+### 设置批注可见性
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -1228,14 +1228,14 @@ Excel.run(async (context) => {
   note.load("visible");
   await context.sync();
   
-  // Toggle visibility
+  // 切换可见性
   note.visible = !note.visible;
   
   await context.sync();
 });
 ```
 
-### Delete Note
+### 删除批注
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
@@ -1247,14 +1247,14 @@ Excel.run(async (context) => {
 });
 ```
 
-## Range Advanced Operation Templates
+## 区域高级操作模板
 
-### Copy Range to New Location
+### 复制区域到新位置
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Copy A1:C5 to E1
+  // 将 A1:C5 复制到 E1
   const destRange = sheet.getRange("E1");
   destRange.copyFrom("A1:C5", Excel.RangeCopyType.all);
   
@@ -1262,12 +1262,12 @@ Excel.run(async (context) => {
 });
 ```
 
-### Copy with Skip Blanks
+### 复制时跳过空单元格
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Skip blank cells when copying, preserve existing data at destination
+  // 复制时跳过空单元格，保留目标处的现有数据
   const destRange = sheet.getRange("D1");
   destRange.copyFrom(
     "A1:C3",
@@ -1280,12 +1280,12 @@ Excel.run(async (context) => {
 });
 ```
 
-### Move Range
+### 移动区域
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Move A1:C5 to G1 (cut and paste)
+  // 将 A1:C5 移动到 G1（剪切粘贴）
   const sourceRange = sheet.getRange("A1:C5");
   sourceRange.moveTo("G1");
   
@@ -1293,12 +1293,12 @@ Excel.run(async (context) => {
 });
 ```
 
-### Insert Cells
+### 插入单元格
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Insert cell at B2, existing cells shift down
+  // 在 B2 插入单元格，现有单元格下移
   const range = sheet.getRange("B2:B2");
   range.insert(Excel.InsertShiftDirection.down);
   
@@ -1306,12 +1306,12 @@ Excel.run(async (context) => {
 });
 ```
 
-### Delete Cells
+### 删除单元格
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Delete C3:C5, other cells shift up
+  // 删除 C3:C5，其他单元格上移
   const range = sheet.getRange("C3:C5");
   range.delete(Excel.DeleteShiftDirection.up);
   
@@ -1319,38 +1319,38 @@ Excel.run(async (context) => {
 });
 ```
 
-### Clear Range Content
+### 清除区域内容
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("A1:D10");
   
-  // Clear all content and formats
+  // 清除所有内容和格式
   range.clear(Excel.ClearApplyTo.all);
   
   await context.sync();
 });
 ```
 
-### Remove Duplicates
+### 删除重复项
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("A1:B20");
   
-  // Remove duplicate rows based on columns 1 and 2
-  range.removeDuplicates([0, 1], true); // true means includes header row
+  // 根据第 1 列和第 2 列删除重复行
+  range.removeDuplicates([0, 1], true); // true 表示包含表头行
   
   await context.sync();
 });
 ```
 
-### Group Rows/Columns
+### 行列分组
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Group rows 2 to 5
+  // 对第 2 到 5 行分组
   const range = sheet.getRange("2:5");
   range.group(Excel.GroupOption.byRows);
   
@@ -1358,12 +1358,12 @@ Excel.run(async (context) => {
 });
 ```
 
-### Ungroup
+### 取消分组
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   
-  // Ungroup rows 2 to 5
+  // 取消第 2 到 5 行的分组
   const range = sheet.getRange("2:5");
   range.ungroup(Excel.GroupOption.byRows);
   
@@ -1371,15 +1371,15 @@ Excel.run(async (context) => {
 });
 ```
 
-## Checkbox Templates
+## 复选框模板
 
-### Add Checkbox
+### 添加复选框
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("B2:B10");
   
-  // Convert boolean values to checkboxes
+  // 将布尔值转换为复选框
   range.control = {
     type: Excel.CellControlType.checkbox
   };
@@ -1388,13 +1388,13 @@ Excel.run(async (context) => {
 });
 ```
 
-### Read Checkbox State
+### 读取复选框状态
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("B2:B10");
   
-  // Read checkbox values (true/false)
+  // 读取复选框值（true/false）
   range.load("values");
   await context.sync();
   
@@ -1402,13 +1402,13 @@ Excel.run(async (context) => {
 });
 ```
 
-### Remove Checkbox
+### 移除复选框
 ```javascript
 Excel.run(async (context) => {
   const sheet = context.workbook.worksheets.getActiveWorksheet();
   const range = sheet.getRange("B2:B10");
   
-  // Convert checkbox back to boolean value
+  // 将复选框恢复为布尔值
   range.control = {
     type: Excel.CellControlType.empty
   };
@@ -1417,15 +1417,15 @@ Excel.run(async (context) => {
 });
 ```
 
-## Data Analysis Python Templates
+## 数据分析 Python 模板
 
-### Descriptive Statistical Analysis
+### 描述性统计分析
 ```python
 import pandas as pd
 import numpy as np
 
 def analyze_data(data):
-    """Perform descriptive statistical analysis on Excel data"""
+    """对 Excel 数据执行描述性统计分析"""
     df = pd.DataFrame(data[1:], columns=data[0])
     
     stats = {
@@ -1440,19 +1440,19 @@ def analyze_data(data):
     return stats
 ```
 
-### Data Cleaning
+### 数据清洗
 ```python
 def clean_data(data):
-    """Clean Excel data"""
+    """清洗 Excel 数据"""
     df = pd.DataFrame(data[1:], columns=data[0])
     
-    # Remove duplicate rows
+    # 删除重复行
     df = df.drop_duplicates()
     
-    # Fill missing values
+    # 填充缺失值
     df = df.fillna(method='ffill')
     
-    # Remove whitespace
+    # 去除空白
     for col in df.select_dtypes(include=['object']).columns:
         df[col] = df[col].str.strip()
     

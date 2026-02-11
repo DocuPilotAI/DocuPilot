@@ -1,30 +1,30 @@
-# Word Tool Template Library
+# Word 工具模板库
 
-## ⚠️ Important: Prefer MCP Domain Tools
+## ⚠️ 重要：优先使用 MCP 领域工具
 
-**This file contains low-level Office.js code templates for reference only.**
+**本文件仅包含供参考的低层 Office.js 代码模板。**
 
-**In actual development, prefer MCP domain tools:**
-- `word_paragraph` - Paragraph insert, format, delete operations
-- `word_document` - Document read, search, replace operations
-- `word_table` - Table create, edit, format operations
+**实际开发中请优先使用 MCP 领域工具：**
+- `word_paragraph` - 段落插入、格式、删除操作
+- `word_document` - 文档读取、搜索、替换操作
+- `word_table` - 表格创建、编辑、格式操作
 
-**Only use execute_code + templates in this file for:**
-- Field operations (Date, TOC, Page numbers, Hyperlinks)
-- Footnotes and Endnotes
-- Annotations and Comments
-- Headers/Footers with advanced formatting
-- Content Controls (forms/templates)
-- Style Management (complex style operations)
-- Other advanced APIs not covered by MCP tools
+**仅对以下情况使用 execute_code + 本文件模板：**
+- 域操作（日期、目录、页码、超链接）
+- 脚注和尾注
+- 批注和评论
+- 高级格式的页眉/页脚
+- 内容控件（表单/模板）
+- 样式管理（复杂样式操作）
+- MCP 工具未覆盖的其他高级 API
 
-**Performance Comparison:**
-- MCP Tools: 1.2s response, ~280 tokens, <5% error rate
-- execute_code: 2.5s response, ~800 tokens, 15% error rate
+**性能对比：**
+- MCP 工具：1.2s 响应，~280 tokens，<5% 错误率
+- execute_code：2.5s 响应，~800 tokens，15% 错误率
 
-**See Also:**
-- [MCP Tools API Documentation](../../../docs/MCP_TOOLS_API.md)
-- [MCP Tools Decision Flow](../../../docs/MCP_TOOL_DECISION_FLOW.md)
+**另见：**
+- [MCP 工具 API 文档](../../../docs/MCP_TOOLS_API.md)
+- [MCP 工具决策流程](../../../docs/MCP_TOOL_DECISION_FLOW.md)
 
 ---
 
@@ -195,9 +195,9 @@ interface ExecutionResult {
 
 ---
 
-## Document Reading Templates
+## 文档读取模板
 
-### Read Selected Text
+### 读取选中文本
 ```javascript
 Word.run(async (context) => {
   const selection = context.document.getSelection();
@@ -210,7 +210,7 @@ Word.run(async (context) => {
 });
 ```
 
-### Read Entire Document
+### 读取整个文档
 ```javascript
 Word.run(async (context) => {
   const body = context.document.body;
@@ -223,7 +223,7 @@ Word.run(async (context) => {
 });
 ```
 
-### Read Document Paragraphs
+### 读取文档段落
 ```javascript
 Word.run(async (context) => {
   const paragraphs = context.document.body.paragraphs;
@@ -240,9 +240,9 @@ Word.run(async (context) => {
 });
 ```
 
-## Text Insertion Templates
+## 文本插入模板
 
-### Insert Text at Selection
+### 在选中处插入文本
 ```javascript
 Word.run(async (context) => {
   const selection = context.document.getSelection();
@@ -251,7 +251,7 @@ Word.run(async (context) => {
 });
 ```
 
-### Insert Paragraph at End of Document
+### 在文档末尾插入段落
 ```javascript
 Word.run(async (context) => {
   const paragraph = context.document.body.insertParagraph(
@@ -263,13 +263,13 @@ Word.run(async (context) => {
 });
 ```
 
-### Insert Multiple Lines of Text (Recommended)
+### 插入多行文本（推荐）
 ```javascript
 Word.run(async (context) => {
   const body = context.document.body;
   const lines = ["First line content", "Second line content", "Third line content"];
   
-  // Loop to insert each paragraph, ensuring flexible format control
+  // 循环插入每个段落，确保灵活的格式控制
   for (const line of lines) {
     const p = body.insertParagraph(line, "End");
     // Optional: set paragraph style
@@ -280,33 +280,33 @@ Word.run(async (context) => {
 });
 ```
 
-### Insert Content at Specific Position
+### 在指定位置插入内容
 ```javascript
 Word.run(async (context) => {
   const body = context.document.body;
   
-  // Insert at beginning
+  // 在开头插入
   body.insertParagraph("Beginning content", "Start");
   
-  // Insert at end
+  // 在末尾插入
   body.insertParagraph("End content", "End");
   
   await context.sync();
 });
 ```
 
-## Image Operation Templates
+## 图片操作模板
 
-### Insert Base64 Image
+### 插入 Base64 图片
 ```javascript
 // Assume base64Image is Base64 string of image (without data:image/... prefix)
 Word.run(async (context) => {
   const body = context.document.body;
   
-  // Insert image at end of document
+  // 在文档末尾插入图片
   const image = body.insertInlinePictureFromBase64(base64Image, "End");
   
-  // Set image size (optional)
+  // 设置图片大小（可选）
   image.width = 400;
   image.height = 300;
   
@@ -314,20 +314,20 @@ Word.run(async (context) => {
 });
 ```
 
-## List Operation Templates
+## 列表操作模板
 
-### Create List
+### 创建列表
 ```javascript
 Word.run(async (context) => {
   const body = context.document.body;
   
   const items = ["Item 1", "Item 2", "Item 3"];
   
-  // Insert first item and start list
+  // 插入第一项并开始列表
   const firstPara = body.insertParagraph(items[0], "End");
   firstPara.startNewList();
   
-  // Insert subsequent items
+  // 插入后续项
   for (let i = 1; i < items.length; i++) {
     body.insertParagraph(items[i], "End");
   }
@@ -336,28 +336,28 @@ Word.run(async (context) => {
 });
 ```
 
-## Table Operation Templates
+## 表格操作模板
 
-### Insert Table
+### 插入表格
 ```javascript
 Word.run(async (context) => {
   const selection = context.document.getSelection();
   
-  // Create 3x4 table
+  // 创建 3x4 表格
   const table = selection.insertTable(3, 4, "After", [
     ["Header1", "Header2", "Header3", "Header4"],
     ["Data1", "Data2", "Data3", "Data4"],
     ["Data5", "Data6", "Data7", "Data8"]
   ]);
   
-  // Set table style
+  // 设置表格样式
   table.styleBuiltIn = Word.Style.gridTable5Dark_Accent1;
   
   await context.sync();
 });
 ```
 
-### Read Table Data
+### 读取表格数据
 ```javascript
 Word.run(async (context) => {
   const tables = context.document.body.tables;
@@ -390,17 +390,17 @@ Word.run(async (context) => {
 });
 ```
 
-## Content Control Templates
+## 内容控件模板
 
-### Create Content Control
+### 创建内容控件
 ```javascript
 Word.run(async (context) => {
   const selection = context.document.getSelection();
   
-  // Wrap selected content in content control
+  // 将选中内容包裹在内容控件中
   const contentControl = selection.insertContentControl();
   
-  // Set properties
+  // 设置属性
   contentControl.title = "Customer Name";
   contentControl.tag = "CustomerName";
   contentControl.appearance = Word.ContentControlAppearance.boundingBox;
@@ -410,15 +410,15 @@ Word.run(async (context) => {
 });
 ```
 
-### Read/Update Content Control
+### 读取/更新内容控件
 ```javascript
 Word.run(async (context) => {
-  // Find control by Tag
+  // 按 Tag 查找控件
   const contentControls = context.document.contentControls.getByTag("CustomerName");
   contentControls.load("items");
   await context.sync();
   
-  // Update text of all matching controls
+  // 更新所有匹配控件的文本
   for (let cc of contentControls.items) {
     cc.insertText("Contoso Ltd.", "Replace");
   }
@@ -427,15 +427,15 @@ Word.run(async (context) => {
 });
 ```
 
-## Header and Footer Templates
+## 页眉和页脚模板
 
-### Modify Header
+### 修改页眉
 ```javascript
 Word.run(async (context) => {
   const header = context.document.sections.getFirst().getHeader(Word.HeaderFooterType.primary);
   header.clear();
   
-  const paragraph = header.insertParagraph("Confidential Document - Internal Use Only", "Start");
+  const paragraph = header.insertParagraph("机密文档 - 仅供内部使用", "Start");
   paragraph.font.color = "red";
   paragraph.alignment = Word.Alignment.centered;
   
@@ -443,14 +443,14 @@ Word.run(async (context) => {
 });
 ```
 
-## Formatting Templates
+## 格式设置模板
 
-### Set Text Format
+### 设置文本格式
 ```javascript
 Word.run(async (context) => {
   const selection = context.document.getSelection();
   
-  // Set font
+  // 设置字体
   selection.font.name = "Microsoft YaHei";
   selection.font.size = 12;
   selection.font.bold = true;
@@ -460,7 +460,7 @@ Word.run(async (context) => {
 });
 ```
 
-### Set Paragraph Format
+### 设置段落格式
 ```javascript
 Word.run(async (context) => {
   const paragraphs = context.document.body.paragraphs;
@@ -468,18 +468,18 @@ Word.run(async (context) => {
   await context.sync();
   
   for (const paragraph of paragraphs.items) {
-    paragraph.lineSpacing = 1.5;  // 1.5x line spacing
-    paragraph.spaceAfter = 10;     // Space after paragraph
-    paragraph.alignment = "Justified";  // Justified alignment
+    paragraph.lineSpacing = 1.5;  // 1.5 倍行距
+    paragraph.spaceAfter = 10;     // 段后间距
+    paragraph.alignment = "Justified";  // 两端对齐
   }
   
   await context.sync();
 });
 ```
 
-## Search and Replace Templates
+## 搜索与替换模板
 
-### Simple Replace
+### 简单替换
 ```javascript
 Word.run(async (context) => {
   const searchResults = context.document.body.search("old text", {
@@ -500,10 +500,10 @@ Word.run(async (context) => {
 });
 ```
 
-### Advanced Search (Wildcards)
+### 高级搜索（通配符）
 ```javascript
 Word.run(async (context) => {
-  // Search for words starting with 'to' and ending with 'n'
+  // 搜索以 'to' 开头、以 'n' 结尾的单词
   const searchResults = context.document.body.search("to*n", {
     matchWildcards: true
   });
@@ -511,21 +511,21 @@ Word.run(async (context) => {
   searchResults.load("items");
   await context.sync();
   
-  // Highlight results
+  // 高亮结果
   for (const result of searchResults.items) {
     result.font.highlightColor = "yellow";
   }
 });
 ```
 
-## Field Operation Templates
+## 域操作模板
 
-### Insert Current Date Field
+### 插入当前日期域
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Insert date field, format "Month/Day/Year Hour:Minute AM/PM"
+  // 插入日期域，格式「月/日/年 时:分 上午/下午」
   const field = range.insertField(
     Word.InsertLocation.end,
     Word.FieldType.date,
@@ -541,12 +541,12 @@ Word.run(async (context) => {
 });
 ```
 
-### Create Table of Contents Field
+### 创建目录域
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Insert Table of Contents field (TOC)
+  // 插入目录域（TOC）
   const field = range.insertField(
     Word.InsertLocation.start,
     Word.FieldType.toc,
@@ -559,12 +559,12 @@ Word.run(async (context) => {
 });
 ```
 
-### Insert Hyperlink Field
+### 插入超链接域
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Insert hyperlink field
+  // 插入超链接域
   const field = range.insertField(
     Word.InsertLocation.end,
     Word.FieldType.hyperlink,
@@ -577,12 +577,12 @@ Word.run(async (context) => {
 });
 ```
 
-### Insert Page Number Field
+### 插入页码域
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Insert page number field
+  // 插入页码域
   const field = range.insertField(
     Word.InsertLocation.end,
     Word.FieldType.page,
@@ -595,12 +595,12 @@ Word.run(async (context) => {
 });
 ```
 
-### Addin Field (Store Plugin Data)
+### Addin 域（存储插件数据）
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Insert Addin field to store plugin data
+  // 插入 Addin 域以存储插件数据
   const field = range.insertField(
     Word.InsertLocation.before,
     Word.FieldType.addin
@@ -609,28 +609,28 @@ Word.run(async (context) => {
   field.load("code,result,data");
   await context.sync();
   
-  // Set field data
+  // 设置域数据
   field.data = JSON.stringify({ customKey: "customValue" });
   await context.sync();
 });
 ```
 
-### Update Field Content
+### 更新域内容
 ```javascript
 Word.run(async (context) => {
-  // Get all fields in document
+  // 获取文档中所有域
   const fields = context.document.body.fields;
   fields.load("items");
   await context.sync();
   
-  // Update all fields
+  // 更新所有域
   let updatedCount = 0;
   for (const field of fields.items) {
     try {
       field.load("type");
       await context.sync();
       
-      // Update field content
+      // 更新域内容
       field.updateResult();
       updatedCount++;
     } catch (e) {
@@ -648,14 +648,14 @@ Word.run(async (context) => {
 });
 ```
 
-## Footnote and Endnote Templates
+## 脚注和尾注模板
 
-### Insert Footnote
+### 插入脚注
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Insert footnote at selected position
+  // 在选中位置插入脚注
   const footnote = range.insertFootnote("This is footnote reference content.");
   
   footnote.load("reference");
@@ -665,12 +665,12 @@ Word.run(async (context) => {
 });
 ```
 
-### Insert Endnote
+### 插入尾注
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Insert endnote at selected position
+  // 在选中位置插入尾注
   const endnote = range.insertEndnote("This is endnote reference content.");
   
   endnote.load("reference");
@@ -680,10 +680,10 @@ Word.run(async (context) => {
 });
 ```
 
-### Read Footnote Content
+### 读取脚注内容
 ```javascript
 Word.run(async (context) => {
-  // Search for footnote reference markers
+  // 搜索脚注引用标记
   const searchResults = context.document.body.search("^f", {
     matchWildcards: true
   });
@@ -695,29 +695,29 @@ Word.run(async (context) => {
 });
 ```
 
-## Style Management Templates
+## 样式管理模板
 
-### Apply Heading 1 Style
+### 应用标题 1 样式
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection().getRange();
   
-  // Apply built-in Heading 1 style
+  // 应用内置标题 1 样式
   range.style = "Heading1";
   
   await context.sync();
 });
 ```
 
-### Apply Heading Style (Using Enum)
+### 应用标题样式（使用枚举）
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection();
   range.load("text");
   await context.sync();
   
-  // Use string form of style name (more compatible)
-  // Options: "Heading 1", "Heading 2", "Heading 3", etc.
+  // 使用样式的字符串形式（兼容性更好）
+  // 选项："Heading 1"、"Heading 2"、"Heading 3" 等
   range.style = "Heading 2";
   
   await context.sync();
@@ -730,14 +730,14 @@ Word.run(async (context) => {
 });
 ```
 
-### Apply Quote Style
+### 应用引用样式
 ```javascript
 Word.run(async (context) => {
   const range = context.document.getSelection();
   range.load("text");
   await context.sync();
   
-  // Apply quote block style (using string form)
+  // 应用引用块样式（使用字符串形式）
   range.style = "Quote";
   
   await context.sync();
@@ -750,10 +750,10 @@ Word.run(async (context) => {
 });
 ```
 
-### Batch Apply Styles
+### 批量应用样式
 ```javascript
 Word.run(async (context) => {
-  // Find all paragraphs containing specific text
+  // 查找包含指定文本的所有段落
   const searchResults = context.document.body.search("Important", {
     matchCase: false
   });
@@ -763,7 +763,7 @@ Word.run(async (context) => {
   
   let appliedCount = 0;
   
-  // Apply emphasis style to all matching paragraphs
+  // 对所有匹配段落应用强调样式
   for (const result of searchResults.items) {
     const paragraph = result.parentOrNullObject.paragraph;
     paragraph.load("isNullObject");
@@ -785,17 +785,17 @@ Word.run(async (context) => {
 });
 ```
 
-### Get and Apply Existing Style
+### 获取并应用现有样式
 ```javascript
 Word.run(async (context) => {
-  // Get first paragraph's style
+  // 获取第一段的样式
   const firstParagraph = context.document.body.paragraphs.getFirst();
   firstParagraph.load("style");
   await context.sync();
   
   const styleName = firstParagraph.style;
   
-  // Apply that style to selected range
+  // 将该样式应用于选中区域
   const range = context.document.getSelection().getRange();
   range.style = styleName;
   
@@ -803,14 +803,14 @@ Word.run(async (context) => {
 });
 ```
 
-## Annotation Templates
+## 批注模板
 
-### Insert Grammar Annotation
+### 插入语法批注
 ```javascript
 Word.run(async (context) => {
   const paragraph = context.document.getSelection().paragraphs.getFirst();
   
-  // Create annotation (requires WordApi 1.7+)
+  // 创建批注（需要 WordApi 1.7+）
   const annotationSet = paragraph.insertAnnotations([{
     critiqueAnnotation: {
       critique: {
@@ -830,12 +830,12 @@ Word.run(async (context) => {
 });
 ```
 
-### Read Paragraph Annotations
+### 读取段落批注
 ```javascript
 Word.run(async (context) => {
   const paragraph = context.document.getSelection().paragraphs.getFirst();
   
-  // Get all annotations of paragraph
+  // 获取段落的所有批注
   const annotations = paragraph.getAnnotations();
   annotations.load("items");
   await context.sync();
@@ -850,10 +850,10 @@ Word.run(async (context) => {
 });
 ```
 
-### Register Annotation Event
+### 注册批注事件
 ```javascript
 Word.run(async (context) => {
-  // Register annotation click event
+  // 注册批注点击事件
   context.document.onAnnotationClicked.add(async (args) => {
     await Word.run(async (context) => {
       const annotation = context.document.getAnnotationById(args.id);
@@ -868,12 +868,12 @@ Word.run(async (context) => {
 });
 ```
 
-### Delete Annotation
+### 删除批注
 ```javascript
 Word.run(async (context) => {
   const paragraph = context.document.getSelection().paragraphs.getFirst();
   
-  // Get and delete all annotations of paragraph
+  // 获取并删除段落的所有批注
   const annotations = paragraph.getAnnotations();
   annotations.load("items");
   await context.sync();
@@ -886,12 +886,12 @@ Word.run(async (context) => {
 });
 ```
 
-## Document Processing Python Templates
+## 文档处理 Python 模板
 
-### Text Summarization
+### 文本摘要
 ```python
 def summarize_text(text, max_length=200):
-    """Summarize text using AI"""
+    """使用 AI 摘要文本"""
     # In actual implementation, call Claude API
     prompt = f"""Please summarize the following text, keeping it within {max_length} words:
 
@@ -902,10 +902,10 @@ Summary:"""
     return summary
 ```
 
-### Text Rewriting
+### 文本改写
 ```python
 def rewrite_text(text, style="formal"):
-    """Rewrite text style"""
+    """改写文本风格"""
     styles = {
         "formal": "formal, professional tone",
         "casual": "relaxed, friendly tone",
@@ -918,6 +918,6 @@ def rewrite_text(text, style="formal"):
 Original: {text}
 
 Rewritten:"""
-    # Call AI to rewrite
+    # 调用 AI 改写
     return rewritten_text
 ```

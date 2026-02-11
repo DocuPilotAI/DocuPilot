@@ -1,35 +1,35 @@
-# PowerPoint Tool Template Library
+# PowerPoint 工具模板库
 
-## ⚠️ Important: Prefer MCP Domain Tools
+## ⚠️ 重要：优先使用 MCP 领域工具
 
-**This file contains low-level Office.js code templates for reference only.**
+**本文件仅包含供参考的低层 Office.js 代码模板。**
 
-**In actual development, prefer MCP domain tools:**
-- `ppt_shape` - Text boxes, images, geometric shapes operations
-- `ppt_slide` - Slide management (add, delete, duplicate, move)
-- `ppt_table` - Table create, edit, format operations
+**实际开发中请优先使用 MCP 领域工具：**
+- `ppt_shape` - 文本框、图片、几何形状操作
+- `ppt_slide` - 幻灯片管理（添加、删除、复制、移动）
+- `ppt_table` - 表格创建、编辑、格式操作
 
-**Only use execute_code + templates in this file for:**
-- Animation and transition effects
-- Slide master and theme operations
-- Shape grouping operations
-- Advanced text formatting (text frame margins, vertical alignment)
-- Slide layouts with specific template requirements
-- Other advanced APIs not covered by MCP tools
+**仅对以下情况使用 execute_code + 本文件模板：**
+- 动画和切换效果
+- 幻灯片母版和主题操作
+- 形状分组操作
+- 高级文本格式（文本框边距、垂直对齐）
+- 需要特定模板的幻灯片版式
+- MCP 工具未覆盖的其他高级 API
 
-**Performance Comparison:**
-- MCP Tools: 1.2s response, ~280 tokens, <5% error rate
-- execute_code: 2.5s response, ~800 tokens, 15% error rate
+**性能对比：**
+- MCP 工具：1.2s 响应，~280 tokens，<5% 错误率
+- execute_code：2.5s 响应，~800 tokens，15% 错误率
 
-**See Also:**
-- [MCP Tools API Documentation](../../../docs/MCP_TOOLS_API.md)
-- [MCP Tools Decision Flow](../../../docs/MCP_TOOL_DECISION_FLOW.md)
+**另见：**
+- [MCP 工具 API 文档](../../../docs/MCP_TOOLS_API.md)
+- [MCP 工具决策流程](../../../docs/MCP_TOOL_DECISION_FLOW.md)
 
 ---
 
-## Slide Operation Templates
+## 幻灯片操作模板
 
-### Get Slide List
+### 获取幻灯片列表
 ```javascript
 PowerPoint.run(async (context) => {
   const slides = context.presentation.slides;
@@ -46,7 +46,7 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Add Blank Slide
+### 添加空白幻灯片
 ```javascript
 PowerPoint.run(async (context) => {
   context.presentation.slides.add();
@@ -54,23 +54,23 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Add Slide and Add Content (IMPORTANT!)
-**Critical**: When adding a new slide and immediately adding shapes to it, you MUST sync() after add() and then get the slide reference:
+### 添加幻灯片并添加内容（重要！）
+**关键**：添加新幻灯片并立即向其添加形状时，必须在 add() 后 sync()，然后获取幻灯片引用：
 
 ```javascript
 PowerPoint.run(async (context) => {
-  // Step 1: Add new slide
+  // 步骤 1：添加新幻灯片
   context.presentation.slides.add();
-  await context.sync(); // CRITICAL: Must sync before accessing the new slide
+  await context.sync(); // 关键：访问新幻灯片前必须 sync
   
-  // Step 2: Get reference to the newly added slide
+  // 步骤 2：获取新添加幻灯片的引用
   const slides = context.presentation.slides;
   slides.load("items");
   await context.sync();
   
   const newSlide = slides.items[slides.items.length - 1];
   
-  // Step 3: Now you can add shapes to the new slide
+  // 步骤 3：现在可以向新幻灯片添加形状
   const textBox = newSlide.shapes.addTextBox("Hello World");
   textBox.left = 100;
   textBox.top = 100;
@@ -81,13 +81,13 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-**Alternative approach - Use getSelectedSlides():**
+**替代方式 - 使用 getSelectedSlides()：**
 ```javascript
 PowerPoint.run(async (context) => {
-  // If working with currently selected slide
+  // 若操作当前选中的幻灯片
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   
-  // Can immediately add shapes without extra sync
+  // 可立即添加形状，无需额外 sync
   const textBox = slide.shapes.addTextBox("Hello World");
   textBox.left = 100;
   textBox.top = 100;
@@ -96,14 +96,14 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Delete Slide
+### 删除幻灯片
 ```javascript
 PowerPoint.run(async (context) => {
   const slides = context.presentation.slides;
   slides.load("items");
   await context.sync();
   
-  // Delete first slide
+  // 删除第一张幻灯片
   if (slides.items.length > 0) {
     slides.items[0].delete();
   }
@@ -112,23 +112,23 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Insert Slides from Another Presentation
+### 从其他演示文稿插入幻灯片
 ```javascript
-// Assume chosenFileBase64 is Base64 string containing .pptx file content
+// 假设 chosenFileBase64 是包含 .pptx 文件内容的 Base64 字符串
 PowerPoint.run(async (context) => {
   context.presentation.insertSlidesFromBase64(chosenFileBase64);
   await context.sync();
 });
 ```
 
-## Table Operation Templates
+## 表格操作模板
 
-### Create and Fill Table
+### 创建并填充表格
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   
-  // Create 3x4 table
+  // 创建 3x4 表格
   const table = slide.shapes.addTable(3, 4, {
     left: 100,
     top: 100,
@@ -145,12 +145,12 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Format Table Cells
+### 格式化表格单元格
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   
-  // Create table and apply styles
+  // 创建表格并应用样式
   const table = slide.shapes.addTable(3, 3, {
     left: 100,
     top: 100,
@@ -170,9 +170,9 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-## Shape Operation Templates
+## 形状操作模板
 
-### Add Rectangle
+### 添加矩形
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -188,7 +188,7 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Add Text Box
+### 添加文本框
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -199,7 +199,7 @@ PowerPoint.run(async (context) => {
   textBox.width = 300;
   textBox.height = 50;
   
-  // Set text style
+  // 设置文本样式
   textBox.textFrame.textRange.font.size = 24;
   textBox.textFrame.textRange.font.color = "purple";
   
@@ -207,7 +207,7 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Add Line
+### 添加线条
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -215,21 +215,21 @@ PowerPoint.run(async (context) => {
   const line = slide.shapes.addLine(PowerPoint.ConnectorType.straight, {
     left: 50,
     top: 50,
-    width: 200, // Horizontal distance from start point to end point
-    height: 200 // Vertical distance from start point to end point
+    width: 200, // 起点到终点的水平距离
+    height: 200 // 起点到终点的垂直距离
   });
   
   await context.sync();
 });
 ```
 
-### Group Shapes
+### 组合形状
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   const shapes = slide.shapes;
   
-  // Assume we want to group first two shapes
+  // 假设要组合前两个形状
   slide.load("shapes/items");
   await context.sync();
   
@@ -242,14 +242,14 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-## Image Operation Templates
+## 图片操作模板
 
-### Add Image
+### 添加图片
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   
-  // base64Image is Base64 string of image (without data:image/... prefix)
+  // base64Image 是图片的 Base64 字符串（不含 data:image/... 前缀）
   const image = slide.shapes.addImage(base64Image);
   image.left = 100;
   image.top = 100;
@@ -260,9 +260,9 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-## Tag (Metadata) Templates
+## 标签（元数据）模板
 
-### Add Tag to Slide
+### 向幻灯片添加标签
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -271,29 +271,29 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Process Slides by Tag
+### 按标签处理幻灯片
 ```javascript
 PowerPoint.run(async (context) => {
   const slides = context.presentation.slides;
   slides.load("tags/key, tags/value");
   await context.sync();
   
-  // Iterate and process
+  // 遍历并处理
   for (let slide of slides.items) {
-    // Check tag logic
+    // 检查标签逻辑
   }
 });
 ```
 
-## Text Formatting Enhancement Templates
+## 文本格式增强模板
 
-### Set Text Bold and Italic
+### 设置文本粗体和斜体
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   const shape = slide.shapes.getItemAt(0);
   
-  // Set text range font properties
+  // 设置文本范围字体属性
   const textRange = shape.textFrame.textRange;
   textRange.font.bold = true;
   textRange.font.italic = true;
@@ -303,7 +303,7 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Set Font Name and Size
+### 设置字体名称和大小
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -318,26 +318,26 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Vertical Center Text
+### 文本垂直居中
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   const shape = slide.shapes.getItemAt(0);
   
-  // Set text box vertical alignment
+  // 设置文本框垂直对齐
   shape.textFrame.verticalAlignment = PowerPoint.TextVerticalAlignment.middle;
   
   await context.sync();
 });
 ```
 
-### Set Text Box Margins
+### 设置文本框边距
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   const shape = slide.shapes.getItemAt(0);
   
-  // Set text box margins (unit: points)
+  // 设置文本框边距（单位：磅）
   shape.textFrame.marginLeft = 10;
   shape.textFrame.marginRight = 10;
   shape.textFrame.marginTop = 5;
@@ -347,14 +347,14 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-## Slide Layout and Master Templates
+## 幻灯片版式和母版模板
 
-### Get Slide Layout Information
+### 获取幻灯片版式信息
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   
-  // Load layout and master information
+  // 加载版式和母版信息
   slide.load("slideMaster,layout");
   await context.sync();
   
@@ -370,10 +370,10 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Create Slide with Specified Layout
+### 使用指定版式创建幻灯片
 ```javascript
 PowerPoint.run(async (context) => {
-  // Get first slide's layout
+  // 获取第一张幻灯片的版式
   const firstSlide = context.presentation.slides.getItemAt(0);
   firstSlide.load("layout");
   await context.sync();
@@ -382,7 +382,7 @@ PowerPoint.run(async (context) => {
   layout.load("id");
   await context.sync();
   
-  // Create new slide with same layout
+  // 使用相同版式创建新幻灯片
   const newSlide = context.presentation.slides.add({
     layoutId: layout.id
   });
@@ -391,7 +391,7 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Get All Available Layouts
+### 获取所有可用版式
 ```javascript
 PowerPoint.run(async (context) => {
   const slides = context.presentation.slides;
@@ -411,7 +411,7 @@ PowerPoint.run(async (context) => {
     layouts.load("items");
     await context.sync();
     
-    console.log("Available layouts:");
+    console.log("可用版式：");
     for (const layout of layouts.items) {
       layout.load("id,name");
       await context.sync();
@@ -421,48 +421,48 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-## Theme System Templates
+## 主题系统模板
 
-### Fill Shape with Theme Color
+### 用主题颜色填充形状
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   const shape = slide.shapes.getItemAt(0);
   
-  // Use theme color (accent1 is theme accent color 1)
+  // 使用主题颜色（accent1 为主题强调色 1）
   shape.fill.setSolidColor("accent1");
   
   await context.sync();
 });
 ```
 
-### Use Multiple Theme Colors
+### 使用多种主题颜色
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   
-  // Create multiple shapes using different theme colors
+  // 使用不同主题颜色创建多个形状
   const rect1 = slide.shapes.addGeometricShape(PowerPoint.GeometricShapeType.rectangle);
   rect1.left = 50;
   rect1.top = 50;
   rect1.width = 100;
   rect1.height = 100;
-  rect1.fill.setSolidColor("accent1"); // Theme accent color 1
+  rect1.fill.setSolidColor("accent1"); // 主题强调色 1
   
   const rect2 = slide.shapes.addGeometricShape(PowerPoint.GeometricShapeType.rectangle);
   rect2.left = 170;
   rect2.top = 50;
   rect2.width = 100;
   rect2.height = 100;
-  rect2.fill.setSolidColor("accent2"); // Theme accent color 2
+  rect2.fill.setSolidColor("accent2"); // 主题强调色 2
   
   await context.sync();
 });
 ```
 
-## Table Data Operation Templates
+## 表格数据操作模板
 
-### Read Table Data
+### 读取表格数据
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -470,7 +470,7 @@ PowerPoint.run(async (context) => {
   shapes.load("items");
   await context.sync();
   
-  // Find first table
+  // 查找第一个表格
   let table = null;
   for (const shape of shapes.items) {
     if (shape.type === PowerPoint.ShapeType.table) {
@@ -483,7 +483,7 @@ PowerPoint.run(async (context) => {
     table.load("rows,columns");
     await context.sync();
     
-    // Read all cell data
+    // 读取所有单元格数据
     for (let i = 0; i < table.rows.count; i++) {
       for (let j = 0; j < table.columns.count; j++) {
         const cell = table.getCell(i, j);
@@ -496,7 +496,7 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Update Table Cell
+### 更新表格单元格
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -513,7 +513,7 @@ PowerPoint.run(async (context) => {
   }
   
   if (table) {
-    // Update cell content
+    // 更新单元格内容
     const cell = table.getCell(0, 0);
     cell.text = "Updated content";
     
@@ -522,7 +522,7 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Set Row Height and Column Width
+### 设置行高和列宽
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
@@ -539,7 +539,7 @@ PowerPoint.run(async (context) => {
   }
   
   if (table) {
-    // Set row height and column width
+    // 设置行高和列宽
     const firstRow = table.rows.getItemAt(0);
     firstRow.height = 50;
     
@@ -551,13 +551,13 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-### Create Table with Merged Cells
+### 创建含合并单元格的表格
 ```javascript
 PowerPoint.run(async (context) => {
   const slide = context.presentation.getSelectedSlides().getItemAt(0);
   
   const tableValues = [
-    ["Title", "", "", ""],  // First row will be merged
+    ["Title", "", "", ""],  // 第一行将被合并
     ["Item A", "100", "200", "300"],
     ["Item B", "150", "250", "350"]
   ];
@@ -579,12 +579,12 @@ PowerPoint.run(async (context) => {
 });
 ```
 
-## Presentation Generation Python Templates
+## 演示文稿生成 Python 模板
 
-### Generate Presentation Outline
+### 生成演示大纲
 ```python
 def generate_outline(topic, slide_count=5):
-    """Generate presentation outline based on topic"""
+    """根据主题生成演示大纲"""
     prompt = f"""Please generate a {slide_count}-page presentation outline for the following topic:
 
 Topic: {topic}
@@ -598,14 +598,14 @@ Please output in the following format:
 
 Outline:"""
     
-    # Call AI to generate outline
+    # 调用 AI 生成大纲
     return outline
 ```
 
-### Generate Slide Content
+### 生成幻灯片内容
 ```python
 def generate_slide_content(title, points):
-    """Generate detailed content for slide"""
+    """生成幻灯片的详细内容"""
     content = {
         "title": title,
         "bullet_points": points,
@@ -614,7 +614,7 @@ def generate_slide_content(title, points):
     return content
 
 def generate_speaker_notes(title, points):
-    """Generate speaker notes"""
+    """生成演讲备注"""
     prompt = f"""Please generate concise speaker notes for the following slide:
 
 Title: {title}
@@ -622,11 +622,11 @@ Points: {', '.join(points)}
 
 Speaker Notes (50-100 words):"""
     
-    # Call AI to generate notes
+    # 调用 AI 生成备注
     return notes
 ```
 
-### Color Scheme Suggestions
+### 配色方案建议
 ```python
 COLOR_SCHEMES = {
     "professional": {
@@ -653,6 +653,6 @@ COLOR_SCHEMES = {
 }
 
 def get_color_scheme(style="professional"):
-    """Get color scheme"""
+    """获取配色方案"""
     return COLOR_SCHEMES.get(style, COLOR_SCHEMES["professional"])
 ```
